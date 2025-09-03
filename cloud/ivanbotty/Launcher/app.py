@@ -71,6 +71,8 @@ class App(Adw.Application):
             for ext in self.extensions_service.list_extensions()
             if ext.enabled
         }
+        # Add the extensions handler to the handlers dictionary
+        handlers['extensions'] = self.extensions_service
 
         # Initialize controllers
         self.search_controller = SearchController(
