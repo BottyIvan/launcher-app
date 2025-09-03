@@ -12,7 +12,6 @@ from .controller.search_controller import SearchController
 from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
 from .widget.window import Window
 from .widget.search_entry import SearchEntry
-from .widget.row import Row
 from .widget.footer import Footer
 
 class App(Adw.Application):
