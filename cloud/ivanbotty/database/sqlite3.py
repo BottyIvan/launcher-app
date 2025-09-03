@@ -23,7 +23,6 @@ def init_db():
     c.execute("""
         CREATE TABLE IF NOT EXISTS extensions (
             id TEXT PRIMARY KEY,
-            name TEXT NOT NULL,
             enabled BOOLEAN
         )
     """)
@@ -60,19 +59,31 @@ def get_pref(key, default=None):
     return row[0] if row else default
 
 # ----- Extensions -----
-def set_extension_enabled(ext_id, enabled: bool):
+def get_extension(ext_id):
     """
-    Enables or disables an extension. If it does not exist, creates it with name equal to id.
+    Retrieves the enabled/disabled state of an extension by its ID.
     """
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
-    # Retrieve the extension name if already present
-    c.execute("SELECT name FROM extensions WHERE id=?", (ext_id,))
+    c.execute("SELECT enabled FROM extensions WHERE id=?", (ext_id,))
     row = c.fetchone()
-    name = row[0] if row else ext_id  # Use ext_id as name if not found
-    c.execute("REPLACE INTO extensions (id, name, enabled) VALUES (?, ?, ?)", (ext_id, name, int(enabled)))
-    conn.commit()
     conn.close()
+    return row[0] == 1 if row else None
+
+def set_extension_enabled(ext_id, enabled: bool):
+    """
+    Enables or disables an extension. If it does not exist, creates it.
+    """
+    conn = sqlite3.connect(DB_PATH)
+    try:
+        with conn:
+            conn.execute(
+                "INSERT INTO extensions (id, enabled) VALUES (?, ?) "
+                "ON CONFLICT(id) DO UPDATE SET enabled=excluded.enabled",
+                (ext_id, int(enabled))
+            )
+    finally:
+        conn.close()
 
 def get_extensions():
     """
