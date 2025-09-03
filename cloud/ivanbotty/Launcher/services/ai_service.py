@@ -6,6 +6,7 @@ class AIService:
     """
 
     def __init__(self):
+        # The constructor is intentionally left empty because no initialization is required for AIService at this time.
         pass
 
     def ask(self, question):
