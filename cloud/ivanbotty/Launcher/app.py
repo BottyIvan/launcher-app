@@ -1,3 +1,4 @@
+from gi.repository.IBus import G
 from cloud.ivanbotty.Launcher.helper.load_class_instance import load_class_instance
 import gi, yaml
 
@@ -25,8 +26,7 @@ class App(Adw.Application):
         self.win = None
 
         # Create widgets
-        self.listbox = Gtk.ListBox()
-        self.listbox.set_visible(False)
+        self.view = Adw.Bin()
         self.entry = SearchEntry(
             placeholder="Type to search...",
             width=UI_CONFS[PREFERENCES]["entry_width"],
@@ -75,7 +75,7 @@ class App(Adw.Application):
         # Initialize controllers
         self.search_controller = SearchController(
             entry_widget=self.entry,
-            listbox=self.listbox,
+            view=self.view,
             services=services,
             handlers=handlers
         )
@@ -89,21 +89,12 @@ class App(Adw.Application):
         event_controller = KeyboardController(self)
         self.win.add_controller(event_controller)
 
-        # Listbox setup
-        self.listbox.set_visible(True)
-        self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
-        self.listbox.set_vexpand(True)
-        self.listbox.set_hexpand(True)
-
-        # Create scrolled window for the listbox
+        # Create scrolled window for the view
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         scrolled_window.set_vexpand(True)
         scrolled_window.set_hexpand(True)
-        scrolled_window.set_child(self.listbox)
-
-        extensions_list = self.extensions_service.list_extensions()
-        self.listbox.bind_model(extensions_list, self.create_row)
+        scrolled_window.set_child(self.view)
 
         # Create footer widget
         footer = Footer(self)
