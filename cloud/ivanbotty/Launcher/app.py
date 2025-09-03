@@ -1,4 +1,3 @@
-from gi.repository.IBus import G
 from cloud.ivanbotty.Launcher.helper.load_class_instance import load_class_instance
 import gi, yaml
 
@@ -110,14 +109,6 @@ class App(Adw.Application):
         box.append(footer)
 
         self.win.set_content(box)
-
-    def create_row(self, app):
-        """Create a row widget for the given app extension."""
-        if getattr(app, "enabled", False):
-            row = Row(app)
-            row.app_model = app
-            return row
-        return None
 
     def do_activate(self):
         """Activate the application and show the window."""
