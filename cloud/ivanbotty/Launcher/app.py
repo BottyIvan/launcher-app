@@ -58,7 +58,7 @@ class App(Adw.Application):
 
         # Prepare services dictionary
         services = {
-            ext.name.lower(): ext.service
+            ext.name.lower(): load_class_instance(ext.service)
             for ext in self.extensions_service.list_extensions()
             if ext.enabled
         }
