@@ -28,6 +28,7 @@ class ExtensionService:
                     description=ext.get("description", ""),
                     enabled=ext.get("enabled", True),
                     service=ext.get("service"),
+                    handler=ext.get("handler"),
                     version=ext.get("version"),
                     author=ext.get("author"),
                 )
