@@ -15,6 +15,14 @@ extensions:
     author: "ivanbotty"
     enabled: true
 
+  - name: Link
+    description: "Open URLs"
+    service: "cloud.ivanbotty.Launcher.services.link_service.LinkService"
+    handler: "cloud.ivanbotty.Launcher.handlers.link_handler.LinkHandler"
+    version: "0.0.1"
+    author: "ivanbotty"
+    enabled: true
+
   - name: Command
     description: "Execute system commands"
     service: "cloud.ivanbotty.Launcher.services.command_service.CommandService"
