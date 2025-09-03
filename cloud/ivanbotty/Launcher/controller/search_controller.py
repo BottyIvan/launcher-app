@@ -1,17 +1,17 @@
 from cloud.ivanbotty.Launcher.widget.row import Row
 
 class SearchController:
-    def __init__(self, entry_widget, listbox, services, handlers=[]):
+    def __init__(self, entry_widget, view, services, handlers=None):
         """
         entry_widget: Gtk.SearchEntry
-        listbox: Gtk.ListBox
+        view: Gtk.Box
         services: dict of available services
         handlers: list of registered handlers
         """
         self.entry = entry_widget
-        self.listbox = listbox
+        self.view = view
         self.services = services
-        self.handlers = handlers
+        self.handlers = handlers if handlers is not None else []
 
         self.entry.connect("text-changed", self.on_text_changed)
         self.entry.connect("activated", self.on_activated)
