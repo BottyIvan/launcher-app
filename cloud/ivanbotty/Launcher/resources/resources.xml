@@ -2,5 +2,6 @@
 <gresources>
     <gresource prefix="/cloud/ivanbotty/Launcher/resources">
         <file>appdata.xml</file>
+        <file>extensions.yaml</file>
     </gresource>
 </gresources>
