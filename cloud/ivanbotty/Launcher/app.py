@@ -67,12 +67,10 @@ class App(Adw.Application):
 
         # Prepare handlers dictionary
         handlers = {
-            ext.name.lower(): load_class_instance(ext.handler)
+            load_class_instance(ext.handler)
             for ext in self.extensions_service.list_extensions()
             if ext.enabled
         }
-        # Add the extensions handler to the handlers dictionary
-        handlers['extensions'] = self.extensions_service
 
         # Initialize controllers
         self.search_controller = SearchController(
