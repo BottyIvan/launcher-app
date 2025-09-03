@@ -15,6 +15,14 @@ extensions:
     author: "ivanbotty"
     enabled: true
 
+  - name: File
+    description: "Manage files"
+    service: "cloud.ivanbotty.Launcher.services.file_service.FileService"
+    handler: "cloud.ivanbotty.Launcher.handlers.file_handler.FileHandler"
+    version: "0.0.1"
+    author: "ivanbotty"
+    enabled: true
+
   - name: Link
     description: "Open URLs"
     service: "cloud.ivanbotty.Launcher.services.link_service.LinkService"
