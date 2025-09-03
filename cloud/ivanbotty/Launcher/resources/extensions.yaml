@@ -2,7 +2,7 @@ extensions:
   - name: Application
     description: "Find applications"
     service: "cloud.ivanbotty.Launcher.services.applications_service"
-    handler: "cloud.ivanbotty.Launcher.handlers.applications_handler"
+    handler: "cloud.ivanbotty.Launcher.handlers.applications_handler.AppHandler"
     class: "ApplicationsService"
     version: "0.0.1"
     author: "ivanbotty"
@@ -11,7 +11,7 @@ extensions:
   - name: Math
     description: "Perform math calculations"
     service: "cloud.ivanbotty.Launcher.services.math_service"
-    handler: "cloud.ivanbotty.Launcher.handlers.math_handler"
+    handler: "cloud.ivanbotty.Launcher.handlers.math_handler.MathHandler"
     class: "MathService"
     version: "0.0.1"
     author: "ivanbotty"
@@ -20,7 +20,7 @@ extensions:
   - name: Command
     description: "Execute system commands"
     service: "cloud.ivanbotty.Launcher.services.command_service"
-    handler: "cloud.ivanbotty.Launcher.handlers.command_handler"
+    handler: "cloud.ivanbotty.Launcher.handlers.command_handler.CommandHandler"
     class: "CommandService"
     version: "0.0.1"
     author: "ivanbotty"
@@ -29,7 +29,7 @@ extensions:
   - name: AI
     description: "AI-powered assistance"
     service: "cloud.ivanbotty.Launcher.services.ai_service"
-    handler: "cloud.ivanbotty.Launcher.handlers.ai_handler"
+    handler: "cloud.ivanbotty.Launcher.handlers.ai_handler.AIHandler"
     class: "AIService"
     version: "0.0.1"
     author: "ivanbotty"
