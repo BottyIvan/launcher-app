@@ -4,7 +4,7 @@ class SearchController:
     def __init__(self, entry_widget, view, services, handlers=None):
         """
         entry_widget: Gtk.SearchEntry
-        view: Gtk.Box
+        view: Adw.Bin
         services: dict of available services
         handlers: list of registered handlers
         """
