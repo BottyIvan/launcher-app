@@ -1,3 +1,4 @@
+from logging import handlers
 import gi, yaml
 
 gi.require_version("Gtk", "4.0")
@@ -64,11 +65,19 @@ class App(Adw.Application):
         # Add the extensions service to the services dictionary
         services["extensions"] = self.extensions_service
 
+        # Prepare handlers dictionary
+        handlers = {
+            ext.name.lower(): ext.handler
+            for ext in self.extensions_service.list_extensions()
+            if ext.enabled
+        }
+
         # Initialize controllers
         self.search_controller = SearchController(
             entry_widget=self.entry,
             listbox=self.listbox,
-            services=services
+            services=services,
+            handlers=handlers
         )
 
         # Adwaita setup
