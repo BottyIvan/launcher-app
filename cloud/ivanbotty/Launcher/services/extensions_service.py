@@ -7,24 +7,45 @@ from cloud.ivanbotty.Launcher.models.extension_model import ExtensionModel
 
 class ExtensionService:
     def __init__(self):
+        # Initialize a Gio.ListStore to hold ExtensionModel instances
         self.extensions = Gio.ListStore(item_type=ExtensionModel)
 
-    def add_extension(self, name, description, service, enabled=True, version=None, author=None):
-        self.extensions.append(
-            ExtensionModel(
-                name=name,
-                description=description,
-                enabled=enabled,
-                service=service,
-                version=version,
-                author=author
+    def register(self, extension: ExtensionModel):
+        """Add a new extension to the store."""
+        self.extensions.append(extension)
+
+    def load_from_config(self, config):
+        """
+        Load extensions from a configuration dictionary.
+
+        The config should contain an "extensions" key with a list of extension definitions.
+        Each extension is registered as an ExtensionModel instance.
+        """
+        for ext in config.get("extensions", []):
+            self.register(
+                ExtensionModel(
+                    name=ext["name"],
+                    description=ext.get("description", ""),
+                    enabled=ext.get("enabled", True),
+                    service=ext.get("service"),
+                    version=ext.get("version"),
+                    author=ext.get("author"),
+                )
             )
-        )
 
     def list_extensions(self):
+        """
+        Return the Gio.ListStore containing all registered extensions.
+        """
         return self.extensions
 
-    def get_extension(self, name):
+    def get_service(self, name):
+        """
+        Retrieve the service associated with an enabled extension by name.
+
+        Returns:
+            The service object if found and enabled, otherwise None.
+        """
         for ext in self.extensions:
             if ext.name == name and ext.enabled:
                 return ext.service
