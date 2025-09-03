@@ -41,7 +41,7 @@ class Preferences(Adw.PreferencesDialog):
             )
             # Save extension enabled state when toggled
             self.switch.connect("notify::active",
-                lambda sw, _, ext_name=extension.name: db.set_extension_enabled(ext_name, sw.get_active()))
+                lambda sw, _, ext_id=extension.service: db.set_extension_enabled(ext_id, sw.get_active()))
             extension_group.add(self.switch)
 
         # API keys settings group
