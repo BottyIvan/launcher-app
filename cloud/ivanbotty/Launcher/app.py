@@ -1,4 +1,4 @@
-import gi
+import gi, yaml
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -6,10 +6,6 @@ gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw
 
 from .services.extensions_service import ExtensionService
-from .services.applications_service import ApplicationsService
-from .services.math_service import MathService
-from .services.command_service import CommandService
-from .services.ai_service import AIService
 from .controller.keyboard_controller import KeyboardController
 from .controller.search_controller import SearchController
 from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
@@ -38,34 +34,21 @@ class App(Adw.Application):
 
         # Initialize services
         self.extensions_service = ExtensionService()
-        self.extensions_service.add_extension(
-            name="Application",
-            description="Find applications",
-            service=ApplicationsService(),
-            version="1.0",
-            author="ivanbotty"
-        )
-        self.extensions_service.add_extension(
-            name="Math",
-            description="Perform math calculations",
-            service=MathService(),
-            version="1.0",
-            author="ivanbotty"
-        )
-        self.extensions_service.add_extension(
-            name="Command",
-            description="Execute system commands",
-            service=CommandService(),
-            version="1.0",
-            author="ivanbotty"
-        )
-        self.extensions_service.add_extension(
-            name="AI",
-            description="AI-powered assistance",
-            service=AIService(),
-            version="1.0",
-            author="ivanbotty"
-        )
+        try:
+            # Load extensions from YAML
+            with open("./cloud/ivanbotty/Launcher/resources/extensions.yaml") as f:
+                config = yaml.safe_load(f)
+        except Exception as e:
+            print(f"Error loading extensions: {e}")
+            return
+
+        # Validate config structure
+        if not isinstance(config, dict):
+            print("Invalid extensions config format")
+            return
+
+        # Load extensions into the service
+        self.extensions_service.load_from_config(config)
 
     def do_startup(self):
         """Startup routine for the application."""
@@ -74,12 +57,12 @@ class App(Adw.Application):
 
         # Prepare services dictionary
         services = {
-            "app": self.extensions_service.get_extension("Application"),
-            "math": self.extensions_service.get_extension("Math"),
-            "command": self.extensions_service.get_extension("Command"),
-            "ai": self.extensions_service.get_extension("AI"),
-            "extensions": self.extensions_service
+            ext.name.lower(): ext.service
+            for ext in self.extensions_service.list_extensions()
+            if ext.enabled
         }
+        # Add the extensions service to the services dictionary
+        services["extensions"] = self.extensions_service
 
         # Initialize controllers
         self.search_controller = SearchController(
