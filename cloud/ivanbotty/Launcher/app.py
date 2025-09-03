@@ -1,4 +1,4 @@
-from logging import handlers
+from cloud.ivanbotty.Launcher.helper.load_class_instance import load_class_instance
 import gi, yaml
 
 gi.require_version("Gtk", "4.0")
@@ -67,7 +67,7 @@ class App(Adw.Application):
 
         # Prepare handlers dictionary
         handlers = {
-            ext.name.lower(): ext.handler
+            ext.name.lower(): load_class_instance(ext.handler)
             for ext in self.extensions_service.list_extensions()
             if ext.enabled
         }
