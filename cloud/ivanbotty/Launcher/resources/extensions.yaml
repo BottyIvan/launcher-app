@@ -46,3 +46,11 @@ extensions:
     version: "0.0.1"
     author: "ivanbotty"
     enabled: true
+
+  - name: Extensions
+    description: "Manage extensions"
+    service: "cloud.ivanbotty.Launcher.services.extensions_service.ExtensionService"
+    handler: "cloud.ivanbotty.Launcher.handlers.extensions_handler.ExtensionHandler"
+    version: "0.0.1"
+    author: "ivanbotty"
+    enabled: true
