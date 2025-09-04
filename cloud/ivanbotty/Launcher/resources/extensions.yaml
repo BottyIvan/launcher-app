@@ -54,3 +54,4 @@ extensions:
     version: "0.0.1"
     author: "ivanbotty"
     enabled: true
+    cant_disable: true
