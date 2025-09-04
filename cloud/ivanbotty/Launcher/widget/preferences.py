@@ -112,7 +112,38 @@ class Preferences(Adw.PreferencesDialog):
 
         api_group.add(gemini_row)
 
+        model_group = Adw.PreferencesGroup(title="Model Selection")
+
+        label_info_model = Gtk.Label(
+            label=(
+            "Choose which Gemini model to use for AI features. Each model offers different capabilities and performance. "
+            "Refer to the Gemini documentation to select the model that best matches your requirements."
+            ),
+            wrap=True,
+            xalign=0,
+            margin_top=6,
+            use_markup=True,
+            selectable=False
+        )
+        label_info_model.set_selectable(False)
+        label_info_model.set_use_markup(True)
+        label_info_model.set_halign(Gtk.Align.START)
+        label_info_model.add_css_class("dimmed")
+
+        model_group.add(label_info_model)
+
+        # Gemini model selection row (UI only, not yet functional)
+        gemini_model_row = Adw.ComboRow(
+            title="Gemini Model",
+            subtitle="Select the Gemini model to use for AI features.",
+            model=Gtk.StringList.new(["gemini-1.5", "gemini-2", "gemini-3"]),
+        )
+        gemini_model_row.set_selected(0)
+
+        model_group.add(gemini_model_row)
+
         page_api.add(api_group)
+        page_api.add(model_group)
         self.add(page_api)
 
     def on_api_key_apply(self, row, service):
