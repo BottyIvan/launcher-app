@@ -1,15 +1,19 @@
 import gi
 gi.require_version("Adw", "1")
-from gi.repository import Adw
+gi.require_version("Gtk", "4.0")
+from gi.repository import Adw, Gtk
 import cloud.ivanbotty.database.sqlite3 as db
 
 class Preferences(Adw.PreferencesDialog):
     def __init__(self, app):
         super().__init__(title="Preferences")
         self.app = app
+        self.add_css_class("round")
 
         # Create the main preferences page
-        page = Adw.PreferencesPage()
+        page_general = Adw.PreferencesPage()
+        page_general.set_title("General Settings")
+        page_general.set_icon_name("preferences-system-symbolic")
 
         # General settings group
         general_group = Adw.PreferencesGroup(title="General")
@@ -44,20 +48,6 @@ class Preferences(Adw.PreferencesDialog):
                 lambda sw, _, ext_id=extension.service: db.set_extension_enabled(ext_id, sw.get_active()))
             extension_group.add(self.switch)
 
-        # API keys settings group
-        api_group = Adw.PreferencesGroup(title="API Keys")
-
-        # Row for Gemini API key input
-        gemini_row = Adw.PasswordEntryRow(
-            title="Gemini API Key",
-            text=db.get_api_key("gemini") or ""
-        )
-        gemini_row.set_show_apply_button(True)
-        # Save API key when "Apply" is pressed
-        gemini_row.connect("apply", self.on_api_key_apply, "gemini")
-
-        api_group.add(gemini_row)
-
         # About group for application info
         about_group = Adw.PreferencesGroup(title="About")
 
@@ -79,11 +69,51 @@ class Preferences(Adw.PreferencesDialog):
         about_group.add(info_row)
 
         # Add all groups to the page and the page to the dialog
-        page.add(general_group)
-        page.add(extension_group)
-        page.add(api_group)
-        page.add(about_group)
-        self.add(page)
+        page_general.add(general_group)
+        page_general.add(extension_group)
+        page_general.add(about_group)
+        self.add(page_general)
+
+        page_api = Adw.PreferencesPage()
+        page_api.set_title("API Keys")
+        page_api.set_icon_name("network-server-symbolic")
+
+        # API keys settings group
+        api_group = Adw.PreferencesGroup(title="API Keys")
+
+        label_info = Gtk.Label(
+            label=(
+            "To use AI-powered features in this application, you need a Gemini API key. "
+            "Visit <a href='https://gemini.com'>https://gemini.com</a> to create an account and generate your personal API key. "
+            "Once you have your key, enter it below to enable Gemini integration. "
+            "Keep your API key secure and do not share it with others."
+            ),
+            wrap=True,
+            xalign=0,
+            margin_top=6,
+            use_markup=True,
+            selectable=False
+        )
+        label_info.set_selectable(False)
+        label_info.set_use_markup(True)
+        label_info.set_halign(Gtk.Align.START)
+        label_info.add_css_class("dimmed")
+
+        api_group.add(label_info)
+
+        # Row for Gemini API key input
+        gemini_row = Adw.PasswordEntryRow(
+            title="Gemini API Key",
+            text=db.get_api_key("gemini") or ""
+        )
+        gemini_row.set_show_apply_button(True)
+        # Save API key when "Apply" is pressed
+        gemini_row.connect("apply", self.on_api_key_apply, "gemini")
+
+        api_group.add(gemini_row)
+
+        page_api.add(api_group)
+        self.add(page_api)
 
     def on_api_key_apply(self, row, service):
         # Save the API key if not empty
