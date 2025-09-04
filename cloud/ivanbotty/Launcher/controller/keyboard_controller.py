@@ -23,7 +23,12 @@ class KeyboardController(Gtk.EventControllerKey):
         return False  # Event not handled
 
     def scroll_list(self, direction):
-        self.app.listbox.get_first_child().grab_focus()
+        # Securely grab focus on the first child if it exists
+        view_child = self.app.view.get_child()
+        if view_child:
+            first_child = view_child.get_first_child()
+            if first_child:
+                first_child.grab_focus()
 
     def confirm_selection(self):
         selected_row = self.app.listbox.get_selected_row()
