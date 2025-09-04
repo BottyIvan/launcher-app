@@ -37,7 +37,7 @@ class KeyboardController(Gtk.EventControllerKey):
         if isinstance(selected_row, Gtk.ListBoxRow):
             if selected_row:
                 # Assuming each row's child is a widget that has an ApplicationModel attached
-                app_model = getattr(selected_row, "app_model", None)
+                app_model = getattr(selected_row, "application", None)
                 if app_model and hasattr(app_model, "exec_cmd"):
                     exec_cmd = app_model.exec_cmd
                     print("Selected app exec_cmd:", exec_cmd)
