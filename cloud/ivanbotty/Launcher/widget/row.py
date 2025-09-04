@@ -18,22 +18,18 @@ class Row(Gtk.ListBoxRow):
         row_box.set_valign(Gtk.Align.CENTER)
 
         # Icon
-        icon_name = getattr(app, "icon", None)
-        if icon_name:
-            icon_widget = self.create_icon_image(icon_name)
-            icon_widget.set_pixel_size(32)
-        else:
-            icon_widget = Gtk.Image.new_from_icon_name("application-x-addon-symbolic")
-            icon_widget.set_pixel_size(32)
+        icon_name = getattr(app, "icon", None) or "application-x-addon-symbolic"
+        icon_widget = self.create_icon_image(icon_name)
+        icon_widget.set_pixel_size(28)
 
         box_icon_bin = Gtk.Box()
-        box_icon_bin.set_margin_top(4)
-        box_icon_bin.set_margin_bottom(4)
-        box_icon_bin.set_margin_start(4)
-        box_icon_bin.set_margin_end(12)
-        box_icon_bin.set_size_request(40, 40)
+        box_icon_bin.set_margin_top(2)
+        box_icon_bin.set_margin_bottom(2)
+        box_icon_bin.set_margin_start(2)
+        box_icon_bin.set_margin_end(8)
         box_icon_bin.set_valign(Gtk.Align.CENTER)
         box_icon_bin.set_halign(Gtk.Align.START)
+        box_icon_bin.set_size_request(36, 36)
         box_icon_bin.append(icon_widget)
 
         row_box.append(box_icon_bin)
@@ -76,12 +72,16 @@ class Row(Gtk.ListBoxRow):
         # Type tag (styled)
         tag = getattr(app, "type", "")
         if tag:
-            tag_label = Gtk.Label(label=tag)
-            tag_label.set_xalign(1)
-            tag_label.set_margin_end(8)
-            tag_label.set_ellipsize(True)
-            tag_label.set_max_width_chars(12)
-            row_box.append(tag_label)
+            tag_button = Gtk.Button(label=tag)
+            tag_button.set_valign(Gtk.Align.CENTER)
+            tag_button.set_halign(Gtk.Align.END)
+            tag_button.set_margin_end(8)
+            tag_button.add_css_class("round")
+            tag_button.add_css_class("raised")
+            tag_button.add_css_class("accent")
+            tag_button.add_css_class("monospace")
+            tag_button.set_focusable(False)
+            row_box.append(tag_button)
 
         self.set_child(row_box)
 
@@ -91,4 +91,5 @@ class Row(Gtk.ListBoxRow):
     def create_icon_image(self, icon_name):
         gicon = Gio.ThemedIcon.new(icon_name)
         image = Gtk.Image.new_from_gicon(gicon)
+        image.add_css_class("icon-dropshadow")
         return image
