@@ -43,7 +43,7 @@ class SearchController:
         Otherwise, finds a handler that can manage the text.
         """
         if not text.strip():
-            print("Empty input, clearing view")
+            self.view.set_child(None) if self.view.get_child() else None
             return
         for handler in self.handlers:
             if handler.can_handle(text):
