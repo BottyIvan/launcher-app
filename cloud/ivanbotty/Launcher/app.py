@@ -60,8 +60,6 @@ class App(Adw.Application):
             for ext in self.extensions_service.list_extensions()
             if ext.enabled
         }
-        # Add the extensions service to the services dictionary
-        services["extensions"] = self.extensions_service
 
         # Prepare handlers dictionary
         handlers = {
