@@ -15,5 +15,9 @@ class AppHandler(bih.BaseInputHandler):
             listbox.add_css_class("boxed-list-separate")
             apps_service.load_applications()
             apps = apps_service.filter_applications(text)
-            listbox.bind_model(apps, lambda app: row_widget.Row(app))
+            listbox.bind_model(apps, lambda app: (
+                row := row_widget.Row(app),
+                setattr(row, "application", app),
+                row
+            ))
             view.set_child(listbox)
