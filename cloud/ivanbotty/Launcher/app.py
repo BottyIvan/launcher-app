@@ -24,7 +24,9 @@ class App(Adw.Application):
         self.win = None
 
         # Create widgets
-        self.view = Adw.Bin()
+        self.view = Gtk.ListBox()
+        self.view.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        self.view.add_css_class("boxed-list-separate")
         self.entry = SearchEntry(
             placeholder="Type to search...",
             width=UI_CONFS[PREFERENCES]["entry_width"],
