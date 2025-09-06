@@ -1,3 +1,9 @@
+import gi
+
+from cloud.ivanbotty.Launcher.models.applications_model import ApplicationModel
+gi.require_version("Gtk", "4.0")
+from cloud.ivanbotty.Launcher.widget import row as row_widget
+
 class SearchController:
     def __init__(self, entry_widget, view, services, handlers=None):
         """
@@ -39,13 +45,19 @@ class SearchController:
     def update_view(self, text):
         """
         Updates the view based on the search text.
-        If the text is empty, clears the view.
-        Otherwise, finds a handler that can manage the text.
+
+        - If the text is empty or no handler can process it, the view remains unchanged.
+        - If a handler can process the text, it retrieves a model of results and binds it to the view.
+        - For each item in the model, a custom row widget is created and its type is set.
+        - Prints the name of each item in the model for debugging purposes.
         """
-        if not text.strip():
-            self.view.set_child(None) if self.view.get_child() else None
-            return
         for handler in self.handlers:
             if handler.can_handle(text):
-                handler.handle(text, self.services, self.view)
-                return
+                # Handler returns a list model of results for the given text
+                if list_model := handler.handle(text, self.services):
+                    # Bind the model to the view, creating a row widget for each item
+                    self.view.bind_model(list_model, lambda row_item: (
+                        row := row_widget.Row(row_item),
+                        setattr(row, "type", row_item.type),
+                        row
+                    ))
