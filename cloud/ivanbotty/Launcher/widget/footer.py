@@ -12,8 +12,6 @@ class Footer(Adw.Bin):
 
         # Create the main horizontal container for the footer
         main_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-        self.set_margin_top(UI_CONFS[PREFERENCES]["margin_top"])
-        self.set_margin_bottom(UI_CONFS[PREFERENCES]["margin_bottom"])
         self.set_margin_start(UI_CONFS[PREFERENCES]["margin_start"])
         self.set_margin_end(UI_CONFS[PREFERENCES]["margin_end"])
 
