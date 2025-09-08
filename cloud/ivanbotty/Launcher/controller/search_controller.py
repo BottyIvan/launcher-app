@@ -58,6 +58,6 @@ class SearchController:
                     # Bind the model to the view, creating a row widget for each item
                     self.view.bind_model(list_model, lambda row_item: (
                         row := row_widget.Row(row_item),
-                        setattr(row, "type", row_item.type),
+                        setattr(row, "item_model", row_item),
                         row
                     ))
