@@ -27,8 +27,6 @@ class App(Adw.Application):
         self.view = Gtk.ListBox()
         self.view.set_selection_mode(Gtk.SelectionMode.SINGLE)
         self.view.add_css_class("boxed-list-separate")
-        self.view.set_margin_bottom(UI_CONFS[PREFERENCES]["margin_bottom"])
-        self.view.set_margin_top(UI_CONFS[PREFERENCES]["margin_top"])
         self.view.set_margin_start(UI_CONFS[PREFERENCES]["margin_start"])
         self.view.set_margin_end(UI_CONFS[PREFERENCES]["margin_end"])
         self.view.set_vexpand(True)
