@@ -72,7 +72,7 @@ class ApplicationsService:
         """
         for ext in extensions:
             pattern = f"**/{icon_name}{ext}"
-            for path in icon_dir.glob(pattern):
+            for path in icon_dir.rglob(pattern):
                 if path.is_file():
                     return str(path)
         return None
