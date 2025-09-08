@@ -1,0 +1,45 @@
+from cloud.ivanbotty.Launcher.controller.event_base_controller import EventBaseController
+from cloud.ivanbotty.Launcher.controller.event_click_controller import EventClickController
+from cloud.ivanbotty.Launcher.widget import row as row_widget
+
+class EventSearchController(EventBaseController):
+    """Handles search and results, including mouse activations."""
+
+    def __init__(self, app, entry_widget, view, services, handlers=None):
+        super().__init__(app)
+        self.entry = entry_widget
+        self.view = view
+        self.services = services
+        self.handlers = handlers if handlers else []
+
+        self.entry.connect("text-changed", self.on_text_changed)
+        self.entry.connect("activated", self.on_activated)
+        self.view.connect("row-activated", self.on_row_activated)
+
+    def on_row_activated(self, listbox, row):
+        """GTK callback: double click or Enter on a row."""
+        self.activate_row(row)
+
+    def on_text_changed(self, widget, text):
+        """Update the view when the search text changes."""
+        self.update_view(text)
+
+    def on_activated(self, widget, text):
+        """GTK callback: Enter in the search entry."""
+        for handler in self.handlers:
+            if handler.can_handle(text):
+                handler.handle(text, self.services, self.view)
+                return
+        print("No handler found for:", text)
+
+    def update_view(self, text):
+        """Update the ListBox based on the results returned by handlers."""
+        for handler in self.handlers:
+            if handler.can_handle(text):
+                if list_model := handler.handle(text, self.services):
+                    self.view.bind_model(list_model, lambda row_item: (
+                        row := row_widget.Row(row_item),
+                        setattr(row, "item_model", row_item),
+                        EventClickController(self.app, row),
+                        row
+                    ))
