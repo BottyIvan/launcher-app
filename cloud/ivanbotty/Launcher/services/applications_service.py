@@ -4,7 +4,7 @@ gi.require_version("Gtk", "4.0")
 
 from gi.repository import Gio
 
-from cloud.ivanbotty.Launcher.config.config import ALL_APP_DIRS
+from cloud.ivanbotty.Launcher.config.config import ALL_APP_DIRS, ICON_DIRS
 from cloud.ivanbotty.Launcher.helper.parser import Parser
 from cloud.ivanbotty.Launcher.models.applications_model import ApplicationModel
 
@@ -35,9 +35,47 @@ class ApplicationsService:
                         file_path = os.path.join(app_dir, file)
                         entry_data = self.parser.parse_desktop_entry(file_path)
                         if entry_data and entry_data['name'] not in loaded_names:
-                            self.store.append(ApplicationModel(**entry_data))
+                            print(f"Loaded application: {entry_data['name']}")
+                            self.store.append(ApplicationModel(
+                                type="math",
+                                name=entry_data['name'],
+                                description=None,
+                                exec_cmd=entry_data['exec_cmd'],
+                                icon=self.find_icon(entry_data['icon']) if entry_data['icon'] else None
+                            ))
                             loaded_names.add(entry_data['name'])
         return self.store
+    
+    def find_icon(self, icon_name):
+        """
+        Search for an icon file by name in ICON_DIRS recursively.
+
+        Args:
+            icon_name (str): Name of the icon to search for (without extension).
+
+        Returns:
+            str or None: Full path to the icon file if found, otherwise None.
+        """
+        possible_extensions = [".png", ".svg", ".xpm"]
+
+        print(f"Searching for icon: {icon_name}")
+        for icon_dir in ICON_DIRS:
+            if icon_dir.exists() and icon_dir.is_dir():
+                found_icon = self._search_icon_in_dir(icon_dir, icon_name, possible_extensions)
+                if found_icon:
+                    return found_icon
+        return None
+
+    def _search_icon_in_dir(self, icon_dir, icon_name, extensions):
+        """
+        Helper to search for the icon in a single directory with given extensions.
+        """
+        for ext in extensions:
+            pattern = f"**/{icon_name}{ext}"
+            for path in icon_dir.glob(pattern):
+                if path.is_file():
+                    return str(path)
+        return None
 
     def filter_applications(self, search_text=""):
         """
