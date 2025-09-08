@@ -6,13 +6,13 @@ gi.require_version("Adw", "1")
 
 from gi.repository import Gtk, Adw
 
-from .services.extensions_service import ExtensionService
-from .controller.keyboard_controller import KeyboardController
-from .controller.search_controller import SearchController
+from cloud.ivanbotty.Launcher.services.extensions_service import ExtensionService
+from cloud.ivanbotty.Launcher.controller.event_key_controller import EventKeyController
+from cloud.ivanbotty.Launcher.controller.event_search_controller import EventSearchController
 from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
-from .widget.window import Window
-from .widget.search_entry import SearchEntry
-from .widget.footer import Footer
+from cloud.ivanbotty.Launcher.widget.window import Window
+from cloud.ivanbotty.Launcher.widget.search_entry import SearchEntry
+from cloud.ivanbotty.Launcher.widget.footer import Footer
 
 class App(Adw.Application):
     """Main application class."""
@@ -70,8 +70,9 @@ class App(Adw.Application):
             if ext.enabled
         }
 
-        # Initialize controllers
-        self.search_controller = SearchController(
+        # Initialize the search controller
+        self.search_controller = EventSearchController(
+            app=self,
             entry_widget=self.entry,
             view=self.view,
             services=services,
@@ -84,8 +85,9 @@ class App(Adw.Application):
 
         # Create main window
         self.win = Window(self)
-        event_controller = KeyboardController(self)
-        self.win.add_controller(event_controller)
+        # Keyboard controller setup
+        self.keyboard_controller = EventKeyController(self)
+        self.win.add_controller(self.keyboard_controller)
 
         # Create scrolled window for the view
         scrolled_window = Gtk.ScrolledWindow()
