@@ -101,10 +101,6 @@ class App(Adw.Application):
 
         # Layout setup
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        box.set_margin_top(UI_CONFS[PREFERENCES]["margin_top"])
-        box.set_margin_bottom(UI_CONFS[PREFERENCES]["margin_bottom"])
-        box.set_margin_start(UI_CONFS[PREFERENCES]["margin_start"])
-        box.set_margin_end(UI_CONFS[PREFERENCES]["margin_end"])
         box.append(self.entry)
         box.append(scrolled_window)
         box.append(footer)
