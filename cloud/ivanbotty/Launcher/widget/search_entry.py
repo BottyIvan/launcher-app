@@ -1,4 +1,4 @@
-from gi.repository import Gtk, GObject, Gdk
+from gi.repository import Gtk, GObject
 from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
 
 class SearchEntry(Gtk.Entry):
