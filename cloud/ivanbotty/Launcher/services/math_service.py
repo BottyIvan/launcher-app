@@ -18,16 +18,19 @@ class MathService:
 
     def calculate(self, expression: str):
         """
-        Safely evaluate a math expression.
+        Safely evaluate a math expression using a restricted set of functions.
 
         Args:
             expression (str): The math expression to evaluate, e.g. "2+2*3".
+
         Returns:
-            str: The result as a string, or error message.
+            list: [result as string, None] if successful, or [None, error message] if evaluation fails.
         """
         try:
+            # Evaluate the expression using only the allowed functions in self.safe_dict
             result = eval(expression, {"__builtins__": {}}, self.safe_dict)
-            return str(result)
+            return [str(result), None]
         except Exception as e:
+            # Print the error for debugging and return a user-friendly error message
             print(f"Math evaluation error: {e}")
-            return f"Error: Could not evaluate '{expression}'. Please check your input."
+            return [None, f"Error: Could not evaluate '{expression}'. Please check your input."]
