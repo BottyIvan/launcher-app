@@ -1,8 +1,6 @@
 import gi,subprocess
-
-from gi.repository.Flatpak import Instance
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk, Gdk, GObject
 
 class KeyboardController(Gtk.EventControllerKey):
     def __init__(self, app):
@@ -25,29 +23,27 @@ class KeyboardController(Gtk.EventControllerKey):
         return False  # Event not handled
 
     def scroll_list(self, direction):
-        # Securely grab focus on the first child if it exists
-        view_child = self.app.view.get_child()
-        if view_child:
-            first_child = view_child.get_first_child()
-            if first_child:
-                first_child.grab_focus()
+        # Focus the first child of the list when scrolling
+        self.app.view.get_first_child().grab_focus()
 
     def confirm_selection(self):
-        selected_row = self.app.view.get_child().get_selected_row()
-        if isinstance(selected_row, Gtk.ListBoxRow):
-            if selected_row:
-                # Assuming each row's child is a widget that has an ApplicationModel attached
-                app_model = getattr(selected_row, "application", None)
-                if app_model and hasattr(app_model, "exec_cmd"):
-                    exec_cmd = app_model.exec_cmd
-                    print("Selected app exec_cmd:", exec_cmd)
-                    # You can run the command if needed:
-                    if (subprocess.Popen(exec_cmd, shell=True)):
-                        self.app.win.close()
-                else:
-                    print("No ApplicationModel attached to selected row.")
-            else:
-                print("No row selected.")
+        # Get the currently selected row from the view
+        selected_row = self.app.view.get_selected_row()
+        if not isinstance(selected_row, Gtk.ListBoxRow):
+            return
+
+        # Retrieve the item_model attribute from the selected row
+        item_model = getattr(selected_row, "item_model", None)
+        # If item_model has a callable 'run' method, execute it
+        if callable(getattr(item_model, "run", None)):
+            try:
+                item_model.run()
+            except Exception as e:
+                # Print any error that occurs during execution
+                print(f"Error running item_model: {e}")
+            finally:
+                # Close the application window after execution
+                self.app.win.close()
 
     def reset_search(self):
         self.app.entry.set_text("")
