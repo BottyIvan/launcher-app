@@ -37,7 +37,7 @@ class ApplicationsService:
                         if entry_data and entry_data['name'] not in loaded_names:
                             print(f"Loaded application: {entry_data['name']}")
                             self.store.append(ApplicationModel(
-                                type="math",
+                                type=entry_data['type'],
                                 name=entry_data['name'],
                                 description=None,
                                 exec_cmd=entry_data['exec_cmd'],
