@@ -29,22 +29,36 @@ class ApplicationsService:
         loaded_names = set()
         self.store.remove_all()
         for app_dir in ALL_APP_DIRS:
-            if app_dir.exists() and app_dir.is_dir():
-                for file in os.listdir(app_dir):
-                    if file.endswith(".desktop"):
-                        file_path = os.path.join(app_dir, file)
-                        entry_data = self.parser.parse_desktop_entry(file_path)
-                        if entry_data and entry_data['name'] not in loaded_names:
-                            print(f"Loaded application: {entry_data['name']}")
-                            self.store.append(ApplicationModel(
-                                type=entry_data['type'],
-                                name=entry_data['name'],
-                                description=None,
-                                exec_cmd=entry_data['exec_cmd'],
-                                icon=self.find_icon(entry_data['icon']) if entry_data['icon'] else None
-                            ))
-                            loaded_names.add(entry_data['name'])
+            self._load_applications_from_dir(app_dir, loaded_names)
         return self.store
+
+    def _load_applications_from_dir(self, app_dir, loaded_names):
+        """Helper to load applications from a single directory."""
+        if not (app_dir.exists() and app_dir.is_dir()):
+            return
+        for file in os.listdir(app_dir):
+            if not file.endswith(".desktop"):
+                continue
+            file_path = os.path.join(app_dir, file)
+            self._try_load_application(file_path, loaded_names)
+
+    def _try_load_application(self, file_path, loaded_names):
+        """Helper to parse and append a single application if not already loaded."""
+        entry_data = self.parser.parse_desktop_entry(file_path)
+        if not entry_data:
+            return
+        app_name = entry_data['name']
+        if app_name in loaded_names:
+            return
+        print(f"Loaded application: {app_name}")
+        self.store.append(ApplicationModel(
+            type=entry_data['type'],
+            name=app_name,
+            description=None,
+            exec_cmd=entry_data['exec_cmd'],
+            icon=self.find_icon(entry_data['icon']) if entry_data['icon'] else None
+        ))
+        loaded_names.add(app_name)
     
     def find_icon(self, icon_name):
         """
