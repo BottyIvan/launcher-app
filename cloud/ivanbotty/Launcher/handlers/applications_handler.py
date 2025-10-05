@@ -8,6 +8,5 @@ class AppHandler(bih.BaseInputHandler):
     def handle(self, text, services):
         apps_service = services.get("application")
         if apps_service:
-            apps_service.load_applications()
             return apps_service.filter_applications(text)
         return None

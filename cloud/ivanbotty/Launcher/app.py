@@ -13,6 +13,7 @@ from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
 from cloud.ivanbotty.Launcher.widget.window import Window
 from cloud.ivanbotty.Launcher.widget.search_entry import SearchEntry
 from cloud.ivanbotty.Launcher.widget.footer import Footer
+from cloud.ivanbotty.Launcher.helper.thread_manager import ThreadManager
 
 class App(Adw.Application):
     """Main application class."""
@@ -82,6 +83,12 @@ class App(Adw.Application):
             services=services,
             handlers=handlers
         )
+
+        # Load applications in the background at startup
+        thread_manager = ThreadManager()
+        apps_service = services.get("application")
+        if apps_service:
+            thread_manager.run_in_thread(apps_service.load_applications)
 
         # Adwaita setup
         Adw.init()

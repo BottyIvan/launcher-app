@@ -1,6 +1,7 @@
 from cloud.ivanbotty.Launcher.controller.event_base_controller import EventBaseController
 from cloud.ivanbotty.Launcher.controller.event_click_controller import EventClickController
 from cloud.ivanbotty.Launcher.widget import row as row_widget
+import threading
 
 class EventSearchController(EventBaseController):
     """Handles search and results, including mouse activations."""
@@ -16,13 +17,17 @@ class EventSearchController(EventBaseController):
         self.entry.connect("activated", self.on_activated)
         self.view.connect("row-activated", self.on_row_activated)
 
+        self._debounce_timer = None
+
     def on_row_activated(self, listbox, row):
         """GTK callback: double click or Enter on a row."""
         self.activate_row(row)
 
     def on_text_changed(self, widget, text):
-        """Update the view when the search text changes."""
-        self.update_view(text)
+        if self._debounce_timer:
+            self._debounce_timer.cancel()
+        self._debounce_timer = threading.Timer(0.15, lambda: self.update_view(text))
+        self._debounce_timer.start()
 
     def on_activated(self, widget, text):
         """GTK callback: Enter in the search entry."""
