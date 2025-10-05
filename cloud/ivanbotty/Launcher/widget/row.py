@@ -38,6 +38,8 @@ class Row(Gtk.ListBoxRow):
         name_desc_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
         name_desc_box.set_valign(Gtk.Align.CENTER)
 
+        # Name (always present)
+        # - Single line, ellipsize if too long
         name_label = Gtk.Label(label=getattr(app, "name", ""))
         name_label.set_xalign(0)
         name_label.set_hexpand(True)
@@ -48,15 +50,20 @@ class Row(Gtk.ListBoxRow):
         name_label.set_halign(Gtk.Align.FILL)
         name_label.set_valign(Gtk.Align.CENTER)
 
+        # Description (if available)
+        # - Multi-line, no ellipsize, wrap text 
         desc = getattr(app, "description", "")
         if desc:
             desc_label = Gtk.Label(label=desc)
             desc_label.set_xalign(0)
             desc_label.set_hexpand(True)
-            desc_label.set_ellipsize(True)
-            desc_label.set_max_width_chars(32)
+            desc_label.set_vexpand(True)
+            desc_label.set_wrap(True)
+            desc_label.set_ellipsize(False)
+            desc_label.set_max_width_chars(0)
             desc_label.set_halign(Gtk.Align.FILL)
-            desc_label.set_valign(Gtk.Align.CENTER)
+            desc_label.set_valign(Gtk.Align.FILL)
+            name_desc_box.set_vexpand(True)
             name_desc_box.append(name_label)
             name_desc_box.append(desc_label)
         else:
