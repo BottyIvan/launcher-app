@@ -4,7 +4,7 @@ import gi, yaml
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 
-from gi.repository import Gtk, Adw
+from gi.repository import Gtk, Adw, GLib
 
 from cloud.ivanbotty.Launcher.services.extensions_service import ExtensionService
 from cloud.ivanbotty.Launcher.controller.event_key_controller import EventKeyController
@@ -13,6 +13,7 @@ from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
 from cloud.ivanbotty.Launcher.widget.window import Window
 from cloud.ivanbotty.Launcher.widget.search_entry import SearchEntry
 from cloud.ivanbotty.Launcher.widget.footer import Footer
+from cloud.ivanbotty.Launcher.widget.progress_bar import ProgressBar
 from cloud.ivanbotty.Launcher.helper.thread_manager import ThreadManager
 
 class App(Adw.Application):
@@ -23,6 +24,15 @@ class App(Adw.Application):
         super().__init__(application_id="cloud.ivanbotty.Launcher")
         self.name = "Main Application"
         self.win = None
+
+        # Initialize progress bar with improved configuration
+        self.progress_bar = ProgressBar("Loading...")
+        self.progress_bar.set_visible(False)
+        self.progress_bar.set_margin_top(UI_CONFS[PREFERENCES].get("progress_margin_top", 6))
+        self.progress_bar.set_margin_bottom(UI_CONFS[PREFERENCES].get("progress_margin_bottom", 6))
+        self.progress_bar.set_margin_start(UI_CONFS[PREFERENCES]["margin_start"])
+        self.progress_bar.set_margin_end(UI_CONFS[PREFERENCES]["margin_end"])
+        self.progress_bar.set_hexpand(True)
 
         # Create widgets
         self.view = Gtk.ListBox()
@@ -56,6 +66,17 @@ class App(Adw.Application):
         # Load extensions into the service
         self.extensions_service.load_from_config(config)
 
+    def run_with_progress(self, target_func, steps=100, delay=0.02, text="Processing..."):
+        """Executes a function while displaying the progress bar during the process."""
+        self.progress_bar.set_text(text)
+        self.progress_bar.set_fraction(0.0)
+        self.progress_bar.set_visible(True)
+        def wrapper():
+            self.progress_bar.start_long_task(steps=steps, delay=delay)
+            target_func()
+            GLib.idle_add(self.progress_bar.set_visible, False)
+        ThreadManager().run_in_thread(wrapper)
+
     def do_startup(self):
         """Startup routine for the application."""
         Gtk.Application.do_startup(self)
@@ -85,10 +106,9 @@ class App(Adw.Application):
         )
 
         # Load applications in the background at startup
-        thread_manager = ThreadManager()
         apps_service = services.get("application")
         if apps_service:
-            thread_manager.run_in_thread(apps_service.load_applications)
+            self.run_with_progress(apps_service.load_applications, text="Caricamento applicazioni...")
 
         # Adwaita setup
         Adw.init()
@@ -113,6 +133,7 @@ class App(Adw.Application):
         # Layout setup
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         box.append(self.entry)
+        box.append(self.progress_bar)
         box.append(scrolled_window)
         box.append(footer)
 
