@@ -8,9 +8,9 @@ class AIService:
     """
 
     def __init__(self):
-        api_key = db.get("AI_API_KEY")
+        api_key = db.get_api_key("gemini")
         if not api_key:
-            raise ValueError("AI_API_KEY not found in database.")
+            raise ValueError("Gemini API key not found in database.")
         self.client = genai.Client(api_key)
 
     def ask(self, question: str) -> dict:
