@@ -108,7 +108,7 @@ class App(Adw.Application):
         # Load applications in the background at startup
         apps_service = services.get("application")
         if apps_service:
-            self.run_with_progress(apps_service.load_applications, text="Caricamento applicazioni...")
+            self.run_with_progress(apps_service.load_applications, text="Loading applications...")
 
         # Adwaita setup
         Adw.init()
