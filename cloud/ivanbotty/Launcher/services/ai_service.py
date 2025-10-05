@@ -50,4 +50,4 @@ class AIService:
         """
         text = getattr(response, "text", str(response))
         print(f"[AIService] Formatted response: {text!r}")
-        return {"response": text}
+        return text
