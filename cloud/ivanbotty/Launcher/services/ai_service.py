@@ -1,4 +1,6 @@
+from google import genai
 from cloud.ivanbotty.Launcher.config.config import SYSTEM_PROMPT
+from cloud.ivanbotty.database.sqlite3 import db
 
 class AIService:
     """
@@ -6,31 +8,37 @@ class AIService:
     """
 
     def __init__(self):
-        # The constructor is intentionally left empty because no initialization is required for AIService at this time.
-        pass
+        api_key = db.get("AI_API_KEY")
+        if not api_key:
+            raise ValueError("AI_API_KEY not found in database.")
+        self.client = genai.Client(api_key)
 
-    def ask(self, question):
+    def ask(self, question: str) -> dict:
         """
-        Ask a question to the user.
+        Ask a question to the AI model.
 
         Args:
             question (str): The question to ask.
 
         Returns:
-            str: The user's response.
+            dict: The AI's response.
         """
-        ask = SYSTEM_PROMPT + question
+        prompt = f"{SYSTEM_PROMPT}{question}"
+        response = self.client.models.generate_content(
+            model="gemini-2.5-flash", contents=prompt
+        )
+        return self._format_response(response)
 
-        return input(ask)
-
-    def respond(self, response):
+    def _format_response(self, response) -> dict:
         """
-        Handle the response from the user.
+        Format the AI model's response.
 
         Args:
-            response (str): The user's response.
+            response: The raw response from the AI model.
 
         Returns:
             dict: The structured response.
         """
-        return {"response": response}
+        # Assuming response has a 'text' attribute; adjust if needed
+        text = getattr(response, "text", str(response))
+        return {"response": text}
