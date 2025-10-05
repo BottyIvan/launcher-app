@@ -13,6 +13,7 @@ def load_class_instance(path: str):
     except ImportError as e:
         print(f"Error importing {module_path}: {e}")
         return None
+    print(f"Module {module_path} imported successfully")
     cls = getattr(module, class_name)                  # get the class
     instance = cls()                                   # create the instance
     return instance
