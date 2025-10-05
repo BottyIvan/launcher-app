@@ -6,7 +6,11 @@ authors = [{ name = "Ivan Bottigelli", email = "droidbotty@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }
-dependencies = ["PyGObject>=3.44"]
+dependencies = [
+    "PyGObject>=3.44",
+    "google-generativeai>=0.3.0", # dipendenza per genai
+    "sqlite3"
+]
 
 [project.scripts]
 cloud-ivanbotty-launcher = "cloud.ivanbotty.Launcher.main:main"
