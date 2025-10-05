@@ -10,7 +10,6 @@ class AIHandler(bih.BaseInputHandler):
     def handle(self, text, services):
         list_model = Gio.ListStore(item_type=ApplicationModel)
         ai_service = services.get("ai")
-        print(ai_service)
         query = text.strip()
         if ai_service and query:
             try:
