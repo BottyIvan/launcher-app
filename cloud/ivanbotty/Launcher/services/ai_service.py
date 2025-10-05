@@ -8,10 +8,13 @@ class AIService:
     """
 
     def __init__(self):
+        print("Initializing AIService")
         api_key = db.get_api_key("gemini")
+        print(f"Retrieved API key: {api_key}")
         if not api_key:
             raise ValueError("Gemini API key not found in database.")
         self.client = genai.Client(api_key)
+        print("genai.Client initialized")
 
     def ask(self, question: str) -> dict:
         """
@@ -24,9 +27,11 @@ class AIService:
             dict: The AI's response.
         """
         prompt = f"{SYSTEM_PROMPT}{question}"
+        print(f"Prompt sent to model: {prompt}")
         response = self.client.models.generate_content(
             model="gemini-2.5-flash", contents=prompt
         )
+        print(f"Raw response from model: {response}")
         return self._format_response(response)
 
     def _format_response(self, response) -> dict:
@@ -39,6 +44,6 @@ class AIService:
         Returns:
             dict: The structured response.
         """
-        # Assuming response has a 'text' attribute; adjust if needed
         text = getattr(response, "text", str(response))
+        print(f"Formatted response text: {text}")
         return {"response": text}
