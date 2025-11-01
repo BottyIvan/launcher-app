@@ -6,17 +6,32 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 
 from gi.repository import Gtk, Gio, Adw
-from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
+from cloud.ivanbotty.Launcher.blueprint import UIBlueprint
 
 
 class Row(Gtk.ListBoxRow):
     def __init__(self, app):
         super().__init__()
+        
+        # Use blueprint for consistent styling
+        self.ui_blueprint = UIBlueprint()
+        layout = self.ui_blueprint.style.get_layout()
 
         # Main row container
-        row_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-        self._apply_margins(row_box)
-
+        row_box = self.ui_blueprint.components.create_box(
+            orientation=Gtk.Orientation.HORIZONTAL,
+            spacing="lg",
+            expand=False
+        )
+        
+        # Apply margins using blueprint
+        self.ui_blueprint.style.apply_margins(row_box, {
+            'top': layout['margin_top'],
+            'bottom': layout['margin_bottom'],
+            'start': layout['margin_start'],
+            'end': layout['margin_end']
+        })
+        
         row_box.set_valign(Gtk.Align.CENTER)
 
         # Icon
@@ -35,7 +50,8 @@ class Row(Gtk.ListBoxRow):
         # Type tag
         tag = getattr(app, "type", "")
         if tag:
-            tag_button = self._create_tag_button(tag)
+            tag_button = self.ui_blueprint.components.create_tag_button(tag)
+            tag_button.set_margin_end(8)
             row_box.append(tag_button)
 
         self.set_child(row_box)
@@ -43,18 +59,13 @@ class Row(Gtk.ListBoxRow):
         # Adwaita style (automatic theme)
         Adw.StyleManager.get_default().set_color_scheme(Adw.ColorScheme.DEFAULT)
 
-    def _apply_margins(self, widget):
-        widget.set_margin_top(UI_CONFS[PREFERENCES]["margin_top"])
-        widget.set_margin_bottom(UI_CONFS[PREFERENCES]["margin_bottom"])
-        widget.set_margin_start(UI_CONFS[PREFERENCES]["margin_start"])
-        widget.set_margin_end(UI_CONFS[PREFERENCES]["margin_end"])
-
     def _create_icon_widget(self, icon_name):
         icon_name = icon_name or "application-x-addon-symbolic"
-        gicon = Gio.ThemedIcon.new(icon_name)
-        image = Gtk.Image.new_from_gicon(gicon)
-        image.set_pixel_size(28)
-        image.add_css_class("icon-dropshadow")
+        image = self.ui_blueprint.components.create_icon(
+            icon_name=icon_name,
+            size="md",
+            css_classes=["icon-dropshadow"]
+        )
 
         box_icon_bin = Gtk.Box()
         box_icon_bin.set_margin_top(2)
@@ -68,17 +79,24 @@ class Row(Gtk.ListBoxRow):
         return box_icon_bin
 
     def _create_name_desc_box(self, app):
-        name_desc_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        name_desc_box = self.ui_blueprint.components.create_box(
+            orientation=Gtk.Orientation.VERTICAL,
+            spacing="xs",
+            expand=False
+        )
         name_desc_box.set_valign(Gtk.Align.CENTER)
 
         # Name label
-        name_label = Gtk.Label(label=getattr(app, "name", ""))
-        name_label.set_xalign(0)
+        name_label = self.ui_blueprint.components.create_label(
+            text=getattr(app, "name", ""),
+            align_start=True,
+            max_width_chars=24,
+            wrap=False
+        )
         name_label.set_hexpand(True)
         name_label.set_margin_start(0)
         name_label.set_margin_bottom(2)
         name_label.set_ellipsize(True)
-        name_label.set_max_width_chars(24)
         name_label.set_halign(Gtk.Align.FILL)
         name_label.set_valign(Gtk.Align.CENTER)
         name_desc_box.append(name_label)
@@ -86,13 +104,15 @@ class Row(Gtk.ListBoxRow):
         # Description
         desc = self.prettify_description(getattr(app, "description", ""))
         if desc:
-            desc_label = Gtk.Label(label=desc)
-            desc_label.set_xalign(0)
+            desc_label = self.ui_blueprint.components.create_label(
+                text=desc,
+                align_start=True,
+                max_width_chars=0,
+                wrap=True
+            )
             desc_label.set_hexpand(True)
             desc_label.set_vexpand(True)
-            desc_label.set_wrap(True)
             desc_label.set_ellipsize(False)
-            desc_label.set_max_width_chars(0)
             desc_label.set_halign(Gtk.Align.FILL)
             desc_label.set_valign(Gtk.Align.FILL)
 
@@ -104,18 +124,6 @@ class Row(Gtk.ListBoxRow):
             name_desc_box.append(desc_label)
 
         return name_desc_box
-
-    def _create_tag_button(self, tag):
-        tag_button = Gtk.Button(label=tag)
-        tag_button.set_valign(Gtk.Align.CENTER)
-        tag_button.set_halign(Gtk.Align.END)
-        tag_button.set_margin_end(8)
-        tag_button.add_css_class("round")
-        tag_button.add_css_class("raised")
-        tag_button.add_css_class("accent")
-        tag_button.add_css_class("monospace")
-        tag_button.set_focusable(False)
-        return tag_button
 
     def prettify_description(self, description: str) -> str:
         """Clean and prettify the description for the end user."""

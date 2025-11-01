@@ -9,12 +9,9 @@ from gi.repository import Gtk, Adw, GLib
 from cloud.ivanbotty.Launcher.services.extensions_service import ExtensionService
 from cloud.ivanbotty.Launcher.controller.event_key_controller import EventKeyController
 from cloud.ivanbotty.Launcher.controller.event_search_controller import EventSearchController
-from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
-from cloud.ivanbotty.Launcher.widget.window import Window
 from cloud.ivanbotty.Launcher.widget.search_entry import SearchEntry
-from cloud.ivanbotty.Launcher.widget.footer import Footer
-from cloud.ivanbotty.Launcher.widget.progress_bar import ProgressBar
 from cloud.ivanbotty.Launcher.helper.thread_manager import ThreadManager
+from cloud.ivanbotty.Launcher.blueprint import UIBlueprint
 
 class App(Adw.Application):
     """Main application class."""
@@ -25,28 +22,13 @@ class App(Adw.Application):
         self.name = "Main Application"
         self.win = None
 
-        # Initialize progress bar with improved configuration
-        self.progress_bar = ProgressBar("Loading...")
-        self.progress_bar.set_visible(False)
-        self.progress_bar.set_margin_top(UI_CONFS[PREFERENCES].get("progress_margin_top", 6))
-        self.progress_bar.set_margin_bottom(UI_CONFS[PREFERENCES].get("progress_margin_bottom", 6))
-        self.progress_bar.set_margin_start(UI_CONFS[PREFERENCES]["margin_start"])
-        self.progress_bar.set_margin_end(UI_CONFS[PREFERENCES]["margin_end"])
-        self.progress_bar.set_hexpand(True)
+        # Initialize UI blueprint for consistent component creation
+        self.ui_blueprint = UIBlueprint()
 
-        # Create widgets
-        self.view = Gtk.ListBox()
-        self.view.set_selection_mode(Gtk.SelectionMode.SINGLE)
-        self.view.add_css_class("boxed-list-separate")
-        self.view.set_margin_start(UI_CONFS[PREFERENCES]["margin_start"])
-        self.view.set_margin_end(UI_CONFS[PREFERENCES]["margin_end"])
-        self.view.set_vexpand(True)
-        self.view.set_hexpand(True)
-        self.entry = SearchEntry(
-            placeholder="Type to search...",
-            width=UI_CONFS[PREFERENCES]["entry_width"],
-            height=UI_CONFS[PREFERENCES]["entry_height"]
-        )
+        # Create widgets using blueprint
+        self.progress_bar = self.ui_blueprint.create_progress_bar("Loading...")
+        self.view = self.ui_blueprint.create_main_list_view()
+        self.entry = SearchEntry(ui_blueprint=self.ui_blueprint)
 
         # Initialize services
         self.extensions_service = ExtensionService()
@@ -110,34 +92,28 @@ class App(Adw.Application):
         if apps_service:
             self.run_with_progress(apps_service.load_applications, text="Loading applications...")
 
-        # Adwaita setup
-        Adw.init()
-        Adw.StyleManager.get_default().set_color_scheme(Adw.ColorScheme.DEFAULT)
+        # Initialize Adwaita theme using blueprint
+        self.ui_blueprint.initialize_theme()
 
-        # Create main window
-        self.win = Window(self)
+        # Create main window using blueprint
+        self.win = self.ui_blueprint.create_window(self)
+        
         # Keyboard controller setup
         self.keyboard_controller = EventKeyController(self)
         self.win.add_controller(self.keyboard_controller)
 
-        # Create scrolled window for the view
-        scrolled_window = Gtk.ScrolledWindow()
-        scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
-        scrolled_window.set_vexpand(True)
-        scrolled_window.set_hexpand(True)
-        scrolled_window.set_child(self.view)
+        # Create footer widget using blueprint
+        footer = self.ui_blueprint.create_footer_layout(self)
 
-        # Create footer widget
-        footer = Footer(self)
+        # Create main layout using blueprint
+        main_layout = self.ui_blueprint.create_main_layout(
+            self.entry,
+            self.progress_bar,
+            self.view,
+            footer
+        )
 
-        # Layout setup
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        box.append(self.entry)
-        box.append(self.progress_bar)
-        box.append(scrolled_window)
-        box.append(footer)
-
-        self.win.set_content(box)
+        self.win.set_content(main_layout)
 
     def do_activate(self):
         """Activate the application and show the window."""
