@@ -1,0 +1,60 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $WizardPage : Adw.Clamp {
+  maximum-size: 640;
+  tightening-threshold: 400;
+
+  Box {
+    orientation: vertical;
+    spacing: 24;
+    margin-top: 48;
+    margin-bottom: 48;
+    margin-start: 32;
+    margin-end: 32;
+    halign: center;
+    valign: center;
+    hexpand: true;
+    vexpand: true;
+
+    Label page_title {
+      wrap: true;
+      max-width-chars: 60;
+      justify: center;
+      halign: center;
+      valign: start;
+
+      styles [
+        "title-1"
+      ]
+    }
+
+    Label page_subtitle {
+      wrap: true;
+      max-width-chars: 60;
+      justify: center;
+      halign: center;
+      valign: start;
+      margin-top: 8;
+
+      styles [
+        "dim-label"
+      ]
+    }
+
+    Separator {
+      margin-top: 12;
+      margin-bottom: 12;
+    }
+
+    Button action_button {
+      halign: center;
+      margin-top: 12;
+
+      styles [
+        "suggested-action",
+        "pill"
+      ]
+    }
+  }
+}

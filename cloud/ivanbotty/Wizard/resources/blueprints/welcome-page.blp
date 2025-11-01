@@ -1,0 +1,43 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $WelcomePage : Adw.Clamp {
+  maximum-size: 640;
+  tightening-threshold: 400;
+
+  Box {
+    orientation: vertical;
+    spacing: 24;
+    margin-top: 48;
+    margin-bottom: 48;
+    margin-start: 32;
+    margin-end: 32;
+    halign: center;
+    valign: center;
+    hexpand: true;
+    vexpand: true;
+
+    Adw.StatusPage status {
+      icon-name: "system-software-install-symbolic";
+      title: _("Welcome to Launcher");
+      description: _("Let's set things up!");
+      vexpand: true;
+    }
+
+    Separator {
+      margin-top: 12;
+      margin-bottom: 12;
+    }
+
+    Button next_button {
+      label: _("Next");
+      halign: center;
+      margin-top: 12;
+
+      styles [
+        "suggested-action",
+        "pill"
+      ]
+    }
+  }
+}

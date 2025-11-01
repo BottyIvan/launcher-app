@@ -1,0 +1,43 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $SummaryPage : Adw.Clamp {
+  maximum-size: 640;
+  tightening-threshold: 400;
+
+  Box {
+    orientation: vertical;
+    spacing: 24;
+    margin-top: 48;
+    margin-bottom: 48;
+    margin-start: 32;
+    margin-end: 32;
+    halign: center;
+    valign: center;
+    hexpand: true;
+    vexpand: true;
+
+    Adw.StatusPage status {
+      icon-name: "emblem-ok-symbolic";
+      title: _("Setup Complete");
+      description: _("Your launcher is now ready to use!");
+      vexpand: true;
+    }
+
+    Separator {
+      margin-top: 12;
+      margin-bottom: 12;
+    }
+
+    Button finish_button {
+      label: _("Finish");
+      halign: center;
+      margin-top: 12;
+
+      styles [
+        "suggested-action",
+        "pill"
+      ]
+    }
+  }
+}

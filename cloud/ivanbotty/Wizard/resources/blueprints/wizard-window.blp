@@ -1,0 +1,39 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $WizardWindow : Adw.ApplicationWindow {
+  default-width: 640;
+  default-height: 480;
+  title: _("Launcher Setup Wizard");
+
+  content: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar header {
+      show-end-title-buttons: true;
+      
+      [title]
+      Adw.WindowTitle window_title {
+        title: _("Setup Wizard");
+      }
+    }
+
+    content: Box {
+      orientation: vertical;
+      spacing: 0;
+
+      Adw.Carousel carousel {
+        vexpand: true;
+        hexpand: true;
+        interactive: true;
+        allow-long-swipes: true;
+        allow-mouse-drag: true;
+      }
+
+      Adw.CarouselIndicatorDots indicator {
+        carousel: carousel;
+        margin-top: 12;
+        margin-bottom: 12;
+      }
+    };
+  };
+}
