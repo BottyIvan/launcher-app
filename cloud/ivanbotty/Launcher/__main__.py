@@ -39,12 +39,18 @@ def main():
         logger.error(f"Failed to initialize database: {e}")
         return
 
-    # Create and run the main application
-    if db.get_pref("show_welcome_wizard", True):
-        app = WelcomeWizard(app='cloud.ivanbotty.Wizard')
-    else:
-        app = App(app='cloud.ivanbotty.Launcher')
-    app.run()
+    # Decide which application to launch based on user preferences
+    try:
+        if db.get_pref("show_welcome_wizard", True) is True:
+            db.set_pref("show_welcome_wizard", False)
+            app = WelcomeWizard(app='cloud.ivanbotty.Wizard')
+            logger.info("Launching Welcome Wizard.")
+        else:
+            app = App(app='cloud.ivanbotty.Launcher')
+            logger.info("Launching Main Application.")
+        app.run()
+    except Exception as e:
+        logger.error(f"Failed to launch application: {e}")
 
 if __name__ == "__main__":
     # Entry point of the application

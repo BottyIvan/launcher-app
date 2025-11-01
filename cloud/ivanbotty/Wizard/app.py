@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
+from concurrent.futures import thread
 import logging
 import yaml
 import gi
+import subprocess
+import sys
+import threading
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -54,8 +58,16 @@ class WelcomeWizard(Adw.Application):
 
     def on_finish(self) -> None:
         """Handles the end of the wizard."""
-        logger.info("Wizard completed!")
-        self.quit()
+        logger.info("Wizard completed! Launching main app...")
+
+        threading.Thread(
+            target=lambda: subprocess.run([sys.executable, "-m", "cloud.ivanbotty.Launcher"]),
+            daemon=True
+        ).start()
+
+        if self.win:
+            self.win.close()
+            logger.info("Welcome wizard application closed.")
 
     def do_activate(self) -> None:
         """Activates the application and shows the window."""

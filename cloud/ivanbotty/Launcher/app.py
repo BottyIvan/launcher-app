@@ -22,9 +22,9 @@ logger = logging.getLogger(__name__)
 class App(Adw.Application):
     """Main application class."""
 
-    def __init__(self):
+    def __init__(self, app):
         """Initialize the application and its components."""
-        super().__init__(application_id="cloud.ivanbotty.Launcher")
+        super().__init__(application_id=app)
         self.name = "Main Application"
         self.win = None
 
