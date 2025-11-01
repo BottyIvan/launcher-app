@@ -1,4 +1,5 @@
 import os, gi
+import logging
 
 gi.require_version("Gtk", "4.0")
 
@@ -7,6 +8,8 @@ from gi.repository import Gio
 from cloud.ivanbotty.Launcher.config.config import ALL_APP_DIRS, ICON_DIRS
 from cloud.ivanbotty.Launcher.helper.parser import Parser
 from cloud.ivanbotty.Launcher.models.applications_model import ApplicationModel
+
+logger = logging.getLogger(__name__)
 
 class ApplicationsService:
     """Service for loading and filtering application entries."""
@@ -50,7 +53,7 @@ class ApplicationsService:
         app_name = entry_data['name']
         if app_name in loaded_names:
             return
-        print(f"Loaded application: {app_name}")
+        logger.debug(f"Loaded application: app_name={app_name}")
         self.store.append(ApplicationModel(
             type=entry_data['type'],
             name=app_name,
@@ -72,7 +75,7 @@ class ApplicationsService:
         """
         possible_extensions = [".png", ".svg", ".xpm"]
 
-        print(f"Searching for icon: {icon_name}")
+        logger.debug(f"Searching for icon: icon_name={icon_name}")
         for icon_dir in ICON_DIRS:
             if icon_dir.exists() and icon_dir.is_dir():
                 found_icon = self._search_icon_in_dir(icon_dir, icon_name, possible_extensions)

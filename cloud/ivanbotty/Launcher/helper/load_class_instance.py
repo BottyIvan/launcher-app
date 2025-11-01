@@ -1,4 +1,7 @@
 import importlib
+import logging
+
+logger = logging.getLogger(__name__)
 
 def load_class_instance(path: str):
     """
@@ -10,24 +13,24 @@ def load_class_instance(path: str):
     module_path, class_name = path.rsplit(".", 1)
     try:
         module = importlib.import_module(module_path)
-        print(f"Module '{module_path}' imported successfully.")
+        logger.debug(f"Module imported successfully: module_path={module_path}")
     except ImportError as e:
-        print(f"Failed to import module '{module_path}': {e}")
+        logger.error(f"Failed to import module module_path={module_path}: {e}")
         return None
 
-    print(f"Looking for class '{class_name}' in module '{module_path}'.")
+    logger.debug(f"Looking for class class_name={class_name} in module module_path={module_path}")
     try:
         cls = getattr(module, class_name)
-        print(f"Class '{class_name}' found in module '{module_path}'.")
+        logger.debug(f"Class found: class_name={class_name} in module_path={module_path}")
     except AttributeError:
-        print(f"Class '{class_name}' not found in module '{module_path}'.")
+        logger.error(f"Class not found: class_name={class_name} in module_path={module_path}")
         return None
 
     try:
         instance = cls()
-        print(f"Instance of '{class_name}' created successfully.")
+        logger.debug(f"Instance created successfully: class_name={class_name}")
     except Exception as e:
-        print(f"Failed to instantiate class '{class_name}': {e}")
+        logger.error(f"Failed to instantiate class class_name={class_name}: {e}")
         return None
 
     return instance

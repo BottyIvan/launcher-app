@@ -2,6 +2,9 @@ from cloud.ivanbotty.Launcher.controller.event_base_controller import EventBaseC
 from cloud.ivanbotty.Launcher.controller.event_click_controller import EventClickController
 from cloud.ivanbotty.Launcher.widget import row as row_widget
 import threading
+import logging
+
+logger = logging.getLogger(__name__)
 
 class EventSearchController(EventBaseController):
     """Handles search and results, including mouse activations."""
@@ -35,7 +38,7 @@ class EventSearchController(EventBaseController):
             if handler.can_handle(text):
                 handler.handle(text, self.services, self.view)
                 return
-        print("No handler found for:", text)
+        logger.warning(f"No handler found for text: {text}")
 
     def update_view(self, text):
         """Update the ListBox based on the results returned by handlers."""

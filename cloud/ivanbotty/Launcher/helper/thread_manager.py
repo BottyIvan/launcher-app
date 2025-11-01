@@ -1,4 +1,7 @@
 import threading
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ThreadManager:
     """
@@ -10,7 +13,7 @@ class ThreadManager:
         """
         Runs the target function in a new thread.
         """
-        print(f"Running {target.__name__} in a separate thread.")
+        logger.debug(f"Running function in separate thread: target={target.__name__}")
         thread = threading.Thread(target=target, args=args, kwargs=kwargs, daemon=True)
         thread.start()
         return thread
@@ -22,7 +25,7 @@ class ThreadManager:
         """
         threads = []
         for target, args, kwargs in targets:
-            print(f"Running {target.__name__} in a separate thread.")
+            logger.debug(f"Running function in separate thread: target={target.__name__}")
             t = threading.Thread(target=target, args=args, kwargs=kwargs, daemon=True)
             t.start()
             threads.append(t)

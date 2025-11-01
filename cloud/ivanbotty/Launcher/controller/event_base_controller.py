@@ -1,6 +1,10 @@
 import gi
+import logging
+
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk
+
+logger = logging.getLogger(__name__)
 
 class EventBaseController:
     """Base controller for common management of rows and results."""
@@ -18,7 +22,7 @@ class EventBaseController:
             try:
                 item_model.run()
             except Exception as e:
-                print(f"Error running item_model: {e}")
+                logger.error(f"Error running item_model: {e}")
             finally:
                 if hasattr(self.app.win, "close"):
                     self.app.win.close()
