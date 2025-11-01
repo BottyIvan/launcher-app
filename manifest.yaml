@@ -17,7 +17,6 @@ finish-args:
 modules:
   - name: launcher-app
     buildsystem: meson
-    builddir: _build
     config-opts:
       - --prefix=/app
     sources:
