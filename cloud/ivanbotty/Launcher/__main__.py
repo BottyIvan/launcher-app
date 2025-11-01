@@ -6,37 +6,7 @@ gi.require_version("Gtk", "4.0")
 from gi.repository import Gio
 import cloud.ivanbotty.database.sqlite3 as db
 from cloud.ivanbotty.Launcher.app import App
-
-# Constants for resource paths
-PKGDATADIR = "launcher-app"
-RESOURCE_SUBDIR = "Launcher/resources"
-RESOURCE_FILE = "resources.gresource"
-
-def find_resource_file():
-    """Find the resources.gresource file in various possible locations."""
-    import os
-    import sys
-    
-    # Build the resource filename path
-    resource_filename = os.path.join(RESOURCE_SUBDIR, RESOURCE_FILE)
-    
-    # Define possible search paths
-    search_paths = [
-        # Direct execution from repository root
-        os.path.join("cloud", "ivanbotty", resource_filename),
-        # Meson installation (in pkgdatadir)
-        os.path.join(sys.prefix, "share", PKGDATADIR, resource_filename),
-        # Alternative Meson installation (in /usr/local)
-        os.path.join("/usr", "local", "share", PKGDATADIR, resource_filename),
-        # Relative to this file
-        os.path.join(os.path.dirname(__file__), "resources", RESOURCE_FILE),
-    ]
-    
-    for path in search_paths:
-        if os.path.exists(path):
-            return path
-    
-    return None
+from cloud.ivanbotty.common import find_resource_file, RESOURCE_FILE
 
 def main():
     # Load and register application resources
