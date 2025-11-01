@@ -10,6 +10,11 @@ import os
 import sys
 from pathlib import Path
 
+# Version requirements
+MIN_GTK_VERSION = "4.0"
+MIN_ADW_VERSION = "1"
+MIN_BLUEPRINT_COMPILER_VERSION = "0.4.0"
+
 
 def check_file_exists(filepath, description):
     """Check if a file exists and report."""
@@ -144,8 +149,8 @@ def validate_blueprint_syntax():
                 
             # Basic syntax checks
             checks = [
-                ("using Gtk 4.0;" in content, "Uses GTK 4.0"),
-                ("using Adw 1;" in content, "Uses Adwaita 1"),
+                (f"using Gtk {MIN_GTK_VERSION};" in content, f"Uses GTK {MIN_GTK_VERSION}"),
+                (f"using Adw {MIN_ADW_VERSION};" in content, f"Uses Adwaita {MIN_ADW_VERSION}"),
                 ("template " in content, "Has template definition"),
                 (content.count("{") == content.count("}"), "Balanced braces"),
             ]

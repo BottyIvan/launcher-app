@@ -48,9 +48,17 @@ class WelcomeWizardBlueprint(Adw.Application):
         
         try:
             # Load wizard page texts from YAML configuration file
-            with open("./cloud/ivanbotty/Launcher/resources/wizard.yaml") as f:
-                self.wizard_texts = yaml.safe_load(f)
-            logger.info("Wizard texts loaded successfully.")
+            # Use Path to make this more portable across different working directories
+            from pathlib import Path
+            wizard_yaml_path = Path(__file__).parent.parent / "Launcher" / "resources" / "wizard.yaml"
+            
+            if wizard_yaml_path.exists():
+                with open(wizard_yaml_path) as f:
+                    self.wizard_texts = yaml.safe_load(f)
+                logger.info("Wizard texts loaded successfully.")
+            else:
+                logger.warning(f"Wizard YAML not found at: {wizard_yaml_path}")
+                self.wizard_texts = None
         except Exception as e:
             # Log error if loading or parsing fails
             logger.error(f"Error loading wizard texts: {e}")

@@ -239,11 +239,11 @@ def load_wizard_resources():
     Returns:
         bool: True if resources were loaded successfully, False otherwise.
     """
-    from cloud.ivanbotty.common import find_resource_file, RESOURCE_FILE
+    from cloud.ivanbotty.common import find_resource_file
     import os
     
-    # Try to find the Wizard-specific resource file
-    wizard_resource_file = "wizard-resources.gresource"
+    # Resource filename must match the output from meson.build
+    WIZARD_RESOURCE_FILE = "wizard-resources.gresource"
     
     # Look in common locations
     search_paths = [
@@ -254,7 +254,7 @@ def load_wizard_resources():
     
     resource_path = None
     for search_path in search_paths:
-        potential_path = os.path.join(search_path, wizard_resource_file)
+        potential_path = os.path.join(search_path, WIZARD_RESOURCE_FILE)
         if os.path.exists(potential_path):
             resource_path = potential_path
             break
@@ -269,5 +269,5 @@ def load_wizard_resources():
             logger.error(f"Failed to load Wizard resources: {e}")
             return False
     else:
-        logger.warning(f"Wizard resource file not found: {wizard_resource_file}")
+        logger.warning(f"Wizard resource file not found: {WIZARD_RESOURCE_FILE}")
         return False

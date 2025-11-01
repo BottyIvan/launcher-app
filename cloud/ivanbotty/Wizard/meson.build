@@ -23,6 +23,8 @@ python.install_sources(
 # Blueprint compilation
 gnome = import('gnome')
 
+# Detect blueprint-compiler (minimum recommended version: 0.4.0)
+# Graceful fallback: if not found, app will use programmatic UI creation
 blueprint_compiler = find_program('blueprint-compiler', required: false)
 
 if blueprint_compiler.found()
