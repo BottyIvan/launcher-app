@@ -1,5 +1,14 @@
 from gi.repository import Gtk, GObject
 
+# Import config for backward compatibility - will be used as fallback when blueprint is not provided
+try:
+    from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES as _PREFERENCES
+    _HAS_CONFIG = True
+except ImportError:
+    _HAS_CONFIG = False
+    _PREFERENCES = "default"
+    UI_CONFS = {"default": {"entry_width": 400, "entry_height": 30, "margin_start": 16, "margin_end": 16}}
+
 class SearchEntry(Gtk.Entry):
     __gsignals__ = {
         "text-changed": (GObject.SignalFlags.RUN_FIRST, None, (str,)),
@@ -17,13 +26,18 @@ class SearchEntry(Gtk.Entry):
             height = height or layout['entry_height']
             margin_start = layout['margin_start']
             margin_end = layout['margin_end']
-        else:
+        elif _HAS_CONFIG:
             # Fallback to config for legacy support
-            from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
-            width = width or UI_CONFS[PREFERENCES]["entry_width"]
-            height = height or UI_CONFS[PREFERENCES]["entry_height"]
-            margin_start = UI_CONFS[PREFERENCES]["margin_start"]
-            margin_end = UI_CONFS[PREFERENCES]["margin_end"]
+            width = width or UI_CONFS[_PREFERENCES]["entry_width"]
+            height = height or UI_CONFS[_PREFERENCES]["entry_height"]
+            margin_start = UI_CONFS[_PREFERENCES]["margin_start"]
+            margin_end = UI_CONFS[_PREFERENCES]["margin_end"]
+        else:
+            # Final fallback to defaults
+            width = width or 400
+            height = height or 30
+            margin_start = 16
+            margin_end = 16
         
         self.set_size_request(width, height)
         self.add_css_class("flat")

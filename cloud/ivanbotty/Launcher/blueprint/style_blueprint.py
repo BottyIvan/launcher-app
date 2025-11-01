@@ -10,7 +10,6 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 
 from gi.repository import Gtk, Adw
-import cloud.ivanbotty.database.sqlite3 as db
 
 
 class StyleBlueprint:
@@ -75,14 +74,29 @@ class StyleBlueprint:
         }
     }
     
-    def __init__(self):
-        """Initialize style blueprint with current theme preferences."""
+    def __init__(self, preference_loader=None):
+        """
+        Initialize style blueprint with current theme preferences.
+        
+        Args:
+            preference_loader: Optional callable that returns (key, default) -> value
+                              If None, uses default database loader
+        """
+        self._preference_loader = preference_loader or self._default_preference_loader
         self._current_style = self._load_style_preference()
     
-    def _load_style_preference(self):
-        """Load style preference from database."""
+    def _default_preference_loader(self, key, default):
+        """Default preference loader using database module."""
         try:
-            pref = db.get_pref("layout", self.DEFAULT)
+            import cloud.ivanbotty.database.sqlite3 as db
+            return db.get_pref(key, default)
+        except Exception:
+            return default
+    
+    def _load_style_preference(self):
+        """Load style preference from configured loader."""
+        try:
+            pref = self._preference_loader("layout", self.DEFAULT)
             return pref if pref in self.LAYOUTS else self.DEFAULT
         except Exception:
             return self.DEFAULT

@@ -9,8 +9,17 @@ to ensure all components can be instantiated correctly.
 import sys
 import os
 
-# Add project root to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
+# Add project root to path - find it by looking for pyproject.toml
+def find_project_root():
+    current = os.path.abspath(os.path.dirname(__file__))
+    while current != '/':
+        if os.path.exists(os.path.join(current, 'pyproject.toml')):
+            return current
+        current = os.path.dirname(current)
+    # Fallback to relative path if not found
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
+
+sys.path.insert(0, find_project_root())
 
 def test_imports():
     """Test that all blueprint modules can be imported."""
