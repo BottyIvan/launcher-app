@@ -8,6 +8,7 @@ from gi.repository import Gio
 import cloud.ivanbotty.database.sqlite3 as db
 from cloud.ivanbotty.Launcher.app import App
 from cloud.ivanbotty.common import find_resource_file, RESOURCE_FILE
+from cloud.ivanbotty.Wizard.app import WelcomeWizard
 
 # Configure logging
 logging.basicConfig(
@@ -39,7 +40,10 @@ def main():
         return
 
     # Create and run the main application
-    app = App()
+    if db.get_pref("show_welcome_wizard", True):
+        app = WelcomeWizard(app='cloud.ivanbotty.Wizard')
+    else:
+        app = App(app='cloud.ivanbotty.Launcher')
     app.run()
 
 if __name__ == "__main__":
