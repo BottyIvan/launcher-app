@@ -6,6 +6,7 @@ wizard_sources = [
   '__init__.py',
   '__main__.py',
   'app.py',
+  'blueprint_app.py',
 ]
 
 python.install_sources(
@@ -18,6 +19,7 @@ python.install_sources(
 python.install_sources(
   'components/__init__.py',
   'components/page.py',
+  'components/blueprint_pages.py',
   subdir: 'cloud/ivanbotty/Wizard/components',
   pure: true,
 )
