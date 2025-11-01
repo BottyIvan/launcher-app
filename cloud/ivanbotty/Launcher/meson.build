@@ -21,6 +21,7 @@ python.install_sources(
 
 # Install controller submodule
 python.install_sources(
+  'controller/__init__.py',
   'controller/event_base_controller.py',
   'controller/event_click_controller.py',
   'controller/event_key_controller.py',
@@ -76,6 +77,7 @@ python.install_sources(
 
 # Install widget submodule
 python.install_sources(
+  'widget/__init__.py',
   'widget/footer.py',
   'widget/preferences.py',
   'widget/progress_bar.py',
