@@ -127,11 +127,33 @@ flatpak-builder --run build-dir manifest.yaml launcher
 ## Project Structure
 
 - `cloud/ivanbotty/database/`: SQLite integration for persistent data
+    - `sqlite3.py`: Database and preferences management
+    - `__init__.py`
 - `cloud/ivanbotty/Launcher/`: Main source code
-- `cloud/ivanbotty/Wizard/`: Wizard/Onboard source code
-- `resources/`: SVG icons and appdata files
+    - `app.py`, `__main__.py`: Entry point and main logic
+    - `config/`: UI configurations and constants
+    - `controller/`: Event controllers (search, key, click)
+    - `handlers/`: Input handling (app, math, AI, link, command, extensions)
+    - `helper/`: Utilities (parser, thread manager, dynamic loader)
+    - `models/`: Data models (applications, extensions)
+    - `services/`: Services (applications, command, math, AI, extensions)
+    - `widget/`: UI components (window, search_entry, row, preferences, progress_bar, footer)
+    - `resources/`: SVG icons, appdata, extension YAMLs, and wizard files
+        - `cloud.ivanbotty.Launcher.svg`
+        - `appdata.xml`
+        - `extensions.yaml`
+        - `wizard.yaml`
+        - `resources.gresource`
+        - `resources.xml`
+- `cloud/ivanbotty/Wizard/`: Wizard/Onboarding source code
+    - `app.py`, `__main__.py`: Welcome wizard
+    - `components/`: UI components for the wizard
 - `manifest.yaml`: Flatpak manifest
 - `pyproject.toml`: Python configuration
+- `meson.build`: Meson build configuration
+- `cloud.ivanbotty.Launcher.desktop`: Desktop entry for the launcher
+- `launcher-wrapper.sh.in`: Launcher wrapper script
+- `LICENSE`: GPL license
 
 ## Contributing
 
