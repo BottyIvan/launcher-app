@@ -3,6 +3,7 @@ import os
 import sys
 
 # Constants for resource paths
+# Note: PKGDATADIR must match the project name in meson.build
 PKGDATADIR = "launcher-app"
 RESOURCE_SUBDIR = "Launcher/resources"
 RESOURCE_FILE = "resources.gresource"

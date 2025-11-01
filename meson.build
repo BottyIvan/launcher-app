@@ -43,7 +43,6 @@ configure_file(
   output: 'cloud-ivanbotty-launcher',
   configuration: {
     'PYTHON': python.full_path(),
-    'pkgdatadir': pkgdatadir,
   },
   install: true,
   install_dir: bindir,
