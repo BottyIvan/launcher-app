@@ -50,6 +50,7 @@ coverage.xml
 # Project Build
 .flatpak-builder/
 build-dir/
+_build/
 *.egg-info/
 
 # Meson Build

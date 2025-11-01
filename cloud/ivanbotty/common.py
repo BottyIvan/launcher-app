@@ -14,7 +14,8 @@ def find_resource_file():
     Find the resources.gresource file in various possible locations.
     
     This function searches for the resource file in multiple locations to support
-    both direct Python execution from the repository and Meson-based installations.
+    both direct Python execution from the repository and Meson-based installations,
+    including Flatpak environments.
     
     Returns:
         str or None: Path to the resource file if found, None otherwise.
@@ -26,6 +27,8 @@ def find_resource_file():
     search_paths = [
         # Direct execution from repository root
         os.path.join("cloud", "ivanbotty", resource_filename),
+        # Flatpak installation (in /app)
+        os.path.join("/app", "share", PKGDATADIR, resource_filename),
         # Meson installation (in pkgdatadir using sys.prefix)
         os.path.join(sys.prefix, "share", PKGDATADIR, resource_filename),
         # Standard installation locations
