@@ -9,6 +9,11 @@ import cloud.ivanbotty.database.sqlite3 as db
 from cloud.ivanbotty.Launcher.app import App
 from cloud.ivanbotty.common import find_resource_file, RESOURCE_FILE
 
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
 
 def main():
