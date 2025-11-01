@@ -1,0 +1,40 @@
+pages:
+  - title: "🚀 Welcome to Launcher!"
+    description: |
+      **Launcher** is a modern and elegant desktop application launcher for Linux, built with **GTK 4** and **Adwaita**.
+      Instantly find and open your applications with a smooth, responsive, and minimal interface.
+    button: "Next"
+
+  - title: "🌟 Fast and Elegant"
+    description: |
+      • Instant search with real-time results  
+      • Modern Adwaita-style interface  
+      • Crisp SVG icons and fluid animations  
+      • Support for native and Flatpak applications  
+      • Lightweight and optimized for performance
+    button: "Next"
+
+  - title: "🧠 Smart Features"
+    description: |
+      • Switch between compact or expanded layouts  
+      • Persistent preferences stored securely with SQLite  
+      • Modular architecture powered by internal services  
+      • AI and command integrations *(in development)*  
+      • Designed for customization and flexibility
+    button: "Next"
+
+  - title: "🧩 Extensions"
+    description: |
+      Extend Launcher with additional modules:
+      • Application search and management  
+      • Built-in calculator and command runner  
+      • AI assistant and file manager *(coming soon)*  
+      • Easy to enable or disable from Preferences
+    button: "Next"
+
+  - title: "🔒 Privacy &amp; Preferences"
+    description: |
+      Your data stays on your device — Launcher never collects or shares information.  
+      All settings are stored locally and can be adjusted anytime from **Preferences**.  
+      Enjoy full control over your workspace.
+    button: "Finish"
