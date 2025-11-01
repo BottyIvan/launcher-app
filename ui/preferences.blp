@@ -1,0 +1,91 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $PreferencesDialog : Adw.PreferencesDialog {
+  title: "Preferences";
+  
+  styles ["round"]
+  
+  Adw.PreferencesPage page_general {
+    title: "General Settings";
+    icon-name: "preferences-system-symbolic";
+    
+    Adw.PreferencesGroup general_group {
+      title: "General";
+      
+      Adw.SwitchRow compact_layout_switch {
+        title: "Use compact layout";
+        subtitle: "Switch between compact and default layout.";
+      }
+    }
+    
+    Adw.PreferencesGroup extension_group {
+      title: "Extensions";
+      description: "Enable or disable extensions.";
+    }
+    
+    Adw.PreferencesGroup about_group {
+      title: "About";
+      
+      Adw.ActionRow info_row {
+        title: "About";
+        subtitle: "Information about this application.";
+        activatable: true;
+      }
+    }
+  }
+  
+  Adw.PreferencesPage page_api {
+    title: "API Keys";
+    icon-name: "network-server-symbolic";
+    
+    Adw.PreferencesGroup api_group {
+      title: "API Keys";
+      
+      Label api_info {
+        label: "To use AI-powered features in this application, you need a Gemini API key. Visit https://gemini.com to create an account and generate your personal API key. Once you have your key, enter it below to enable Gemini integration. Keep your API key secure and do not share it with others.";
+        wrap: true;
+        xalign: 0;
+        margin-top: 6;
+        use-markup: true;
+        selectable: false;
+        halign: start;
+        
+        styles ["dim-label"]
+      }
+      
+      Adw.PasswordEntryRow gemini_api_key {
+        title: "Gemini API Key";
+        show-apply-button: true;
+      }
+    }
+    
+    Adw.PreferencesGroup model_group {
+      title: "Model Selection";
+      
+      Label model_info {
+        label: "Choose which Gemini model to use for AI features. Each model offers different capabilities and performance. Refer to the Gemini documentation to select the model that best matches your requirements.";
+        wrap: true;
+        xalign: 0;
+        margin-top: 6;
+        use-markup: true;
+        selectable: false;
+        halign: start;
+        
+        styles ["dim-label"]
+      }
+      
+      Adw.ComboRow gemini_model {
+        title: "Gemini Model";
+        subtitle: "Select the Gemini model to use for AI features.";
+        model: StringList {
+          strings [
+            "gemini-1.5",
+            "gemini-2",
+            "gemini-3"
+          ]
+        };
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+using Gtk 4.0;
+
+template $SearchEntry : Gtk.Entry {
+  placeholder-text: "Type to search...";
+  width-request: 400;
+  height-request: 30;
+  hexpand: true;
+  
+  styles ["flat"]
+  
+  primary-icon-name: "system-search-symbolic";
+  secondary-icon-name: "edit-clear-symbolic";
+}

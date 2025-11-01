@@ -51,3 +51,11 @@ coverage.xml
 .flatpak-builder/
 build-dir/
 *.egg-info/
+
+# Meson build
+builddir/
+meson-logs/
+
+# Compiled UI files (can be regenerated from .blp)
+# Comment out the following line if you want to commit compiled UI files
+ui/*.ui

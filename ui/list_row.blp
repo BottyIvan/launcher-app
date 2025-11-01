@@ -1,0 +1,75 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $LauncherRow : Gtk.ListBoxRow {
+  child: Box {
+    orientation: horizontal;
+    spacing: 12;
+    margin-top: 6;
+    margin-bottom: 6;
+    margin-start: 12;
+    margin-end: 12;
+    valign: center;
+    
+    Box icon_box {
+      valign: center;
+      halign: start;
+      width-request: 36;
+      height-request: 36;
+      margin-top: 2;
+      margin-bottom: 2;
+      margin-start: 2;
+      margin-end: 8;
+      
+      Image app_icon {
+        pixel-size: 28;
+        
+        styles ["icon-dropshadow"]
+      }
+    }
+    
+    Box name_desc_box {
+      orientation: vertical;
+      spacing: 2;
+      valign: center;
+      hexpand: true;
+      
+      Label name_label {
+        xalign: 0;
+        hexpand: true;
+        margin-start: 0;
+        margin-bottom: 2;
+        ellipsize: end;
+        max-width-chars: 24;
+        halign: fill;
+        valign: center;
+      }
+      
+      Label desc_label {
+        xalign: 0;
+        hexpand: true;
+        vexpand: true;
+        wrap: true;
+        ellipsize: none;
+        max-width-chars: 0;
+        halign: fill;
+        valign: fill;
+        visible: false;
+      }
+    }
+    
+    Box spacer {
+      hexpand: true;
+    }
+    
+    Button tag_button {
+      valign: center;
+      halign: end;
+      margin-end: 8;
+      focusable: false;
+      visible: false;
+      
+      styles ["round", "raised", "accent", "monospace"]
+    }
+  }
+}

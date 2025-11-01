@@ -1,0 +1,61 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $LauncherWindow : Adw.ApplicationWindow {
+  default-width: 600;
+  default-height: 400;
+  resizable: false;
+  
+  content: Box {
+    orientation: vertical;
+    spacing: 6;
+    
+    $SearchEntry search_entry {
+      placeholder-text: "Type to search...";
+      margin-start: 12;
+      margin-end: 12;
+      hexpand: true;
+      
+      styles ["flat"]
+      
+      primary-icon-name: "system-search-symbolic";
+      secondary-icon-name: "edit-clear-symbolic";
+    }
+    
+    Box progress_box {
+      orientation: horizontal;
+      visible: false;
+      margin-top: 6;
+      margin-bottom: 6;
+      margin-start: 12;
+      margin-end: 12;
+      hexpand: true;
+      
+      ProgressBar progress_bar {
+        hexpand: true;
+        text: "Loading...";
+        show-text: true;
+      }
+    }
+    
+    ScrolledWindow {
+      vexpand: true;
+      hexpand: true;
+      hscrollbar-policy: automatic;
+      vscrollbar-policy: automatic;
+      
+      ListBox list_view {
+        selection-mode: single;
+        margin-start: 12;
+        margin-end: 12;
+        vexpand: true;
+        hexpand: true;
+        
+        styles ["boxed-list-separate"]
+      }
+    }
+    
+    $LauncherFooter footer {
+    }
+  }
+}

@@ -1,0 +1,58 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $LauncherFooter : Adw.Bin {
+  child: Box {
+    orientation: horizontal;
+    spacing: 12;
+    
+    Button preferences_btn {
+      valign: center;
+      tooltip-text: "Open Preferences";
+      focus-on-click: false;
+      
+      styles ["flat"]
+      
+      Adw.ButtonContent {
+        icon-name: "applications-system-symbolic";
+      }
+    }
+    
+    Box spacer {
+      hexpand: true;
+    }
+    
+    Button shortcut_enter {
+      valign: center;
+      tooltip-text: "Press Enter to Select";
+      
+      styles ["flat"]
+      
+      Adw.ButtonContent {
+        icon-name: "keyboard-enter-symbolic";
+      }
+    }
+    
+    Button shortcut_down {
+      valign: center;
+      tooltip-text: "Press Down Arrow to Navigate Down";
+      
+      styles ["flat"]
+      
+      Adw.ButtonContent {
+        icon-name: "arrow1-down-symbolic";
+      }
+    }
+    
+    Button shortcut_up {
+      valign: center;
+      tooltip-text: "Press Up Arrow to Navigate Up";
+      
+      styles ["flat"]
+      
+      Adw.ButtonContent {
+        icon-name: "arrow1-up-symbolic";
+      }
+    }
+  }
+}
