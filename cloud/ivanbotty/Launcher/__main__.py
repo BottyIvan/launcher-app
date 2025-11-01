@@ -10,7 +10,32 @@ from cloud.ivanbotty.Launcher.app import App
 def main():
     # Load and register application resources
     try:
-        resource = Gio.Resource.load("cloud/ivanbotty/Launcher/resources/resources.gresource")
+        import os
+        import sys
+        
+        # Try to find the resources file in different locations
+        resource_paths = [
+            # Direct execution from repository root
+            "cloud/ivanbotty/Launcher/resources/resources.gresource",
+            # Meson installation (in pkgdatadir)
+            os.path.join(sys.prefix, "share", "launcher-app", "Launcher", "resources", "resources.gresource"),
+            # Alternative Meson installation (in /usr/local)
+            "/usr/local/share/launcher-app/Launcher/resources/resources.gresource",
+            # Relative to this file
+            os.path.join(os.path.dirname(__file__), "resources", "resources.gresource"),
+        ]
+        
+        resource = None
+        for path in resource_paths:
+            if os.path.exists(path):
+                resource = Gio.Resource.load(path)
+                break
+        
+        if resource is None:
+            print(f"Failed to load resources: resources.gresource not found")
+            print(f"Tried paths: {resource_paths}")
+            return
+        
         Gio.resources_register(resource)
     except Exception as e:
         print(f"Failed to load resources: {e}")

@@ -1,4 +1,4 @@
-project('launcher-app', 'python',
+project('launcher-app',
   version: '0.0.1',
   meson_version: '>= 0.59.0',
   default_options: [
@@ -15,14 +15,7 @@ bindir = prefix / get_option('bindir')
 datadir = prefix / get_option('datadir')
 pkgdatadir = datadir / meson.project_name()
 
-# Python module directory
-py_installation = python.install_sources(
-  [],
-  subdir: 'cloud/ivanbotty',
-  pure: true,
-)
-
-# Install Python package structure
+# Process Python package structure
 subdir('cloud')
 
 # Install desktop file
