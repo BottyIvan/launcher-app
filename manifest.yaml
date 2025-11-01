@@ -15,6 +15,19 @@ finish-args:
   - --filesystem=xdg-data:ro               # Read-only access to user data directories
 
 modules:
+  # Python dependencies
+  - name: python-dependencies
+    buildsystem: simple
+    build-commands:
+      - pip3 install --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} PyYAML google-generativeai
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz
+        sha256: bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43
+      - type: file
+        url: https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd465f83162e1d1cad76/google_generativeai-0.3.2.tar.gz
+        sha256: 4f936be1c24ed2a6cbdcd8f98e36df08a29f6e9c62a3e3460950942db7ea5dc2
+
   - name: launcher-app
     buildsystem: meson
     config-opts:
