@@ -76,6 +76,9 @@ def initialize_templates():
         
         def setup_pages(self):
             """Setup wizard pages in the carousel."""
+            # Ensure templates are initialized
+            initialize_templates()
+            
             # Create pages with callbacks
             welcome_page = _WelcomePage(callback=self.on_next)
             summary_page = _SummaryPage(callback=self.on_finish)

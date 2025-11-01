@@ -19,7 +19,6 @@ python.install_sources(
 python.install_sources(
   'components/__init__.py',
   'components/page.py',
-  'components/blueprint_pages.py',
   subdir: 'cloud/ivanbotty/Wizard/components',
   pure: true,
 )
@@ -63,4 +62,6 @@ if blueprint_compiler.found()
   )
 else
   warning('blueprint-compiler not found. Blueprint UI files will not be compiled.')
+  warning('Please install blueprint-compiler: sudo apt-get install blueprint-compiler')
+  warning('The Wizard module requires Blueprint UI for proper operation.')
 endif
