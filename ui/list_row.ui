@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from list_row.blp - DO NOT EDIT MANUALLY -->
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="adwaita" version="1.0"/>
+  <template class="LauncherRow" parent="GtkListBoxRow">
+    <property name="child">
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <property name="spacing">12</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+        <property name="margin-start">12</property>
+        <property name="margin-end">12</property>
+        <property name="valign">center</property>
+        <child>
+          <object class="GtkBox" id="icon_box">
+            <property name="valign">center</property>
+            <property name="halign">start</property>
+            <property name="width-request">36</property>
+            <property name="height-request">36</property>
+            <property name="margin-top">2</property>
+            <property name="margin-bottom">2</property>
+            <property name="margin-start">2</property>
+            <property name="margin-end">8</property>
+            <child>
+              <object class="GtkImage" id="app_icon">
+                <property name="pixel-size">28</property>
+                <style>
+                  <class name="icon-dropshadow"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="name_desc_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">2</property>
+            <property name="valign">center</property>
+            <property name="hexpand">true</property>
+            <child>
+              <object class="GtkLabel" id="name_label">
+                <property name="xalign">0</property>
+                <property name="hexpand">true</property>
+                <property name="margin-start">0</property>
+                <property name="margin-bottom">2</property>
+                <property name="ellipsize">end</property>
+                <property name="max-width-chars">24</property>
+                <property name="halign">fill</property>
+                <property name="valign">center</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="desc_label">
+                <property name="xalign">0</property>
+                <property name="hexpand">true</property>
+                <property name="vexpand">true</property>
+                <property name="wrap">true</property>
+                <property name="ellipsize">none</property>
+                <property name="max-width-chars">0</property>
+                <property name="halign">fill</property>
+                <property name="valign">fill</property>
+                <property name="visible">false</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="spacer">
+            <property name="hexpand">true</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="tag_button">
+            <property name="valign">center</property>
+            <property name="halign">end</property>
+            <property name="margin-end">8</property>
+            <property name="focusable">false</property>
+            <property name="visible">false</property>
+            <style>
+              <class name="round"/>
+              <class name="raised"/>
+              <class name="accent"/>
+              <class name="monospace"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>

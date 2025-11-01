@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from search_entry.blp - DO NOT EDIT MANUALLY -->
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="SearchEntry" parent="GtkEntry">
+    <property name="placeholder-text">Type to search...</property>
+    <property name="width-request">400</property>
+    <property name="height-request">30</property>
+    <property name="hexpand">true</property>
+    <property name="primary-icon-name">system-search-symbolic</property>
+    <property name="secondary-icon-name">edit-clear-symbolic</property>
+    <style>
+      <class name="flat"/>
+    </style>
+  </template>
+</interface>

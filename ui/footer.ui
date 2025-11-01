@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from footer.blp - DO NOT EDIT MANUALLY -->
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="adwaita" version="1.0"/>
+  <template class="LauncherFooter" parent="AdwBin">
+    <property name="child">
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <property name="spacing">12</property>
+        <child>
+          <object class="GtkButton" id="preferences_btn">
+            <property name="valign">center</property>
+            <property name="tooltip-text">Open Preferences</property>
+            <property name="focus-on-click">false</property>
+            <style>
+              <class name="flat"/>
+            </style>
+            <child>
+              <object class="AdwButtonContent">
+                <property name="icon-name">applications-system-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="spacer">
+            <property name="hexpand">true</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="shortcut_enter">
+            <property name="valign">center</property>
+            <property name="tooltip-text">Press Enter to Select</property>
+            <style>
+              <class name="flat"/>
+            </style>
+            <child>
+              <object class="AdwButtonContent">
+                <property name="icon-name">keyboard-enter-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="shortcut_down">
+            <property name="valign">center</property>
+            <property name="tooltip-text">Press Down Arrow to Navigate Down</property>
+            <style>
+              <class name="flat"/>
+            </style>
+            <child>
+              <object class="AdwButtonContent">
+                <property name="icon-name">arrow1-down-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="shortcut_up">
+            <property name="valign">center</property>
+            <property name="tooltip-text">Press Up Arrow to Navigate Up</property>
+            <style>
+              <class name="flat"/>
+            </style>
+            <child>
+              <object class="AdwButtonContent">
+                <property name="icon-name">arrow1-up-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>

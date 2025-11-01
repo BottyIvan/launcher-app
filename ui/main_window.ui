@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from main_window.blp - DO NOT EDIT MANUALLY -->
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="adwaita" version="1.0"/>
+  <template class="LauncherWindow" parent="AdwApplicationWindow">
+    <property name="default-width">600</property>
+    <property name="default-height">400</property>
+    <property name="resizable">false</property>
+    <property name="content">
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="SearchEntry" id="search_entry">
+            <property name="placeholder-text">Type to search...</property>
+            <property name="margin-start">12</property>
+            <property name="margin-end">12</property>
+            <property name="hexpand">true</property>
+            <property name="primary-icon-name">system-search-symbolic</property>
+            <property name="secondary-icon-name">edit-clear-symbolic</property>
+            <style>
+              <class name="flat"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="progress_box">
+            <property name="orientation">horizontal</property>
+            <property name="visible">false</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+            <property name="margin-start">12</property>
+            <property name="margin-end">12</property>
+            <property name="hexpand">true</property>
+            <child>
+              <object class="GtkProgressBar" id="progress_bar">
+                <property name="hexpand">true</property>
+                <property name="text">Loading...</property>
+                <property name="show-text">true</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="vexpand">true</property>
+            <property name="hexpand">true</property>
+            <property name="hscrollbar-policy">automatic</property>
+            <property name="vscrollbar-policy">automatic</property>
+            <property name="child">
+              <object class="GtkListBox" id="list_view">
+                <property name="selection-mode">single</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <property name="vexpand">true</property>
+                <property name="hexpand">true</property>
+                <style>
+                  <class name="boxed-list-separate"/>
+                </style>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="LauncherFooter" id="footer"/>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from preferences.blp - DO NOT EDIT MANUALLY -->
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="adwaita" version="1.0"/>
+  <template class="PreferencesDialog" parent="AdwPreferencesDialog">
+    <property name="title">Preferences</property>
+    <style>
+      <class name="round"/>
+    </style>
+    <child>
+      <object class="AdwPreferencesPage" id="page_general">
+        <property name="title">General Settings</property>
+        <property name="icon-name">preferences-system-symbolic</property>
+        <child>
+          <object class="AdwPreferencesGroup" id="general_group">
+            <property name="title">General</property>
+            <child>
+              <object class="AdwSwitchRow" id="compact_layout_switch">
+                <property name="title">Use compact layout</property>
+                <property name="subtitle">Switch between compact and default layout.</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup" id="extension_group">
+            <property name="title">Extensions</property>
+            <property name="description">Enable or disable extensions.</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup" id="about_group">
+            <property name="title">About</property>
+            <child>
+              <object class="AdwActionRow" id="info_row">
+                <property name="title">About</property>
+                <property name="subtitle">Information about this application.</property>
+                <property name="activatable">true</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesPage" id="page_api">
+        <property name="title">API Keys</property>
+        <property name="icon-name">network-server-symbolic</property>
+        <child>
+          <object class="AdwPreferencesGroup" id="api_group">
+            <property name="title">API Keys</property>
+            <child>
+              <object class="GtkLabel" id="api_info">
+                <property name="label">To use AI-powered features in this application, you need a Gemini API key. Visit https://gemini.com to create an account and generate your personal API key. Once you have your key, enter it below to enable Gemini integration. Keep your API key secure and do not share it with others.</property>
+                <property name="wrap">true</property>
+                <property name="xalign">0</property>
+                <property name="margin-top">6</property>
+                <property name="use-markup">true</property>
+                <property name="selectable">false</property>
+                <property name="halign">start</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPasswordEntryRow" id="gemini_api_key">
+                <property name="title">Gemini API Key</property>
+                <property name="show-apply-button">true</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup" id="model_group">
+            <property name="title">Model Selection</property>
+            <child>
+              <object class="GtkLabel" id="model_info">
+                <property name="label">Choose which Gemini model to use for AI features. Each model offers different capabilities and performance. Refer to the Gemini documentation to select the model that best matches your requirements.</property>
+                <property name="wrap">true</property>
+                <property name="xalign">0</property>
+                <property name="margin-top">6</property>
+                <property name="use-markup">true</property>
+                <property name="selectable">false</property>
+                <property name="halign">start</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="AdwComboRow" id="gemini_model">
+                <property name="title">Gemini Model</property>
+                <property name="subtitle">Select the Gemini model to use for AI features.</property>
+                <property name="model">
+                  <object class="GtkStringList">
+                    <items>
+                      <item>gemini-1.5</item>
+                      <item>gemini-2</item>
+                      <item>gemini-3</item>
+                    </items>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
