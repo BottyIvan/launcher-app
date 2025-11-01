@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/cloud/ivanbotty/Wizard">
+        <file>wizard-window.ui</file>
+        <file>welcome-page.ui</file>
+        <file>summary-page.ui</file>
+    </gresource>
+</gresources>

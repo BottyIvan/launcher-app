@@ -1,0 +1,63 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $WelcomePage : Adw.Clamp {
+  maximum-size: 640;
+
+  Gtk.Box {
+    orientation: vertical;
+    spacing: 24;
+    margin-top: 48;
+    margin-bottom: 48;
+    margin-start: 32;
+    margin-end: 32;
+    halign: center;
+    valign: center;
+    hexpand: true;
+    vexpand: true;
+
+    Gtk.Label title_label {
+      label: _("Welcome to Launcher");
+      wrap: true;
+      max-width-chars: 60;
+      justify: center;
+      halign: center;
+      valign: start;
+      
+      styles [
+        "title-1"
+      ]
+    }
+
+    Gtk.Label subtitle_label {
+      label: _("Let's set things up for you");
+      wrap: true;
+      max-width-chars: 60;
+      justify: center;
+      halign: center;
+      valign: start;
+      margin-top: 8;
+      
+      styles [
+        "dim-label"
+      ]
+    }
+
+    Gtk.Separator {
+      orientation: horizontal;
+      margin-top: 12;
+      margin-bottom: 12;
+    }
+
+    Gtk.Button action_button {
+      label: _("Next");
+      halign: center;
+      margin-top: 12;
+      
+      styles [
+        "suggested-action",
+        "pill"
+      ]
+    }
+  }
+}
