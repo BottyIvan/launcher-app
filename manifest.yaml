@@ -20,9 +20,10 @@ modules:
     buildsystem: meson
     sources:
       - type: git
-        url: https://gitlab.gnome.org/jwestman/blueprint-compiler.git
-        tag: v0.14.0
-        commit: 1be956336a57ad6629b51e96fb04d86dc7b6b336
+        url: https://gitlab.gnome.org/GNOME/blueprint-compiler
+        tag: v0.18.0
+        branch: main
+        commit: 07c9c9df9cd1b6b4454ecba21ee58211e9144a4b
     cleanup:
       - '*'
   
