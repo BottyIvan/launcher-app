@@ -72,9 +72,23 @@ Launcher supports extensions defined in YAML, which can be enabled or disabled f
 
 ## Getting Started
 
-You can run Launcher in three ways: via Meson build, direct Python execution, or Flatpak.
+You can run Launcher in three ways: via Flatpak (recommended for users), Meson build (recommended for system installation), or direct Python execution (recommended for development).
 
-### Method 1: Meson Build (Recommended for System Installation)
+### Method 1: 🧱 Build and Run with Flatpak (Recommended for Users)
+
+Flatpak provides a sandboxed environment with all dependencies included. To build and install:
+
+```bash
+# Build and install the Flatpak
+flatpak-builder --user --install --force-clean build-dir manifest.yaml
+
+# Run the application
+flatpak run cloud.ivanbotty.Launcher
+```
+
+The Flatpak build uses Meson internally and installs the application to `/app` with proper sandboxing and permissions.
+
+### Method 2: Meson Build (Recommended for System Installation)
 
 Build and install using Meson:
 
@@ -98,7 +112,7 @@ meson install -C builddir
 cloud-ivanbotty-launcher
 ```
 
-### Method 2: Direct Python Execution (For Development)
+### Method 3: Direct Python Execution (For Development)
 
 Run directly without installation:
 
@@ -108,18 +122,6 @@ pip install PyGObject google-generativeai
 
 # Run the application
 python3 -m cloud.ivanbotty.Launcher
-```
-
-### Method 3: Flatpak
-
-> [!WARNING]
-> **Note:** Application icons may not display correctly in Flatpak due to sandboxing.
-
-Build and run with Flatpak:
-
-```bash
-flatpak-builder build-dir manifest.yaml --force-clean
-flatpak-builder --run build-dir manifest.yaml launcher
 ```
 
 ---

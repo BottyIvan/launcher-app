@@ -1,8 +1,8 @@
 id: cloud.ivanbotty.Launcher
 runtime: org.gnome.Platform
-runtime-version: '48'
+runtime-version: '46'
 sdk: org.gnome.Sdk
-command: launcher
+command: cloud-ivanbotty-launcher
 
 # Permissions and filesystem access for the Flatpak app
 finish-args:
@@ -10,26 +10,17 @@ finish-args:
   - --socket=wayland                       # Enable Wayland display support
   - --socket=fallback-x11                  # Fallback to X11 if Wayland is unavailable
   - --device=dri                           # Allow direct rendering (GPU access)
+  - --talk-name=org.freedesktop.portal.Desktop  # Desktop portal access
+  - --filesystem=home                      # Access to home directory
   - --filesystem=xdg-data:ro               # Read-only access to user data directories
-  - --filesystem=host:ro                   # Access to the host filesystem
 
 modules:
-  - name: launcher
-    buildsystem: simple
-    build-commands:
-      - install -Dm755 launcher.sh /app/bin/launcher
-      - install -d /app/launcher
-      - cp -r cloud /app/launcher/
-      - install -d /app/launcher/resources
-      - cp -r cloud/ivanbotty/Launcher/resources/* /app/launcher/resources/
+  - name: launcher-app
+    buildsystem: meson
+    builddir: _build
+    config-opts:
+      - --prefix=/app
     sources:
-      - type: script
-        dest-filename: launcher.sh
-        commands:
-          - |
-            #!/bin/sh
-            export PYTHONPATH=/app/launcher:$PYTHONPATH
-            exec python3 -m cloud.ivanbotty.Launcher
       - type: dir
         path: .
         dest: .

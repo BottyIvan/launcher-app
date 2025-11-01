@@ -24,6 +24,12 @@ install_data(
   install_dir: datadir / 'applications',
 )
 
+# Install SVG icon
+install_data(
+  'cloud/ivanbotty/Launcher/resources/cloud.ivanbotty.Launcher.svg',
+  install_dir: datadir / 'icons/hicolor/scalable/apps',
+)
+
 # Install manifest.yaml
 install_data(
   'manifest.yaml',
