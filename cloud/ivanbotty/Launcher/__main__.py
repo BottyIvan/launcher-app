@@ -6,11 +6,18 @@ gi.require_version("Gtk", "4.0")
 from gi.repository import Gio
 import cloud.ivanbotty.database.sqlite3 as db
 from cloud.ivanbotty.Launcher.app import App
+from cloud.ivanbotty.common import find_resource_file, RESOURCE_FILE
 
 def main():
     # Load and register application resources
     try:
-        resource = Gio.Resource.load("cloud/ivanbotty/Launcher/resources/resources.gresource")
+        resource_path = find_resource_file()
+        
+        if resource_path is None:
+            print(f"Failed to load resources: {RESOURCE_FILE} not found")
+            return
+        
+        resource = Gio.Resource.load(resource_path)
         Gio.resources_register(resource)
     except Exception as e:
         print(f"Failed to load resources: {e}")

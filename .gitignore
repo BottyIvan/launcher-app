@@ -51,3 +51,11 @@ coverage.xml
 .flatpak-builder/
 build-dir/
 *.egg-info/
+
+# Meson Build
+builddir/
+build/
+meson-logs/
+meson-private/
+.mesonpy-*
+*.ninja
