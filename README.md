@@ -22,6 +22,7 @@
 ## Features
 
 - Modern interface with Adwaita and GTK4
+- **Declarative UI with GTK Blueprint** for maintainable layouts
 - Flatpak support for sandboxed environments
 - Switchable compact and extended layouts
 - SVG icon rendering and detailed app info
@@ -220,6 +221,13 @@ class MyWindow(Gtk.ApplicationWindow):
 - [GTK4 Widget Gallery](https://docs.gtk.org/gtk4/visual_index.html)
 - [Libadwaita Widget Gallery](https://gnome.pages.gitlab.gnome.org/libadwaita/doc/main/widget-gallery.html)
 
+### Blueprint Documentation in This Repository
+
+- **[BLUEPRINT_MIGRATION.md](BLUEPRINT_MIGRATION.md)** - Step-by-step guide for migrating existing widgets to Blueprint
+- **[BLUEPRINT_REFERENCE.md](BLUEPRINT_REFERENCE.md)** - Quick reference for common Blueprint patterns
+- **[examples_blueprint.py](examples_blueprint.py)** - Working examples of Blueprint template usage
+- **[verify_blueprints.py](verify_blueprints.py)** - Script to verify Blueprint infrastructure setup
+
 ---
 
 ## Project Structure
@@ -233,6 +241,10 @@ class MyWindow(Gtk.ApplicationWindow):
 - `pyproject.toml`: Python configuration
 - `meson.build`: Build configuration for compiling Blueprint files
 - `compile_blueprints.py`: Standalone script to compile Blueprint files
+- `verify_blueprints.py`: Verify Blueprint infrastructure setup
+- `examples_blueprint.py`: Example Blueprint template implementations
+- `BLUEPRINT_MIGRATION.md`: Guide for migrating widgets to Blueprint
+- `BLUEPRINT_REFERENCE.md`: Quick reference for Blueprint syntax
 
 ## Contributing
 
