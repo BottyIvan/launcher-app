@@ -26,9 +26,10 @@ def find_resource_file():
     search_paths = [
         # Direct execution from repository root
         os.path.join("cloud", "ivanbotty", resource_filename),
-        # Meson installation (in pkgdatadir)
+        # Meson installation (in pkgdatadir using sys.prefix)
         os.path.join(sys.prefix, "share", PKGDATADIR, resource_filename),
-        # Alternative Meson installation (in /usr/local)
+        # Standard installation locations
+        os.path.join("/usr", "share", PKGDATADIR, resource_filename),
         os.path.join("/usr", "local", "share", PKGDATADIR, resource_filename),
     ]
     
