@@ -60,3 +60,7 @@ meson-logs/
 meson-private/
 .mesonpy-*
 *.ninja
+
+# GNOME Blueprint compiled UI files
+*.ui
+*.gresource

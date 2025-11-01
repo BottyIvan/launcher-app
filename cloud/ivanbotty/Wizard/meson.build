@@ -63,7 +63,7 @@ if blueprint_compiler.found()
     source_dir: meson.current_build_dir(),
     dependencies: compiled_ui,
     install: true,
-    install_dir: pkgdatadir / 'Wizard',
+    install_dir: get_option('datadir') / meson.project_name() / 'Wizard',
   )
 else
   warning('blueprint-compiler not found. Blueprint UI files will not be compiled.')
