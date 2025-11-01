@@ -96,14 +96,39 @@ flatpak-builder --run build-dir manifest.yaml launcher
 
 - `cloud/ivanbotty/database/`: SQLite integration for persistent data
 - `cloud/ivanbotty/Launcher/`: Main source code
+  - `blueprint/`: UI blueprint design pattern for consistent component creation
+  - `config/`: Application configuration
+  - `controller/`: Event controllers for UI interactions
+  - `handlers/`: Input handlers for different command types
+  - `models/`: Data models
+  - `services/`: Core application services
+  - `widget/`: UI widgets and components
 - `cloud/ivanbotty/Wizard/`: Wizard/Onboard source code
 - `resources/`: SVG icons and appdata files
 - `manifest.yaml`: Flatpak manifest
 - `pyproject.toml`: Python configuration
 
+## UI Blueprint Design
+
+The application uses a **blueprint design pattern** for UI component creation, providing:
+
+- **Consistency**: Standardized styling and spacing across all components
+- **Maintainability**: Centralized UI configuration and theming
+- **Scalability**: Easy addition of new components following established patterns
+- **Usability**: Reduced code duplication and improved readability
+
+Key components:
+- **StyleBlueprint**: Centralized style management and theming
+- **ComponentRegistry**: Factory methods for creating UI components
+- **UIBlueprint**: High-level interface for complete UI layouts
+
+For detailed information, see: `cloud/ivanbotty/Launcher/blueprint/README.md`
+
 ## Contributing
 
 Fork the repository and submit a pull request. Follow PEP8 conventions and ensure your code is tested.
+
+When working with UI components, consider using the blueprint design pattern for consistency. See `cloud/ivanbotty/Launcher/blueprint/MIGRATION.md` for migration guidance.
 
 ## License
 
