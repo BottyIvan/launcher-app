@@ -11,6 +11,7 @@ finish-args:
   - --socket=fallback-x11                  # Fallback to X11 if Wayland is unavailable
   - --device=dri                           # Allow direct rendering (GPU access)
   - --talk-name=org.freedesktop.portal.Desktop  # Desktop portal access
+  - --filesystem=host:ro                   # Access to the host filesystem (read-only)
   - --filesystem=home                      # Access to home directory
   - --filesystem=xdg-data:ro               # Read-only access to user data directories
 
