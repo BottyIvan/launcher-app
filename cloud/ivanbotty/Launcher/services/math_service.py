@@ -1,4 +1,7 @@
 import math
+import logging
+
+logger = logging.getLogger(__name__)
 
 class MathService:
     """Service to safely evaluate math expressions."""
@@ -31,6 +34,6 @@ class MathService:
             result = eval(expression, {"__builtins__": {}}, self.safe_dict)
             return [str(result), None]
         except Exception as e:
-            # Print the error for debugging and return a user-friendly error message
-            print(f"Math evaluation error: {e}")
+            # Log the error for debugging and return a user-friendly error message
+            logger.error(f"Math evaluation error for expression='{expression}': {e}")
             return [None, f"Error: Could not evaluate '{expression}'. Please check your input."]

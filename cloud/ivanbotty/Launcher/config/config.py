@@ -1,5 +1,8 @@
 import cloud.ivanbotty.database.sqlite3 as db
 from pathlib import Path
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Directories to search for .desktop application files
 SYSTEM_DIRS = [
@@ -59,7 +62,7 @@ try:
 except Exception:
     # On error (e.g., database unavailable), use the default style and log the issue.
     PREFERENCES = "default"
-    print("Failed to get preferences, using default.")
+    logger.warning("Failed to get preferences, using default")
 
 SYSTEM_PROMPT = (
     "You are a helpful assistant focused on concise, accurate answers. "

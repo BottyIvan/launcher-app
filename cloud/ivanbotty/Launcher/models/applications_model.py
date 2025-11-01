@@ -1,8 +1,11 @@
 import gi
 import subprocess
+import logging
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import GObject
+
+logger = logging.getLogger(__name__)
 
 class ApplicationModel(GObject.GObject):
     """
@@ -44,5 +47,5 @@ class ApplicationModel(GObject.GObject):
             subprocess.Popen(self.exec_cmd, shell=True)
             return True
         except Exception as e:
-            print(f"Error executing {self.exec_cmd}: {e}")
+            logger.error(f"Error executing command exec_cmd={self.exec_cmd}: {e}")
             return False

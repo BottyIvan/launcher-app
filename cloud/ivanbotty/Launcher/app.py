@@ -1,5 +1,6 @@
 from cloud.ivanbotty.Launcher.helper.load_class_instance import load_class_instance
 import gi, yaml
+import logging
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -15,6 +16,8 @@ from cloud.ivanbotty.Launcher.widget.search_entry import SearchEntry
 from cloud.ivanbotty.Launcher.widget.footer import Footer
 from cloud.ivanbotty.Launcher.widget.progress_bar import ProgressBar
 from cloud.ivanbotty.Launcher.helper.thread_manager import ThreadManager
+
+logger = logging.getLogger(__name__)
 
 class App(Adw.Application):
     """Main application class."""
@@ -55,12 +58,12 @@ class App(Adw.Application):
             with open("./cloud/ivanbotty/Launcher/resources/extensions.yaml") as f:
                 config = yaml.safe_load(f)
         except Exception as e:
-            print(f"Error loading extensions: {e}")
+            logger.error(f"Error loading extensions: {e}")
             return
 
         # Validate config structure
         if not isinstance(config, dict):
-            print("Invalid extensions config format")
+            logger.error("Invalid extensions config format")
             return
 
         # Load extensions into the service
@@ -80,7 +83,7 @@ class App(Adw.Application):
     def do_startup(self):
         """Startup routine for the application."""
         Gtk.Application.do_startup(self)
-        print("Application startup")
+        logger.info("Application startup")
 
         # Prepare services dictionary
         services = {
@@ -141,6 +144,6 @@ class App(Adw.Application):
 
     def do_activate(self):
         """Activate the application and show the window."""
-        print("Application activated")
+        logger.info("Application activated")
         if self.win is not None:
             self.win.present()
