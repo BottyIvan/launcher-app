@@ -96,6 +96,7 @@ flatpak-builder --run build-dir manifest.yaml launcher
 
 - `cloud/ivanbotty/database/`: SQLite integration for persistent data
 - `cloud/ivanbotty/Launcher/`: Main source code
+- `cloud/ivanbotty/Wizard/`: Wizard/Onboard source code
 - `resources/`: SVG icons and appdata files
 - `manifest.yaml`: Flatpak manifest
 - `pyproject.toml`: Python configuration
