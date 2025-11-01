@@ -12,7 +12,7 @@ import os
 # Add project root to path - find it by looking for pyproject.toml
 def find_project_root():
     current = os.path.abspath(os.path.dirname(__file__))
-    while current != '/':
+    while os.path.dirname(current) != current:  # Cross-platform root check
         if os.path.exists(os.path.join(current, 'pyproject.toml')):
             return current
         current = os.path.dirname(current)

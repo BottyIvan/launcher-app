@@ -90,7 +90,10 @@ class StyleBlueprint:
         try:
             import cloud.ivanbotty.database.sqlite3 as db
             return db.get_pref(key, default)
-        except Exception:
+        except (ImportError, AttributeError, OSError) as e:
+            # ImportError: database module not available
+            # AttributeError: get_pref method not found
+            # OSError: database file issues
             return default
     
     def _load_style_preference(self):

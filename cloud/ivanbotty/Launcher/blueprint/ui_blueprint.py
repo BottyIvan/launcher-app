@@ -151,7 +151,7 @@ class UIBlueprint:
         for icon_name, description in shortcuts:
             shortcut_btn = self.components.create_icon_button(
                 icon_name=icon_name,
-                tooltip=f"{description}",
+                tooltip=description,
                 css_classes=["flat"]
             )
             main_box.append(shortcut_btn)
