@@ -1,0 +1,5 @@
+#!/bin/sh
+# Wrapper script for cloud.ivanbotty.Launcher
+
+export PYTHONPATH="@pkgdatadir@:${PYTHONPATH}"
+exec @PYTHON@ -m cloud.ivanbotty.Launcher "$@"

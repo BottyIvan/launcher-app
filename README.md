@@ -68,17 +68,49 @@ Launcher supports extensions defined in YAML, which can be enabled or disabled f
 - [google-generativeai](https://pypi.org/project/google-generativeai/) >= 0.3.0 (for AI features)
 - [sqlite3](https://docs.python.org/3/library/sqlite3.html) (built-in with Python)
 - GTK4 and Adwaita libraries
+- Meson >= 0.59.0 (for building with Meson)
 
 ## Getting Started
 
-### Local Installation
+You can run Launcher in three ways: via Meson build, direct Python execution, or Flatpak.
+
+### Method 1: Meson Build (Recommended for System Installation)
+
+Build and install using Meson:
 
 ```bash
-pip install .
-python -m cloud.ivanbotty.Launcher
+# Setup the build directory
+meson setup builddir
+
+# Install to the system (may require sudo)
+meson install -C builddir
+
+# Run the installed application
+cloud-ivanbotty-launcher
 ```
 
-### Flatpak
+To install to a custom prefix (e.g., in your home directory):
+
+```bash
+meson setup builddir --prefix=$HOME/.local
+meson install -C builddir
+# Make sure $HOME/.local/bin is in your PATH
+cloud-ivanbotty-launcher
+```
+
+### Method 2: Direct Python Execution (For Development)
+
+Run directly without installation:
+
+```bash
+# Install Python dependencies
+pip install PyGObject google-generativeai
+
+# Run the application
+python3 -m cloud.ivanbotty.Launcher
+```
+
+### Method 3: Flatpak
 
 > [!WARNING]
 > **Note:** Application icons may not display correctly in Flatpak due to sandboxing.
