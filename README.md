@@ -123,14 +123,14 @@ python3 -m unittest discover tests/ -v
 
 ## Project Structure
 
-- `cloud/ivanbotty/database/`: SQLite integration for persistent data
-    - `sqlite3.py`: Database and preferences management with type hints
+- `cloud/ivanbotty/database/`: Persistent data management with SQLite
+    - `sqlite3.py`: Database and preferences handling with type hints
     - `__init__.py`
 - `cloud/ivanbotty/utils/`: Shared utility modules
-    - `app_init.py`: Application initialization utilities (resource loading, DB setup, logging)
+    - `app_init.py`: App initialization (resources, DB, logging)
     - `__init__.py`
-- `cloud/ivanbotty/Launcher/`: Main source code
-    - `app.py`, `__main__.py`: Entry point and main application logic
+- `cloud/ivanbotty/Launcher/`: Main Launcher app code
+    - `app.py`, `__main__.py`: Entry point and core logic
     - `config/`: UI configurations and constants
     - `controller/`: Event controllers (search, key, click)
     - `handlers/`: Input handling (app, math, AI, link, command, extensions)
@@ -138,17 +138,17 @@ python3 -m unittest discover tests/ -v
     - `models/`: Data models (applications, extensions)
     - `services/`: Services (applications, command, math, AI, extensions)
     - `widget/`: UI components (window, search_entry, row, preferences, progress_bar, footer)
-    - `resources/`: SVG icons, appdata, extension YAMLs, and wizard files
-- `cloud/ivanbotty/Wizard/`: Wizard/Onboarding source code
+    - `resources/`: SVG icons, appdata, extension YAML, wizard files
+- `cloud/ivanbotty/Wizard/`: Wizard/onboarding source code
     - `app.py`, `__main__.py`: Welcome wizard
-    - `components/`: UI components for the wizard
+    - `components/`: Wizard UI components
 - `tests/`: Test suite
-    - `test_utils.py`: Tests for utility modules
-    - `test_helpers.py`: Tests for helper modules
+    - `test_utils.py`: Utility module tests
+    - `test_helpers.py`: Helper module tests
 - `manifest.yaml`: Flatpak manifest
 - `pyproject.toml`: Python configuration
 - `meson.build`: Meson build configuration
-- `cloud.ivanbotty.Launcher.desktop`: Desktop entry for the launcher
+- `cloud.ivanbotty.Launcher.desktop`: Desktop entry for Launcher
 - `launcher-wrapper.sh.in`: Launcher wrapper script
 - `LICENSE`: GPL-3.0-or-later
 
