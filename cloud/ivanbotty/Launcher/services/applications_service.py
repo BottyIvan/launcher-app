@@ -128,11 +128,7 @@ class ApplicationsService:
         """
         filtered_store = Gio.ListStore(item_type=ApplicationModel)
 
-        if not search_text:
-            # If no search text, return all apps sorted
-            search_text_lower = ""
-        else:
-            search_text_lower = search_text.lower()
+        search_text_lower = search_text.lower() if search_text else ""
 
         # Collect matching apps in a list for sorting
         filtered_apps = []

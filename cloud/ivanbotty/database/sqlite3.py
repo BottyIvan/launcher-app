@@ -25,6 +25,13 @@ def _get_connection() -> sqlite3.Connection:
     """
     if not hasattr(_local, 'connection') or _local.connection is None:
         _local.connection = sqlite3.connect(DB_PATH, check_same_thread=False)
+    else:
+        # Check if connection is still valid
+        try:
+            _local.connection.execute("SELECT 1")
+        except sqlite3.ProgrammingError:
+            # Connection was closed, create a new one
+            _local.connection = sqlite3.connect(DB_PATH, check_same_thread=False)
     return _local.connection
 
 
