@@ -23,16 +23,14 @@ except (ValueError, ImportError):
 import cloud.ivanbotty.database.sqlite3 as db
 from cloud.ivanbotty.common import find_resource_file, RESOURCE_FILE
 
+def build_parser(version: Optional[str] = None) -> argparse.ArgumentParser:
+    """Create and configure the argument parser for the Launcher application.
 
-def configure_cli(version: Optional[str] = None) -> argparse.Namespace:
-    """Configure the command-line interface for the Launcher application.
+    Args:
+        version: Optional application version string for the --version flag.
 
-    Command-line options:
-      --debug           Enable verbose logging for troubleshooting and development
-      --wizard          Launch the welcome wizard on startup for first-time setup
-      --config PATH     Specify an alternative configuration file location
-      --search QUERY    Automatically perform a search with the provided query on startup
-      --version         Show application version and exit
+    Returns:
+        Configured ArgumentParser instance.
     """
     parser = argparse.ArgumentParser(
         description="Launcher App - flexible startup options for configuration, logging, and automation"
@@ -63,7 +61,35 @@ def configure_cli(version: Optional[str] = None) -> argparse.Namespace:
         version=version if version else "Launcher App (version unknown)",
         help="Show application version and exit"
     )
-    return parser.parse_args()
+    return parser
+
+def parse_args(args=None, version: Optional[str] = None) -> argparse.Namespace:
+    """Parse command-line arguments and set derived values.
+
+    Args:
+        args: Optional list of argument strings to parse (defaults to sys.argv).
+        version: Optional application version string for the --version flag.
+
+    Returns:
+        Namespace with parsed arguments and computed log_level.
+    """
+    parser = build_parser(version)
+    parsed = parser.parse_args(args)
+
+    # Set log_level based on --debug flag
+    parsed.log_level = logging.DEBUG if parsed.debug else logging.INFO
+    return parsed
+
+def configure_cli(version: Optional[str] = None) -> argparse.Namespace:
+    """Parse CLI arguments and return the resulting namespace.
+
+    Args:
+        version: Optional application version string for the --version flag.
+
+    Returns:
+        Namespace with parsed arguments and computed log_level.
+    """
+    return parse_args(version=version)
 
 def setup_logging(
     level: int = logging.INFO,
