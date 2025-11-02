@@ -7,46 +7,77 @@ and API keys using a SQLite database.
 import os
 import sqlite3
 from typing import Any, Dict, Optional
+from contextlib import contextmanager
+import threading
 
 # Path to the SQLite database
 DB_PATH = os.path.expanduser("~/.config/cloud.ivanbotty.Launcher/settings.db")
+
+# Thread-local storage for connections
+_local = threading.local()
+
+
+def _get_connection() -> sqlite3.Connection:
+    """Get or create a thread-local database connection.
+
+    Returns:
+        sqlite3.Connection: Thread-local database connection
+    """
+    if not hasattr(_local, 'connection') or _local.connection is None:
+        _local.connection = sqlite3.connect(DB_PATH, check_same_thread=False)
+    return _local.connection
+
+
+@contextmanager
+def _db_cursor():
+    """Context manager for database operations with automatic commit.
+
+    Yields:
+        sqlite3.Cursor: Database cursor for operations
+    """
+    conn = _get_connection()
+    cursor = conn.cursor()
+    try:
+        yield cursor
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        cursor.close()
 
 
 def init_db() -> None:
     """Initialize the database and create tables if they do not exist."""
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-
-    # Table for user preferences
-    c.execute(
+    with _db_cursor() as c:
+        # Table for user preferences
+        c.execute(
+            """
+            CREATE TABLE IF NOT EXISTS preferences (
+                key TEXT PRIMARY KEY,
+                value TEXT
+            )
         """
-        CREATE TABLE IF NOT EXISTS preferences (
-            key TEXT PRIMARY KEY,
-            value TEXT
         )
-    """
-    )
-    # Table for installed extensions
-    c.execute(
+        # Table for installed extensions
+        c.execute(
+            """
+            CREATE TABLE IF NOT EXISTS extensions (
+                id TEXT PRIMARY KEY,
+                enabled BOOLEAN
+            )
         """
-        CREATE TABLE IF NOT EXISTS extensions (
-            id TEXT PRIMARY KEY,
-            enabled BOOLEAN
         )
-    """
-    )
-    # Table for API keys of external services
-    c.execute(
+        # Table for API keys of external services
+        c.execute(
+            """
+            CREATE TABLE IF NOT EXISTS api_keys (
+                service TEXT PRIMARY KEY,
+                key TEXT
+            )
         """
-        CREATE TABLE IF NOT EXISTS api_keys (
-            service TEXT PRIMARY KEY,
-            key TEXT
         )
-    """
-    )
-    conn.commit()
-    conn.close()
 
 
 # ----- Preferences -----
@@ -57,11 +88,8 @@ def set_pref(key: str, value: Any) -> None:
         key: The preference key
         value: The preference value (will be converted to string)
     """
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    c.execute("REPLACE INTO preferences (key, value) VALUES (?, ?)", (key, str(value)))
-    conn.commit()
-    conn.close()
+    with _db_cursor() as c:
+        c.execute("REPLACE INTO preferences (key, value) VALUES (?, ?)", (key, str(value)))
 
 
 def get_pref(key: str, default: Any = None) -> Any:
@@ -74,12 +102,10 @@ def get_pref(key: str, default: Any = None) -> Any:
     Returns:
         The preference value if found, otherwise the default value
     """
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    c.execute("SELECT value FROM preferences WHERE key=?", (key,))
-    row = c.fetchone()
-    conn.close()
-    return row[0] if row else default
+    with _db_cursor() as c:
+        c.execute("SELECT value FROM preferences WHERE key=?", (key,))
+        row = c.fetchone()
+        return row[0] if row else default
 
 
 # ----- Extensions -----
@@ -92,12 +118,10 @@ def get_extension(ext_id: str) -> Optional[bool]:
     Returns:
         True if enabled, False if disabled, None if not found
     """
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    c.execute("SELECT enabled FROM extensions WHERE id=?", (ext_id,))
-    row = c.fetchone()
-    conn.close()
-    return row[0] == 1 if row else None
+    with _db_cursor() as c:
+        c.execute("SELECT enabled FROM extensions WHERE id=?", (ext_id,))
+        row = c.fetchone()
+        return row[0] == 1 if row else None
 
 
 def set_extension_enabled(ext_id: str, enabled: bool) -> None:
@@ -109,16 +133,12 @@ def set_extension_enabled(ext_id: str, enabled: bool) -> None:
         ext_id: The extension identifier
         enabled: True to enable, False to disable
     """
-    conn = sqlite3.connect(DB_PATH)
-    try:
-        with conn:
-            conn.execute(
-                "INSERT INTO extensions (id, enabled) VALUES (?, ?) "
-                "ON CONFLICT(id) DO UPDATE SET enabled=excluded.enabled",
-                (ext_id, int(enabled)),
-            )
-    finally:
-        conn.close()
+    with _db_cursor() as c:
+        c.execute(
+            "INSERT INTO extensions (id, enabled) VALUES (?, ?) "
+            "ON CONFLICT(id) DO UPDATE SET enabled=excluded.enabled",
+            (ext_id, int(enabled)),
+        )
 
 
 def get_extensions() -> Dict[str, bool]:
@@ -127,12 +147,10 @@ def get_extensions() -> Dict[str, bool]:
     Returns:
         Dictionary mapping extension IDs to their enabled state
     """
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    c.execute("SELECT id, enabled FROM extensions")
-    result = {row[0]: (row[1] == 1) for row in c.fetchall()}
-    conn.close()
-    return result
+    with _db_cursor() as c:
+        c.execute("SELECT id, enabled FROM extensions")
+        result = {row[0]: (row[1] == 1) for row in c.fetchall()}
+        return result
 
 
 # ----- API Keys -----
@@ -143,11 +161,8 @@ def set_api_key(service: str, key: str) -> None:
         service: The service name
         key: The API key
     """
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    c.execute("REPLACE INTO api_keys (service, key) VALUES (?, ?)", (service, key))
-    conn.commit()
-    conn.close()
+    with _db_cursor() as c:
+        c.execute("REPLACE INTO api_keys (service, key) VALUES (?, ?)", (service, key))
 
 
 def get_api_key(service: str) -> Optional[str]:
@@ -159,9 +174,7 @@ def get_api_key(service: str) -> Optional[str]:
     Returns:
         The API key if found, None otherwise
     """
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    c.execute("SELECT key FROM api_keys WHERE service=?", (service,))
-    row = c.fetchone()
-    conn.close()
-    return row[0] if row else None
+    with _db_cursor() as c:
+        c.execute("SELECT key FROM api_keys WHERE service=?", (service,))
+        row = c.fetchone()
+        return row[0] if row else None

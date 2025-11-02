@@ -10,6 +10,9 @@ from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
+# Cache for loaded class instances
+_instance_cache = {}
+
 
 def load_class_instance(path: str) -> Optional[Any]:
     """Dynamically import a class from a full path and return an instance.
@@ -21,6 +24,11 @@ def load_class_instance(path: str) -> Optional[Any]:
     Returns:
         Instance of the specified class, or None if import/instantiation fails
     """
+    # Check cache first
+    if path in _instance_cache:
+        logger.debug(f"Returning cached instance for: {path}")
+        return _instance_cache[path]
+
     try:
         module_path, class_name = path.rsplit(".", 1)
     except ValueError:
@@ -45,6 +53,8 @@ def load_class_instance(path: str) -> Optional[Any]:
     try:
         instance = cls()
         logger.debug(f"Instance created successfully: {class_name}")
+        # Cache the instance for future use
+        _instance_cache[path] = instance
     except Exception as e:
         logger.error(f"Failed to instantiate class {class_name}: {e}")
         return None
