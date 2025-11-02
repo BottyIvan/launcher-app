@@ -83,7 +83,7 @@ class App(Adw.Application):
         # Initialize services
         self.extensions_service = ExtensionService()
         try:
-            yaml_path = find_extensions_yaml()
+            yaml_path = find_extensions_yaml("extensions.yaml")
             if yaml_path is None:
                 logger.error("extensions.yaml file not found")
                 return
