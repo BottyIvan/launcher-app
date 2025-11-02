@@ -21,7 +21,7 @@ extensions:
     handler: "cloud.ivanbotty.Launcher.handlers.file_handler.FileHandler"
     version: "0.0.1"
     author: "ivanbotty"
-    enabled: true
+    enabled: false
 
   - name: Link
     description: "Open URLs"
@@ -29,7 +29,7 @@ extensions:
     handler: "cloud.ivanbotty.Launcher.handlers.link_handler.LinkHandler"
     version: "0.0.1"
     author: "ivanbotty"
-    enabled: true
+    enabled: false
 
   - name: Command
     description: "Execute system commands"
@@ -37,7 +37,7 @@ extensions:
     handler: "cloud.ivanbotty.Launcher.handlers.command_handler.CommandHandler"
     version: "0.0.1"
     author: "ivanbotty"
-    enabled: true
+    enabled: false
 
   - name: AI
     description: "AI-powered assistance"
