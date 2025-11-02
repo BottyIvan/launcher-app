@@ -27,6 +27,7 @@ from cloud.ivanbotty.Launcher.widget.footer import Footer
 from cloud.ivanbotty.Launcher.widget.progress_bar import ProgressBar
 from cloud.ivanbotty.Launcher.widget.search_entry import SearchEntry
 from cloud.ivanbotty.Launcher.widget.window import Window
+from cloud.ivanbotty.common import find_extensions_yaml
 
 logger = logging.getLogger(__name__)
 
@@ -82,8 +83,11 @@ class App(Adw.Application):
         # Initialize services
         self.extensions_service = ExtensionService()
         try:
-            # Load extensions from YAML
-            with open("./cloud/ivanbotty/Launcher/resources/extensions.yaml") as f:
+            yaml_path = find_extensions_yaml()
+            if yaml_path is None:
+                logger.error("extensions.yaml file not found")
+                return
+            with open(yaml_path) as f:
                 config = yaml.safe_load(f)
         except Exception as e:
             logger.error(f"Error loading extensions: {e}")

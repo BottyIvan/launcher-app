@@ -46,3 +46,26 @@ def find_resource_file() -> Optional[str]:
             return path
 
     return None
+
+
+def find_extensions_yaml() -> Optional[str]:
+    """Find the extensions.yaml file in various possible locations.
+
+    This function searches for the extensions.yaml file in multiple locations to support
+    both direct Python execution from the repository and Meson-based installations,
+    including Flatpak environments.
+
+    Returns:
+        Path to the extensions.yaml file if found, None otherwise
+    """
+    resource_filename = os.path.join(RESOURCE_SUBDIR, "extensions.yaml")
+    search_paths = [
+        os.path.join("cloud", "ivanbotty", resource_filename),
+        os.path.join("/app", "share", PKGDATADIR, resource_filename),
+        os.path.join(sys.prefix, "share", PKGDATADIR, resource_filename),
+        os.path.join("/usr", "share", PKGDATADIR, resource_filename),
+    ]
+    for path in search_paths:
+        if os.path.exists(path):
+            return path
+    return None
