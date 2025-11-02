@@ -7,10 +7,17 @@ and logging setup used by both Launcher and Wizard entry points.
 import logging
 from typing import Optional
 
-import gi
+try:
+    import gi
 
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gio
+    gi.require_version("Gtk", "4.0")
+    from gi.repository import Gio
+
+    GTK_AVAILABLE = True
+except (ValueError, ImportError):
+    # GTK4 not available - this is okay for testing
+    GTK_AVAILABLE = False
+    Gio = None
 
 import cloud.ivanbotty.database.sqlite3 as db
 from cloud.ivanbotty.common import find_resource_file, RESOURCE_FILE
@@ -39,6 +46,11 @@ def load_resources() -> bool:
     Returns:
         True if resources were loaded successfully, False otherwise
     """
+    if not GTK_AVAILABLE:
+        logger = logging.getLogger(__name__)
+        logger.warning("GTK4 not available, skipping resource loading")
+        return False
+
     logger = logging.getLogger(__name__)
 
     try:
@@ -98,3 +110,4 @@ def initialize_app(app_name: Optional[str] = None) -> bool:
 
     logger.info("Application initialization completed successfully")
     return True
+
