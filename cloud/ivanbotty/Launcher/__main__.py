@@ -26,7 +26,7 @@ def main() -> int:
 
     try:
         args = configure_cli(version="0.0.1")
-        logger = setup_logging(args.debug)
+        logger = setup_logging(args.log_level)
     except Exception as e:
         print(f"Error parsing command-line arguments: {e}", file=sys.stderr)
         return 1
