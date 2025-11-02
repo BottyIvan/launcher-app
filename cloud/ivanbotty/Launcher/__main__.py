@@ -13,7 +13,7 @@ gi.require_version("Gtk", "4.0")
 
 import cloud.ivanbotty.database.sqlite3 as db
 from cloud.ivanbotty.Launcher.app import App
-from cloud.ivanbotty.utils import initialize_app, setup_logging
+from cloud.ivanbotty.utils import configure_cli, initialize_app, setup_logging
 from cloud.ivanbotty.Wizard.app import WelcomeWizard
 
 
@@ -23,7 +23,13 @@ def main() -> int:
     Returns:
         Exit code (0 for success, 1 for failure)
     """
-    logger = setup_logging()
+
+    try:
+        args = configure_cli(version="0.0.1")
+        logger = setup_logging(args.debug)
+    except Exception as e:
+        print(f"Error parsing command-line arguments: {e}", file=sys.stderr)
+        return 1
 
     # Initialize application resources and database
     if not initialize_app("Launcher"):
