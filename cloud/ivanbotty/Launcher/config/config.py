@@ -4,28 +4,31 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+# Define constant for host prefix
+HOST_PREFIX = "/run/host"
+
 # Directories to search for .desktop application files
 SYSTEM_DIRS = [
     Path("/usr/share/applications"),  # system applications
-    Path("/run/host/usr/share/applications"),  # host applications
-    Path(
-        "/run/host/var/lib/flatpak/exports/share/applications"
-    ),  # flatpak system-wide applications
+    Path(f"{HOST_PREFIX}/usr/share/applications"),  # host applications
+    Path(f"{HOST_PREFIX}/var/lib/flatpak/exports/share/applications"),  # flatpak system-wide applications
     Path.home() / ".local/share/applications",  # user applications
-    Path(
-        "/run/host" + str(Path.home()) + "/.local/share/applications"
-    ),  # user applications from host perspective
+    Path(f"{HOST_PREFIX}{Path.home()}/.local/share/applications"),  # user applications from host perspective
 ]
 
 # Directories to search for icons
+# Directories to search for icons
 ICON_DIRS = [
-    Path("/usr/share/icons"),  # system-wide icon themes
-    Path("/usr/share/pixmaps"),  # legacy system icons
-    Path.home() / ".local/share/icons",  # user icons
-    Path.home() / ".icons",  # old user icons path
-    Path("/var/lib/flatpak/app"),  # Flatpak app icons (system)
-    Path("/run/host/var/lib/flatpak/app"),  # Flatpak app icons (host)
-    Path("/var/lib/flatpak/runtime"),  # Flatpak runtime icons
+    Path("/usr/share/icons"),  # system-wide icons
+    Path("/usr/share/pixmaps"),  # system-wide pixmaps
+    Path.home() / ".local/share/icons",  # user-specific icons
+    Path.home() / ".icons",  # legacy user-specific icons
+    Path(f"{HOST_PREFIX}/usr/share/icons"),  # host system-wide icons
+    Path(f"{HOST_PREFIX}/usr/share/pixmaps"),  # host system-wide pixmaps
+    Path(f"{HOST_PREFIX}{Path.home()}/.local/share/icons"),  # host user-specific icons
+    Path(f"{HOST_PREFIX}{Path.home()}/.icons"),  # host legacy user-specific icons
+    Path(f"{HOST_PREFIX}/var/lib/flatpak/app"),  # flatpak app icons
+    Path(f"{HOST_PREFIX}/var/lib/flatpak/runtime"),  # flatpak runtime icons
 ]
 
 ALL_APP_DIRS = SYSTEM_DIRS
