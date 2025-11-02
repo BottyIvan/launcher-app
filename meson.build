@@ -43,6 +43,17 @@ install_subdir(
   strip_directory: false,
 )
 
+# Compile the gresource file
+gresource_xml = 'cloud/ivanbotty/Launcher/resources/resources.xml'
+gresource_target = custom_target(
+  'resources.gresource',
+  input: gresource_xml,
+  output: 'resources.gresource',
+  command: ['glib-compile-resources', '@INPUT@', '--target=@OUTPUT@', '--sourcedir=' + meson.project_source_root() / 'cloud/ivanbotty/Launcher/resources'],
+  install: true,
+  install_dir: pkgdatadir / 'Launcher/resources',
+)
+
 # Create wrapper script for the launcher
 configure_file(
   input: 'launcher-wrapper.sh.in',
