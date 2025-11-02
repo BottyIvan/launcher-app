@@ -33,7 +33,7 @@ class MathHandler(BaseInputHandler):
             True if text matches a valid math expression pattern
         """
         text = text.strip()
-        return bool(text) and self.MATH_PATTERN.fullmatch(text) is not None
+        return bool(text and self.MATH_PATTERN.fullmatch(text))
 
     def handle(self, text: str, services: Dict) -> Gio.ListStore:
         """Evaluate the mathematical expression and return results.

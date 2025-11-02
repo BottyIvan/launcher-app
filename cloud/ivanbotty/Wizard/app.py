@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Welcome Wizard application for first-time setup.
 
 This module provides a welcome wizard that guides users through the initial
