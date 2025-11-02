@@ -55,7 +55,12 @@ class Row(Gtk.ListBoxRow):
 
     def _create_icon_widget(self, icon_name):
         icon_name = icon_name or "application-x-addon-symbolic"
-        gicon = Gio.ThemedIcon.new(icon_name)
+        # Use FileIcon for absolute paths, otherwise ThemedIcon
+        gicon = (
+            Gio.FileIcon.new(Gio.File.new_for_path(icon_name))
+            if icon_name.startswith("/")
+            else Gio.ThemedIcon.new(icon_name)
+        )
         image = Gtk.Image.new_from_gicon(gicon)
         image.set_pixel_size(28)
         image.add_css_class("icon-dropshadow")
