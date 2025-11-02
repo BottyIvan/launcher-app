@@ -112,7 +112,7 @@ class WelcomeWizard(Adw.Application):
             pages_config = self.wizard_texts.get("pages", [])
             pages = [
                 Page.make_page(
-                    title=text.get("title", f"Page {i+1}"),
+                    title=text.get("title", f"Page {i + 1}"),
                     subtitle=text.get("description", "Default description."),
                     button_text=text.get(
                         "button_label", "Next" if i < len(pages_config) - 1 else "Finish"

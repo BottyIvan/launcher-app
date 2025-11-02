@@ -1,0 +1,29 @@
+[flake8]
+max-line-length = 100
+exclude =
+    .git,
+    __pycache__,
+    build,
+    dist,
+    .eggs,
+    *.egg-info,
+    venv,
+    env,
+    .venv,
+    .tox,
+    builddir,
+    build-dir,
+    _build
+
+# E402: Module level import not at top of file - acceptable for gi.require_version
+# W503: Line break before binary operator - conflicts with black
+# W504: Line break after binary operator - conflicts with black
+ignore = W503,W504
+
+per-file-ignores =
+    # Allow module level imports after gi.require_version calls
+    **/Launcher/**/*.py:E402
+    **/Wizard/**/*.py:E402
+    **/utils/**/*.py:E402
+    # Allow unused imports in test files (used for mocking)
+    tests/*.py:F401

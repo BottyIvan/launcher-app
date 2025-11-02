@@ -110,4 +110,3 @@ def initialize_app(app_name: Optional[str] = None) -> bool:
 
     logger.info("Application initialization completed successfully")
     return True
-

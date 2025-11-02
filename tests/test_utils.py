@@ -3,6 +3,7 @@
 These tests verify that the basic utility functions can be imported
 and executed without errors.
 """
+
 import sys
 import os
 import unittest
@@ -19,6 +20,7 @@ class TestAppInitUtils(unittest.TestCase):
         """Test that the app_init module can be imported."""
         try:
             from cloud.ivanbotty.utils import app_init
+
             self.assertIsNotNone(app_init)
         except ImportError as e:
             self.fail(f"Failed to import app_init module: {e}")
@@ -26,11 +28,13 @@ class TestAppInitUtils(unittest.TestCase):
     def test_setup_logging_function_exists(self):
         """Test that setup_logging function exists."""
         from cloud.ivanbotty.utils.app_init import setup_logging
+
         self.assertTrue(callable(setup_logging))
 
     def test_setup_logging_basic(self):
         """Test basic logging setup."""
         from cloud.ivanbotty.utils.app_init import setup_logging
+
         logger = setup_logging()
         self.assertIsNotNone(logger)
 
@@ -46,7 +50,7 @@ class TestAppInitUtils(unittest.TestCase):
         with patch.object(app_init_module, "Gio") as mock_gio:
             mock_resource = MagicMock()
             mock_gio.Resource.load.return_value = mock_resource
-            
+
             # Mock finding the resource file
             mock_find.return_value = "/fake/path/to/resources.gresource"
 
@@ -95,6 +99,7 @@ class TestCommonUtils(unittest.TestCase):
         """Test that the common module can be imported."""
         try:
             from cloud.ivanbotty import common
+
             self.assertIsNotNone(common)
         except ImportError as e:
             self.fail(f"Failed to import common module: {e}")
@@ -102,11 +107,13 @@ class TestCommonUtils(unittest.TestCase):
     def test_find_resource_file_function_exists(self):
         """Test that find_resource_file function exists."""
         from cloud.ivanbotty.common import find_resource_file
+
         self.assertTrue(callable(find_resource_file))
 
     def test_resource_constants_exist(self):
         """Test that resource constants are defined."""
         from cloud.ivanbotty.common import PKGDATADIR, RESOURCE_SUBDIR, RESOURCE_FILE
+
         self.assertIsNotNone(PKGDATADIR)
         self.assertIsNotNone(RESOURCE_SUBDIR)
         self.assertIsNotNone(RESOURCE_FILE)
@@ -119,6 +126,7 @@ class TestDatabaseModule(unittest.TestCase):
         """Test that the database module can be imported."""
         try:
             from cloud.ivanbotty.database import sqlite3 as db
+
             self.assertIsNotNone(db)
         except ImportError as e:
             self.fail(f"Failed to import database module: {e}")
@@ -126,6 +134,7 @@ class TestDatabaseModule(unittest.TestCase):
     def test_database_functions_exist(self):
         """Test that database functions exist."""
         from cloud.ivanbotty.database import sqlite3 as db
+
         self.assertTrue(callable(db.init_db))
         self.assertTrue(callable(db.set_pref))
         self.assertTrue(callable(db.get_pref))

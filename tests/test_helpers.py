@@ -3,6 +3,7 @@
 These tests verify that helper modules can be imported and their
 basic functionality works as expected.
 """
+
 import sys
 import os
 import unittest
@@ -19,6 +20,7 @@ class TestParser(unittest.TestCase):
         """Test that the Parser class can be imported."""
         try:
             from cloud.ivanbotty.Launcher.helper.parser import Parser
+
             self.assertIsNotNone(Parser)
         except ImportError as e:
             self.fail(f"Failed to import Parser: {e}")
@@ -38,6 +40,7 @@ class TestThreadManager(unittest.TestCase):
         """Test that the ThreadManager class can be imported."""
         try:
             from cloud.ivanbotty.Launcher.helper.thread_manager import ThreadManager
+
             self.assertIsNotNone(ThreadManager)
         except ImportError as e:
             self.fail(f"Failed to import ThreadManager: {e}")
@@ -63,7 +66,7 @@ class TestThreadManager(unittest.TestCase):
 
         thread = manager.run_in_thread(test_func)
         self.assertIsInstance(thread, threading.Thread)
-        
+
         # Wait for thread to complete
         time.sleep(0.1)
         self.assertEqual(test_var, [1])
@@ -78,6 +81,7 @@ class TestLoadClassInstance(unittest.TestCase):
             from cloud.ivanbotty.Launcher.helper.load_class_instance import (
                 load_class_instance,
             )
+
             self.assertTrue(callable(load_class_instance))
         except ImportError as e:
             self.fail(f"Failed to import load_class_instance: {e}")
@@ -108,6 +112,7 @@ class TestMathService(unittest.TestCase):
         """Test that the MathService class can be imported."""
         try:
             from cloud.ivanbotty.Launcher.services.math_service import MathService
+
             self.assertIsNotNone(MathService)
         except ImportError as e:
             self.fail(f"Failed to import MathService: {e}")
@@ -125,7 +130,7 @@ class TestMathService(unittest.TestCase):
 
         service = MathService()
         result, error = service.calculate("2 + 2")
-        
+
         self.assertIsNone(error)
         self.assertEqual(result, "4")
 
@@ -135,7 +140,7 @@ class TestMathService(unittest.TestCase):
 
         service = MathService()
         result, error = service.calculate("2 * 3 + 4")
-        
+
         self.assertIsNone(error)
         self.assertEqual(result, "10")
 
@@ -145,7 +150,7 @@ class TestMathService(unittest.TestCase):
 
         service = MathService()
         result, error = service.calculate("invalid")
-        
+
         self.assertIsNotNone(error)
         self.assertIsNone(result)
 
@@ -159,6 +164,7 @@ class TestBaseInputHandler(unittest.TestCase):
             from cloud.ivanbotty.Launcher.handlers.base_input_handler import (
                 BaseInputHandler,
             )
+
             self.assertIsNotNone(BaseInputHandler)
         except ImportError as e:
             self.fail(f"Failed to import BaseInputHandler: {e}")
@@ -170,10 +176,10 @@ class TestBaseInputHandler(unittest.TestCase):
         )
 
         handler = BaseInputHandler()
-        
+
         with self.assertRaises(NotImplementedError):
             handler.can_handle("test")
-        
+
         with self.assertRaises(NotImplementedError):
             handler.handle("test", {})
 
