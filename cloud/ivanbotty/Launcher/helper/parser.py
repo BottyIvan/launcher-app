@@ -1,7 +1,7 @@
 """Desktop entry file parser.
 
 This module provides functionality for parsing .desktop files to extract
-application metadata such as name, icon, and execution command.
+application metadata such as name, icon, execution command, and desktop ID.
 """
 
 from typing import Optional, Dict
@@ -24,7 +24,7 @@ class Parser:
             show_no_display: If True, include entries with NoDisplay=true
 
         Returns:
-            Dictionary containing parsed entry data (type, name, exec_cmd, icon),
+            Dictionary containing parsed entry data (type, name, exec_cmd, desktop_id, icon),
             or None if the entry should be filtered out
         """
         entry: Dict[str, str] = {}
@@ -56,6 +56,8 @@ class Parser:
                         entry["name"] = line.split("=", 1)[1].strip()
                     elif line.startswith("Exec="):
                         entry["exec_cmd"] = line.split("=", 1)[1].strip()
+                    elif line.startswith("DesktopID="):
+                        entry["desktop_id"] = line.split("=", 1)[1].strip()
                     elif line.startswith("Icon="):
                         entry["icon"] = line.split("=", 1)[1].strip()
 
