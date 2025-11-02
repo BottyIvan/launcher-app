@@ -4,6 +4,7 @@ This module provides shared functions for resource loading, database initializat
 and logging setup used by both Launcher and Wizard entry points.
 """
 
+import argparse
 import logging
 from typing import Optional
 
@@ -22,6 +23,47 @@ except (ValueError, ImportError):
 import cloud.ivanbotty.database.sqlite3 as db
 from cloud.ivanbotty.common import find_resource_file, RESOURCE_FILE
 
+
+def configure_cli(version: Optional[str] = None) -> argparse.Namespace:
+    """Configure the command-line interface for the Launcher application.
+
+    Command-line options:
+      --debug           Enable verbose logging for troubleshooting and development
+      --wizard          Launch the welcome wizard on startup for first-time setup
+      --config PATH     Specify an alternative configuration file location
+      --search QUERY    Automatically perform a search with the provided query on startup
+      --version         Show application version and exit
+    """
+    parser = argparse.ArgumentParser(
+        description="Launcher App - flexible startup options for configuration, logging, and automation"
+    )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Enable verbose logging for troubleshooting and development"
+    )
+    parser.add_argument(
+        "--wizard",
+        action="store_true",
+        help="Launch the welcome wizard on startup for first-time setup"
+    )
+    parser.add_argument(
+        "--config",
+        type=str,
+        help="Specify an alternative configuration file location"
+    )
+    parser.add_argument(
+        "--search",
+        type=str,
+        help="Automatically perform a search with the provided query on startup"
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=version if version else "Launcher App (version unknown)",
+        help="Show application version and exit"
+    )
+    return parser.parse_args()
 
 def setup_logging(
     level: int = logging.INFO,
