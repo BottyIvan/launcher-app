@@ -72,7 +72,7 @@ class ApplicationsService:
                 name=app_name,
                 description=None,
                 exec_cmd=entry_data["exec_cmd"],
-                desktop_id=entry_data["desktop_id"],
+                desktop_id=os.path.basename(file_path),
                 icon=self.find_icon(entry_data["icon"]) if entry_data["icon"] else None,
             )
         )
