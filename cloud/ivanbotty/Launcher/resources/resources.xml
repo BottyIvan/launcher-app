@@ -3,5 +3,9 @@
     <gresource prefix="/cloud/ivanbotty/Launcher/resources">
         <file>appdata.xml</file>
         <file>extensions.yaml</file>
+        <file>wizard.yaml</file>
+        <file>arrow1-down-symbolic.svg</file>
+        <file>arrow1-up-symbolic.svg</file>
+        <file>keyboard-enter-symbolic.svg</file>
     </gresource>
 </gresources>
