@@ -62,23 +62,23 @@ cd launcher-app
 python3 -m cloud.ivanbotty.Launcher
 ```
 
-**📚 For detailed installation instructions, see the [Installation Guide](wiki/Installation.md).**
+**📚 For detailed installation instructions, see the [Installation Guide](https://github.com/BottyIvan/launcher-app/wiki/Installation).**
 
 ## 📖 Documentation
 
-Complete documentation is available in our **[Wiki](wiki/Home.md)**:
+Complete documentation is available in our **[Wiki](https://github.com/BottyIvan/launcher-app/wiki/Home)**:
 
-- **[Home](wiki/Home.md)** - Project overview and quick links
-- **[Installation](wiki/Installation.md)** - Installation for all platforms
-- **[Usage Guide](wiki/Usage-Guide.md)** - How to use Launcher effectively
-- **[Features](wiki/Features.md)** - Complete feature list and descriptions
-- **[Configuration](wiki/Configuration.md)** - Customize Launcher settings
-- **[Architecture](wiki/Architecture.md)** - Technical design and structure
-- **[API Reference](wiki/API-Reference.md)** - API documentation for developers
-- **[Contributing](wiki/Contributing.md)** - Contribution guidelines and dev setup
-- **[FAQ](wiki/FAQ.md)** - Frequently asked questions and troubleshooting
-- **[Changelog](wiki/Changelog.md)** - Version history and release notes
-- **[License](wiki/License.md)** - Licensing information
+- **[Home](https://github.com/BottyIvan/launcher-app/wiki/Home)** - Project overview and quick links
+- **[Installation](https://github.com/BottyIvan/launcher-app/wiki/Installation)** - Installation for all platforms
+- **[Usage Guide](https://github.com/BottyIvan/launcher-app/wiki/Usage-Guide)** - How to use Launcher effectively
+- **[Features](https://github.com/BottyIvan/launcher-app/wiki/Features)** - Complete feature list and descriptions
+- **[Configuration](https://github.com/BottyIvan/launcher-app/wiki/Configuration)** - Customize Launcher settings
+- **[Architecture](https://github.com/BottyIvan/launcher-app/wiki/Architecture)** - Technical design and structure
+- **[API Reference](https://github.com/BottyIvan/launcher-app/wiki/API-Reference)** - API documentation for developers
+- **[Contributing](https://github.com/BottyIvan/launcher-app/wiki/Contributing)** - Contribution guidelines and dev setup
+- **[FAQ](https://github.com/BottyIvan/launcher-app/wiki/FAQ)** - Frequently asked questions and troubleshooting
+- **[Changelog](https://github.com/BottyIvan/launcher-app/wiki/Changelog)** - Version history and release notes
+- **[License](https://github.com/BottyIvan/launcher-app/wiki/License)** - Licensing information
 
 ## 🤝 Contributing
 
@@ -88,7 +88,7 @@ We welcome contributions! Whether you want to:
 - Improve documentation
 - Write code
 
-**Please read our [Contributing Guide](wiki/Contributing.md) to get started.**
+**Please read our [Contributing Guide](https://github.com/BottyIvan/launcher-app/wiki/Contributing) to get started.**
 
 ## 💬 Community & Support
 
@@ -102,13 +102,13 @@ We welcome contributions! Whether you want to:
 - GTK4 and Adwaita
 - PyGObject 3.44+
 
-**See [Installation Guide](wiki/Installation.md) for complete requirements.**
+**See [Installation Guide](https://github.com/BottyIvan/launcher-app/wiki/Installation) for complete requirements.**
 
 ## 📜 License
 
 **GPL-3.0-or-later** - See [LICENSE](LICENSE) file for details.
 
-Learn more: [License Documentation](wiki/License.md)
+Learn more: [License Documentation](https://github.com/BottyIvan/launcher-app/wiki/License)
 
 ## 🙏 Acknowledgments
 
