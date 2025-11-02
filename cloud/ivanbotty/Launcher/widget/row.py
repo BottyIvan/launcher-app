@@ -8,6 +8,10 @@ gi.require_version("Adw", "1")
 from gi.repository import Gtk, Gio, Adw
 from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
 
+# Pre-compile regex patterns for better performance
+_CODE_BLOCK_PATTERN = re.compile(r"(^```(?:json)?$|^```$)", re.MULTILINE)
+_CODE_KEYWORDS_PATTERN = re.compile(r"\b(const|def|class|function)\b")
+
 
 class Row(Gtk.ListBoxRow):
     def __init__(self, app):
@@ -96,8 +100,8 @@ class Row(Gtk.ListBoxRow):
             desc_label.set_halign(Gtk.Align.FILL)
             desc_label.set_valign(Gtk.Align.FILL)
 
-            # Monospace font if code detected
-            if re.search(r"\b(const|def|class|function)\b", desc):
+            # Monospace font if code detected - use pre-compiled pattern
+            if _CODE_KEYWORDS_PATTERN.search(desc):
                 desc_label.add_css_class("monospace")
 
             name_desc_box.set_vexpand(True)
@@ -122,10 +126,8 @@ class Row(Gtk.ListBoxRow):
         if not description:
             return ""
 
-        # Remove code block markers
-        cleaned = re.sub(
-            r"(^```(?:json)?$|^```$)", "", description.strip(), flags=re.MULTILINE
-        ).strip()
+        # Remove code block markers - use pre-compiled pattern
+        cleaned = _CODE_BLOCK_PATTERN.sub("", description.strip()).strip()
 
         # Extract "response" from JSON if present
         try:

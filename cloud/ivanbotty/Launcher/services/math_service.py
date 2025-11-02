@@ -10,6 +10,10 @@ from typing import Tuple, Optional
 
 logger = logging.getLogger(__name__)
 
+# Pre-build the safe dictionary at module level for better performance
+_SAFE_DICT = {k: getattr(math, k) for k in dir(math) if not k.startswith("__")}
+_SAFE_DICT.update({"abs": abs, "round": round, "min": min, "max": max})
+
 
 class MathService:
     """Service to safely evaluate mathematical expressions.
@@ -20,10 +24,8 @@ class MathService:
 
     def __init__(self) -> None:
         """Initialize the MathService with safe math functions."""
-        # Create a dictionary with allowed math functions
-        self.safe_dict = {k: getattr(math, k) for k in dir(math) if not k.startswith("__")}
-        # Also add constants and basic functions
-        self.safe_dict.update({"abs": abs, "round": round, "min": min, "max": max})
+        # Use the pre-built dictionary
+        self.safe_dict = _SAFE_DICT
 
     def calculate(self, expression: str) -> Tuple[Optional[str], Optional[str]]:
         """Safely evaluate a mathematical expression.
