@@ -1,8 +1,10 @@
 import gi
+
 gi.require_version("Adw", "1")
 gi.require_version("Gtk", "4.0")
 from gi.repository import Adw, Gtk
 import cloud.ivanbotty.database.sqlite3 as db
+
 
 class Preferences(Adw.PreferencesDialog):
     def __init__(self, app):
@@ -22,11 +24,13 @@ class Preferences(Adw.PreferencesDialog):
         self.switch = Adw.SwitchRow(
             active=(db.get_pref("layout", "default") == "compact"),
             title="Use compact layout",
-            subtitle="Switch between compact and default layout."
+            subtitle="Switch between compact and default layout.",
         )
         # Save layout preference when toggled
-        self.switch.connect("notify::active", 
-            lambda sw, _: db.set_pref("layout", "compact" if sw.get_active() else "default"))
+        self.switch.connect(
+            "notify::active",
+            lambda sw, _: db.set_pref("layout", "compact" if sw.get_active() else "default"),
+        )
         general_group.add(self.switch)
 
         # Extensions settings group
@@ -41,25 +45,29 @@ class Preferences(Adw.PreferencesDialog):
             self.switch = Adw.SwitchRow(
                 active=saved_exts.get(extension.name, extension.enabled),
                 title=extension.name or "Unnamed Extension",
-                subtitle=extension.description or "No description available."
+                subtitle=extension.description or "No description available.",
             )
             # Save extension enabled state when toggled
-            self.switch.connect("notify::active",
-                lambda sw, _, ext_id=extension.service: db.set_extension_enabled(ext_id, sw.get_active()))
+            self.switch.connect(
+                "notify::active",
+                lambda sw, _, ext_id=extension.service: db.set_extension_enabled(
+                    ext_id, sw.get_active()
+                ),
+            )
             extension_group.add(self.switch)
 
         # About group for application info
         about_group = Adw.PreferencesGroup(title="About")
 
         # Information row with app details
-        info_row = Adw.ActionRow(
-            title="About",
-            subtitle="Information about this application."
-        )
+        info_row = Adw.ActionRow(title="About", subtitle="Information about this application.")
         info_row.set_activatable(True)
+
         # Show about dialog when activated
         def on_info_row_activated(row):
-            about = Adw.AboutDialog.new_from_appdata("/cloud/ivanbotty/Launcher/resources/appdata.xml", "0.0.1")
+            about = Adw.AboutDialog.new_from_appdata(
+                "/cloud/ivanbotty/Launcher/resources/appdata.xml", "0.0.1"
+            )
             about.set_developers(["Ivan Bottigelli https://ivanbotty.cloud"])
             about.set_copyright("© 2025 Ivan Bottigelli.")
             about.present()
@@ -83,16 +91,16 @@ class Preferences(Adw.PreferencesDialog):
 
         label_info = Gtk.Label(
             label=(
-            "To use AI-powered features in this application, you need a Gemini API key. "
-            "Visit <a href='https://gemini.com'>https://gemini.com</a> to create an account and generate your personal API key. "
-            "Once you have your key, enter it below to enable Gemini integration. "
-            "Keep your API key secure and do not share it with others."
+                "To use AI-powered features in this application, you need a Gemini API key. "
+                "Visit <a href='https://gemini.com'>https://gemini.com</a> to create an account and generate your personal API key. "
+                "Once you have your key, enter it below to enable Gemini integration. "
+                "Keep your API key secure and do not share it with others."
             ),
             wrap=True,
             xalign=0,
             margin_top=6,
             use_markup=True,
-            selectable=False
+            selectable=False,
         )
         label_info.set_selectable(False)
         label_info.set_use_markup(True)
@@ -103,8 +111,7 @@ class Preferences(Adw.PreferencesDialog):
 
         # Row for Gemini API key input
         gemini_row = Adw.PasswordEntryRow(
-            title="Gemini API Key",
-            text=db.get_api_key("gemini") or ""
+            title="Gemini API Key", text=db.get_api_key("gemini") or ""
         )
         gemini_row.set_show_apply_button(True)
         # Save API key when "Apply" is pressed
@@ -116,14 +123,14 @@ class Preferences(Adw.PreferencesDialog):
 
         label_info_model = Gtk.Label(
             label=(
-            "Choose which Gemini model to use for AI features. Each model offers different capabilities and performance. "
-            "Refer to the Gemini documentation to select the model that best matches your requirements."
+                "Choose which Gemini model to use for AI features. Each model offers different capabilities and performance. "
+                "Refer to the Gemini documentation to select the model that best matches your requirements."
             ),
             wrap=True,
             xalign=0,
             margin_top=6,
             use_markup=True,
-            selectable=False
+            selectable=False,
         )
         label_info_model.set_selectable(False)
         label_info_model.set_use_markup(True)

@@ -1,10 +1,11 @@
 from gi.repository import Gtk, GObject
 from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
 
+
 class SearchEntry(Gtk.Entry):
     __gsignals__ = {
         "text-changed": (GObject.SignalFlags.RUN_FIRST, None, (str,)),
-        "activated": (GObject.SignalFlags.RUN_FIRST, None, (str,))
+        "activated": (GObject.SignalFlags.RUN_FIRST, None, (str,)),
     }
 
     def __init__(self, placeholder="Type to search...", width=400, height=30):

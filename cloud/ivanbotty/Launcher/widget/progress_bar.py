@@ -2,6 +2,7 @@ import threading
 import time
 from gi.repository import Gtk, GLib
 
+
 class ProgressBar(Gtk.ProgressBar):
     def __init__(self, text="Loading..."):
         """
@@ -37,8 +38,10 @@ class ProgressBar(Gtk.ProgressBar):
         Simulate a long-running task by updating the progress bar in a separate thread.
         'steps' defines the number of increments, 'delay' is the time between updates.
         """
+
         def task():
             for i in range(steps + 1):
                 self.update_progress(i / steps, text)
                 time.sleep(delay)
+
         threading.Thread(target=task, daemon=True).start()

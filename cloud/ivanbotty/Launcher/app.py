@@ -1,34 +1,61 @@
-from cloud.ivanbotty.Launcher.helper.load_class_instance import load_class_instance
-import gi, yaml
+"""Main Launcher application.
+
+This module provides the main GTK4/Adwaita application for the Launcher,
+handling UI setup, extension management, and search functionality.
+"""
+
 import logging
+from typing import Optional
+
+import gi
+import yaml
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 
-from gi.repository import Gtk, Adw, GLib
+from gi.repository import Adw, GLib, Gtk
 
-from cloud.ivanbotty.Launcher.services.extensions_service import ExtensionService
+from cloud.ivanbotty.Launcher.config.config import PREFERENCES, UI_CONFS
 from cloud.ivanbotty.Launcher.controller.event_key_controller import EventKeyController
-from cloud.ivanbotty.Launcher.controller.event_search_controller import EventSearchController
-from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
-from cloud.ivanbotty.Launcher.widget.window import Window
-from cloud.ivanbotty.Launcher.widget.search_entry import SearchEntry
+from cloud.ivanbotty.Launcher.controller.event_search_controller import (
+    EventSearchController,
+)
+from cloud.ivanbotty.Launcher.helper.load_class_instance import load_class_instance
+from cloud.ivanbotty.Launcher.helper.thread_manager import ThreadManager
+from cloud.ivanbotty.Launcher.services.extensions_service import ExtensionService
 from cloud.ivanbotty.Launcher.widget.footer import Footer
 from cloud.ivanbotty.Launcher.widget.progress_bar import ProgressBar
-from cloud.ivanbotty.Launcher.helper.thread_manager import ThreadManager
+from cloud.ivanbotty.Launcher.widget.search_entry import SearchEntry
+from cloud.ivanbotty.Launcher.widget.window import Window
 
 logger = logging.getLogger(__name__)
 
-class App(Adw.Application):
-    """Main application class."""
 
-    def __init__(self, app):
-        """Initialize the application and its components."""
+class App(Adw.Application):
+    """Main Launcher application class.
+
+    Attributes:
+        name: Application name
+        win: Main application window
+        progress_bar: Progress indicator widget
+        view: ListBox for displaying search results
+        entry: Search entry widget
+        extensions_service: Service for managing extensions
+        search_controller: Controller for handling search events
+        keyboard_controller: Controller for handling keyboard events
+    """
+
+    def __init__(self, app: str) -> None:
+        """Initialize the application and its components.
+
+        Args:
+            app: Application ID string
+        """
         super().__init__(application_id=app)
         self.name = "Main Application"
-        self.win = None
+        self.win: Optional[Window] = None
 
-        # Initialize progress bar with improved configuration
+        # Initialize progress bar with configuration
         self.progress_bar = ProgressBar("Loading...")
         self.progress_bar.set_visible(False)
         self.progress_bar.set_margin_top(UI_CONFS[PREFERENCES].get("progress_margin_top", 6))
@@ -45,10 +72,11 @@ class App(Adw.Application):
         self.view.set_margin_end(UI_CONFS[PREFERENCES]["margin_end"])
         self.view.set_vexpand(True)
         self.view.set_hexpand(True)
+
         self.entry = SearchEntry(
             placeholder="Type to search...",
             width=UI_CONFS[PREFERENCES]["entry_width"],
-            height=UI_CONFS[PREFERENCES]["entry_height"]
+            height=UI_CONFS[PREFERENCES]["entry_height"],
         )
 
         # Initialize services
@@ -69,19 +97,34 @@ class App(Adw.Application):
         # Load extensions into the service
         self.extensions_service.load_from_config(config)
 
-    def run_with_progress(self, target_func, steps=100, delay=0.02, text="Processing..."):
-        """Executes a function while displaying the progress bar during the process."""
+    def run_with_progress(
+        self,
+        target_func: callable,
+        steps: int = 100,
+        delay: float = 0.02,
+        text: str = "Processing...",
+    ) -> None:
+        """Execute a function while displaying the progress bar.
+
+        Args:
+            target_func: Function to execute
+            steps: Number of progress steps
+            delay: Delay between steps in seconds
+            text: Text to display on progress bar
+        """
         self.progress_bar.set_text(text)
         self.progress_bar.set_fraction(0.0)
         self.progress_bar.set_visible(True)
+
         def wrapper():
             self.progress_bar.start_long_task(steps=steps, delay=delay)
             target_func()
             GLib.idle_add(self.progress_bar.set_visible, False)
+
         ThreadManager().run_in_thread(wrapper)
 
-    def do_startup(self):
-        """Startup routine for the application."""
+    def do_startup(self) -> None:
+        """Perform startup routine for the application."""
         Gtk.Application.do_startup(self)
         logger.info("Application startup")
 
@@ -92,7 +135,7 @@ class App(Adw.Application):
             if ext.enabled
         }
 
-        # Prepare handlers dictionary
+        # Prepare handlers set
         handlers = {
             load_class_instance(ext.handler)
             for ext in self.extensions_service.list_extensions()
@@ -101,11 +144,7 @@ class App(Adw.Application):
 
         # Initialize the search controller
         self.search_controller = EventSearchController(
-            app=self,
-            entry_widget=self.entry,
-            view=self.view,
-            services=services,
-            handlers=handlers
+            app=self, entry_widget=self.entry, view=self.view, services=services, handlers=handlers
         )
 
         # Load applications in the background at startup
@@ -119,6 +158,7 @@ class App(Adw.Application):
 
         # Create main window
         self.win = Window(self)
+
         # Keyboard controller setup
         self.keyboard_controller = EventKeyController(self)
         self.win.add_controller(self.keyboard_controller)
@@ -142,7 +182,7 @@ class App(Adw.Application):
 
         self.win.set_content(box)
 
-    def do_activate(self):
+    def do_activate(self) -> None:
         """Activate the application and show the window."""
         logger.info("Application activated")
         if self.win is not None:

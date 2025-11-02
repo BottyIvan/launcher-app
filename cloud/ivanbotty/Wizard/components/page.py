@@ -1,8 +1,10 @@
 import gi
+
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw
 from typing import Callable
+
 
 class Page:
     @staticmethod
@@ -32,7 +34,7 @@ class Page:
         vbox.set_vexpand(True)
 
         # Title and subtitle labels
-        title_label = Page._create_label(title, markup=True, size='xx-large', weight='bold')
+        title_label = Page._create_label(title, markup=True, size="xx-large", weight="bold")
         subtitle_label = Page._create_label(subtitle, markup=True, dim=True, margin_top=8)
 
         # Separator line

@@ -1,11 +1,16 @@
-#!/usr/bin/env python3
-from concurrent.futures import thread
+"""Welcome Wizard application for first-time setup.
+
+This module provides a welcome wizard that guides users through the initial
+setup process when they first launch the application.
+"""
 import logging
-import yaml
-import gi
 import subprocess
 import sys
 import threading
+from typing import Optional
+
+import gi
+import yaml
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -14,34 +19,48 @@ from gi.repository import Adw, Gtk
 from cloud.ivanbotty.Launcher.widget.window import Window
 from cloud.ivanbotty.Wizard.components.page import Page
 
-# Setup logger
-logger = logging.getLogger("WelcomeWizard")
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 class WelcomeWizard(Adw.Application):
-    def __init__(self, app):
+    """Welcome Wizard application for first-time user onboarding.
+
+    Attributes:
+        win: Main application window
+        content: Carousel widget containing wizard pages
+        wizard_texts: Configuration dictionary loaded from wizard.yaml
+    """
+
+    def __init__(self, app: str) -> None:
+        """Initialize the Welcome Wizard application.
+
+        Args:
+            app: Application ID string
+        """
         super().__init__(application_id=app)
-        self.win = None  # Main window
-        self.content = None  # Carousel of contents
-        self.wizard_texts = None  # Texts for the wizard
+        self.win: Optional[Window] = None
+        self.content: Optional[Adw.Carousel] = None
+        self.wizard_texts: dict = {}
 
         try:
             # Load wizard page texts from YAML configuration file
             with open("./cloud/ivanbotty/Launcher/resources/wizard.yaml") as f:
                 self.wizard_texts = yaml.safe_load(f)
-            logger.info("Wizard texts loaded successfully.")
+            logger.info("Wizard texts loaded successfully")
         except Exception as e:
-            # Log error if loading or parsing fails
             logger.error(f"Error loading wizard texts: {e}")
-            self.wizard_texts = None
+            self.wizard_texts = {}
 
         # Ensure the loaded configuration is a dictionary
         if not isinstance(self.wizard_texts, dict):
-            logger.error("Invalid wizard texts structure; expected a dictionary.")
-            self.wizard_texts = []
+            logger.error("Invalid wizard texts structure; expected a dictionary")
+            self.wizard_texts = {}
 
     def on_next(self) -> None:
-        """Handles moving to the next page."""
+        """Handle moving to the next page in the wizard."""
+        if self.content is None:
+            return
+
         cur = self.content.get_position()
         n = self.content.get_n_pages()
         if cur < n - 1:
@@ -50,33 +69,36 @@ class WelcomeWizard(Adw.Application):
             self.content.scroll_to(next_w, True)
 
     def on_prev(self) -> None:
-        """Handles returning to the previous page."""
+        """Handle returning to the previous page in the wizard."""
+        if self.content is None:
+            return
+
         cur = self.content.get_position()
         if cur > 0:
             prev_w = self.content.get_nth_page(cur - 1)
             self.content.scroll_to(prev_w)
 
     def on_finish(self) -> None:
-        """Handles the end of the wizard."""
+        """Handle completion of the wizard and launch main application."""
         logger.info("Wizard completed! Launching main app...")
 
         threading.Thread(
             target=lambda: subprocess.run([sys.executable, "-m", "cloud.ivanbotty.Launcher"]),
-            daemon=True
+            daemon=True,
         ).start()
 
         if self.win:
             self.win.close()
-            logger.info("Welcome wizard application closed.")
+            logger.info("Welcome wizard application closed")
 
     def do_activate(self) -> None:
-        """Activates the application and shows the window."""
+        """Activate the application and show the window."""
         logger.info("Application activated")
         if self.win is None:
             self.win = Window(application=self)
 
             # Main box with padding
-            main_box = Gtk.Box(orientation="vertical", spacing=24)
+            main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=24)
 
             # Carousel and indicators
             self.content = Adw.Carousel()
@@ -85,15 +107,18 @@ class WelcomeWizard(Adw.Application):
             main_box.append(indicator)
             self.win.set_content(main_box)
 
-            # Wizard pages
+            # Build wizard pages from configuration
+            pages_config = self.wizard_texts.get("pages", [])
             pages = [
                 Page.make_page(
-                    title=text.get("title", f"Page {i+1}"),
+                    title=text.get("title", f"Page {i + 1}"),
                     subtitle=text.get("description", "Default description."),
-                    button_text=text.get("button_label", "Next" if i < len(self.wizard_texts.get("pages", [])) - 1 else "Finish"),
-                    callback=self.on_next if i < len(self.wizard_texts.get("pages", [])) - 1 else self.on_finish
+                    button_text=text.get(
+                        "button_label", "Next" if i < len(pages_config) - 1 else "Finish"
+                    ),
+                    callback=self.on_next if i < len(pages_config) - 1 else self.on_finish,
                 )
-                for i, text in enumerate(self.wizard_texts.get("pages", []))
+                for i, text in enumerate(pages_config)
             ]
 
             for page in pages:

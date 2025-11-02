@@ -1,5 +1,7 @@
-import os, gi
 import logging
+import os
+
+import gi
 
 gi.require_version("Gtk", "4.0")
 
@@ -10,6 +12,7 @@ from cloud.ivanbotty.Launcher.helper.parser import Parser
 from cloud.ivanbotty.Launcher.models.applications_model import ApplicationModel
 
 logger = logging.getLogger(__name__)
+
 
 class ApplicationsService:
     """Service for loading and filtering application entries."""
@@ -50,19 +53,21 @@ class ApplicationsService:
         entry_data = self.parser.parse_desktop_entry(file_path)
         if not entry_data:
             return
-        app_name = entry_data['name']
+        app_name = entry_data["name"]
         if app_name in loaded_names:
             return
         logger.debug(f"Loaded application: app_name={app_name}")
-        self.store.append(ApplicationModel(
-            type=entry_data['type'],
-            name=app_name,
-            description=None,
-            exec_cmd=entry_data['exec_cmd'],
-            icon=self.find_icon(entry_data['icon']) if entry_data['icon'] else None
-        ))
+        self.store.append(
+            ApplicationModel(
+                type=entry_data["type"],
+                name=app_name,
+                description=None,
+                exec_cmd=entry_data["exec_cmd"],
+                icon=self.find_icon(entry_data["icon"]) if entry_data["icon"] else None,
+            )
+        )
         loaded_names.add(app_name)
-    
+
     def find_icon(self, icon_name):
         """
         Search for an icon file by name in ICON_DIRS recursively.

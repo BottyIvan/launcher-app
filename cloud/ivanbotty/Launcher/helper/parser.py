@@ -1,17 +1,41 @@
+"""Desktop entry file parser.
+
+This module provides functionality for parsing .desktop files to extract
+application metadata such as name, icon, and execution command.
+"""
+
+from typing import Optional, Dict
+
+
 class Parser:
-    def __init__(self):
+    """Parser for .desktop entry files following the freedesktop.org specification."""
+
+    def __init__(self) -> None:
+        """Initialize the Parser."""
         pass
 
-    def parse_desktop_entry(self, file_path, show_no_display=False):
-        entry = {}
-        current_section = None
+    def parse_desktop_entry(
+        self, file_path: str, show_no_display: bool = False
+    ) -> Optional[Dict[str, str]]:
+        """Parse a .desktop entry file and extract application metadata.
+
+        Args:
+            file_path: Path to the .desktop file
+            show_no_display: If True, include entries with NoDisplay=true
+
+        Returns:
+            Dictionary containing parsed entry data (type, name, exec_cmd, icon),
+            or None if the entry should be filtered out
+        """
+        entry: Dict[str, str] = {}
+        current_section: Optional[str] = None
         terminal = False
         no_display = False
 
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
-                
+
                 if not line or line.startswith("#"):
                     continue
 

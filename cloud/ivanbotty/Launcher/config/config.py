@@ -6,22 +6,26 @@ logger = logging.getLogger(__name__)
 
 # Directories to search for .desktop application files
 SYSTEM_DIRS = [
-    Path("/usr/share/applications"),                                # system applications
-    Path("/run/host/usr/share/applications"),                       # host applications
-    Path("/run/host/var/lib/flatpak/exports/share/applications"),   # flatpak system-wide applications
-    Path.home() / ".local/share/applications",                      # user applications
-    Path("/run/host" + str(Path.home()) + "/.local/share/applications")  # user applications from host perspective
+    Path("/usr/share/applications"),  # system applications
+    Path("/run/host/usr/share/applications"),  # host applications
+    Path(
+        "/run/host/var/lib/flatpak/exports/share/applications"
+    ),  # flatpak system-wide applications
+    Path.home() / ".local/share/applications",  # user applications
+    Path(
+        "/run/host" + str(Path.home()) + "/.local/share/applications"
+    ),  # user applications from host perspective
 ]
 
 # Directories to search for icons
 ICON_DIRS = [
-    Path("/usr/share/icons"),                                        # system-wide icon themes
-    Path("/usr/share/pixmaps"),                                      # legacy system icons
-    Path.home() / ".local/share/icons",                               # user icons
-    Path.home() / ".icons",                                           # old user icons path
-    Path("/var/lib/flatpak/app"),                                     # Flatpak app icons (system)
-    Path("/run/host/var/lib/flatpak/app"),                            # Flatpak app icons (host)
-    Path("/var/lib/flatpak/runtime")                                  # Flatpak runtime icons
+    Path("/usr/share/icons"),  # system-wide icon themes
+    Path("/usr/share/pixmaps"),  # legacy system icons
+    Path.home() / ".local/share/icons",  # user icons
+    Path.home() / ".icons",  # old user icons path
+    Path("/var/lib/flatpak/app"),  # Flatpak app icons (system)
+    Path("/run/host/var/lib/flatpak/app"),  # Flatpak app icons (host)
+    Path("/var/lib/flatpak/runtime"),  # Flatpak runtime icons
 ]
 
 ALL_APP_DIRS = SYSTEM_DIRS
@@ -40,7 +44,7 @@ UI_CONFS = {
         "margin_top": 8,
         "margin_bottom": 8,
         "margin_start": 8,
-        "margin_end": 8
+        "margin_end": 8,
     },
     DEFAULT_STYLE: {
         "width": 800,
@@ -50,8 +54,8 @@ UI_CONFS = {
         "margin_top": 16,
         "margin_bottom": 16,
         "margin_start": 16,
-        "margin_end": 16
-    }
+        "margin_end": 16,
+    },
 }
 
 # Retrieve the user's preferred UI style from the database.
@@ -67,8 +71,8 @@ except Exception:
 SYSTEM_PROMPT = (
     "You are a helpful assistant focused on concise, accurate answers. "
     "Respond only to the user's question, avoiding unnecessary details. "
-    "Always reply in JSON format: {\"response\": \"your answer\"}. "
+    'Always reply in JSON format: {"response": "your answer"}. '
     "Example questions: What is the capital of France? How do I create a virtual environment in Python? "
-    "Example response: {\"response\": \"Paris is the capital of France.\"} "
+    'Example response: {"response": "Paris is the capital of France."} '
     "Keep responses brief and relevant."
 )
