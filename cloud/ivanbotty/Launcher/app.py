@@ -135,11 +135,11 @@ class App(Adw.Application):
             if ext.enabled
         }
 
-        # Prepare handlers set
+        # Prepare handlers set and check for None handlers
         handlers = {
-            load_class_instance(ext.handler)
-            for ext in self.extensions_service.list_extensions()
+            h for ext in self.extensions_service.list_extensions()
             if ext.enabled
+            if (h := load_class_instance(ext.handler)) is not None
         }
 
         # Initialize the search controller
