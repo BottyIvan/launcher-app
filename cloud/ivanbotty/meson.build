@@ -7,6 +7,7 @@ python.install_sources(
 )
 
 # Process subdirectories
+subdir('utils')
 subdir('database')
 subdir('Launcher')
 subdir('Wizard')
