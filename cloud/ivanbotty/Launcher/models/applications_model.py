@@ -7,11 +7,13 @@ from gi.repository import GObject
 
 logger = logging.getLogger(__name__)
 
+
 class ApplicationModel(GObject.GObject):
     """
     Model representing an application with properties for type, name, description,
     execution command, and icon.
     """
+
     type = GObject.Property(type=str)
     name = GObject.Property(type=str)
     description = GObject.Property(type=str, default=None)

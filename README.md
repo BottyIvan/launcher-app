@@ -27,6 +27,8 @@
 - SVG icon rendering and detailed app info
 - Persistent user preferences (SQLite)
 - Extension system for enabling/disabling features
+- Type-annotated codebase for better IDE support
+- Comprehensive test suite
 
 ### Core Services
 
@@ -63,6 +65,7 @@ Launcher supports extensions defined in YAML, which can be enabled or disabled f
 ---
 
 ## Requirements
+
 - Python >= 3.11
 - [PyGObject](https://pygobject.readthedocs.io/en/latest/) >= 3.44
 - [google-generativeai](https://pypi.org/project/google-generativeai/) >= 0.3.0 (for AI features)
@@ -84,15 +87,50 @@ flatpak-builder --user --install --force-clean build-dir manifest.yaml
 flatpak run cloud.ivanbotty.Launcher
 ```
 
+### Development Setup
+
+To contribute to Launcher or run it from source:
+
+```bash
+# Clone the repository
+git clone https://github.com/BottyIvan/launcher-app.git
+cd launcher-app
+
+# Install development dependencies (optional but recommended)
+python3 -m pip install black flake8 mypy
+
+# Run the application directly
+python3 -m cloud.ivanbotty.Launcher
+
+# Or run the welcome wizard
+python3 -m cloud.ivanbotty.Wizard
+```
+
+### Running Tests
+
+```bash
+# Run all tests
+python3 -m unittest discover tests/
+
+# Run specific test file
+python3 -m unittest tests/test_utils.py
+
+# Run with verbose output
+python3 -m unittest discover tests/ -v
+```
+
 ---
 
 ## Project Structure
 
 - `cloud/ivanbotty/database/`: SQLite integration for persistent data
-    - `sqlite3.py`: Database and preferences management
+    - `sqlite3.py`: Database and preferences management with type hints
+    - `__init__.py`
+- `cloud/ivanbotty/utils/`: Shared utility modules
+    - `app_init.py`: Application initialization utilities (resource loading, DB setup, logging)
     - `__init__.py`
 - `cloud/ivanbotty/Launcher/`: Main source code
-    - `app.py`, `__main__.py`: Entry point and main logic
+    - `app.py`, `__main__.py`: Entry point and main application logic
     - `config/`: UI configurations and constants
     - `controller/`: Event controllers (search, key, click)
     - `handlers/`: Input handling (app, math, AI, link, command, extensions)
@@ -101,25 +139,49 @@ flatpak run cloud.ivanbotty.Launcher
     - `services/`: Services (applications, command, math, AI, extensions)
     - `widget/`: UI components (window, search_entry, row, preferences, progress_bar, footer)
     - `resources/`: SVG icons, appdata, extension YAMLs, and wizard files
-        - `cloud.ivanbotty.Launcher.svg`
-        - `appdata.xml`
-        - `extensions.yaml`
-        - `wizard.yaml`
-        - `resources.gresource`
-        - `resources.xml`
 - `cloud/ivanbotty/Wizard/`: Wizard/Onboarding source code
     - `app.py`, `__main__.py`: Welcome wizard
     - `components/`: UI components for the wizard
+- `tests/`: Test suite
+    - `test_utils.py`: Tests for utility modules
+    - `test_helpers.py`: Tests for helper modules
 - `manifest.yaml`: Flatpak manifest
 - `pyproject.toml`: Python configuration
 - `meson.build`: Meson build configuration
 - `cloud.ivanbotty.Launcher.desktop`: Desktop entry for the launcher
 - `launcher-wrapper.sh.in`: Launcher wrapper script
-- `LICENSE`: GPL license
+- `LICENSE`: GPL-3.0-or-later
 
 ## Contributing
 
-Fork the repository and submit a pull request. Follow PEP8 conventions and ensure your code is tested.
+We welcome contributions! Here's how to get started:
+
+### Code Style
+
+- Follow PEP8 conventions
+- Use type hints for function signatures
+- Add docstrings to modules, classes, and functions
+- Format code with `black --line-length 100`
+- Check code with `flake8`
+
+### Workflow
+
+1. **Fork** the repository
+2. **Create a branch** for your feature: `git checkout -b feature/your-feature-name`
+3. **Make your changes** following the code style guidelines
+4. **Write or update tests** for your changes
+5. **Run tests** to ensure everything works: `python3 -m unittest discover tests/`
+6. **Format your code**: `black cloud/ivanbotty --line-length 100`
+7. **Commit your changes** with clear, descriptive messages
+8. **Push** to your fork and **submit a pull request**
+
+### Guidelines
+
+- Keep changes focused and atomic
+- Ensure backward compatibility when possible
+- Update documentation for new features
+- Add tests for new functionality
+- Maintain consistent code style with existing codebase
 
 ## License
 

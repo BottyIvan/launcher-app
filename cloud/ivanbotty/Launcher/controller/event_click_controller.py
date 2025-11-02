@@ -1,8 +1,10 @@
 import gi
+
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk
 
 from .event_base_controller import EventBaseController
+
 
 class EventClickController(EventBaseController):
     """Handles click/double-click events on a row or widget."""

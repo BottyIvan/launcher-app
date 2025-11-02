@@ -6,6 +6,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class EventSearchController(EventBaseController):
     """Handles search and results, including mouse activations."""
 
@@ -45,9 +46,12 @@ class EventSearchController(EventBaseController):
         for handler in self.handlers:
             if handler.can_handle(text):
                 if list_model := handler.handle(text, self.services):
-                    self.view.bind_model(list_model, lambda row_item: (
-                        row := row_widget.Row(row_item),
-                        setattr(row, "item_model", row_item),
-                        EventClickController(self.app, row),
-                        row
-                    ))
+                    self.view.bind_model(
+                        list_model,
+                        lambda row_item: (
+                            row := row_widget.Row(row_item),
+                            setattr(row, "item_model", row_item),
+                            EventClickController(self.app, row),
+                            row,
+                        ),
+                    )

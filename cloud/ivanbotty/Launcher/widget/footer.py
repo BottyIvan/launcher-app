@@ -1,9 +1,11 @@
 import gi
+
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw
 from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
 from cloud.ivanbotty.Launcher.widget.preferences import Preferences
+
 
 class Footer(Adw.Bin):
     def __init__(self, app):

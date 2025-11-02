@@ -1,6 +1,7 @@
 from gi.repository import Gtk
 import cloud.ivanbotty.Launcher.handlers.base_input_handler as bih
 
+
 class CommandHandler(bih.BaseInputHandler):
     def can_handle(self, text):
         return text.startswith(">")
