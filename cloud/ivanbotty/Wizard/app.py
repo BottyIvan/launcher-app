@@ -18,6 +18,7 @@ from gi.repository import Adw, Gtk
 
 from cloud.ivanbotty.Launcher.widget.window import Window
 from cloud.ivanbotty.Wizard.components.page import Page
+from cloud.ivanbotty.common import find_extensions_yaml
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +45,8 @@ class WelcomeWizard(Adw.Application):
 
         try:
             # Load wizard page texts from YAML configuration file
-            with open("./cloud/ivanbotty/Launcher/resources/wizard.yaml") as f:
+            yaml_path = find_extensions_yaml("wizard.yaml")
+            with open(yaml_path) as f:
                 self.wizard_texts = yaml.safe_load(f)
             logger.info("Wizard texts loaded successfully")
         except Exception as e:
