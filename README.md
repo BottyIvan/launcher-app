@@ -1,188 +1,127 @@
 # Launcher
 
-> [!IMPORTANT]
-> **Launcher** is under active development. Features and interfaces may change frequently. Contributions and feedback are welcome!
-
 <p align="center">
-    <img src="./cloud/ivanbotty/Launcher/resources/cloud.ivanbotty.Launcher.svg" alt="Launcher Icon" width="96">
+    <img src="./cloud/ivanbotty/Launcher/resources/cloud.ivanbotty.Launcher.svg" alt="Launcher Icon" width="128">
 </p>
 
-**Launcher** is a modern desktop application launcher for Linux, built with GTK4 and Adwaita. It offers instant search, a sleek user interface, and seamless integration for launching installed applications. The extension system allows you to add new features and customize your workflow.
+<p align="center">
+    <strong>A modern desktop application launcher for Linux</strong>
+</p>
 
 <p align="center">
-    <video src="./assets/launcher.mp4" controls width="480">
+    Built with GTK4 and Adwaita | Fast | Extensible | Open Source
+</p>
+
+<p align="center">
+    <a href="https://github.com/BottyIvan/launcher-app/wiki/Home">📚 Wiki Documentation</a> •
+    <a href="https://github.com/BottyIvan/launcher-app/wiki/Installation">💾 Installation</a> •
+    <a href="https://github.com/BottyIvan/launcher-app/wiki/Usage-Guide">📖 Usage Guide</a> •
+    <a href="https://github.com/BottyIvan/launcher-app/wiki/Contributing">🤝 Contributing</a>
+</p>
+
+---
+
+## Overview
+
+**Launcher** provides instant search for installed applications, a built-in calculator, and an extensible architecture for adding custom features. It integrates seamlessly with modern Linux desktop environments.
+
+<p align="center">
+    <video src="./assets/launcher.mp4" controls width="600">
         Your browser does not support the video tag.
     </video>
 </p>
 
-> Icon rights: [Icons8](https://icons8.it/icon/qW0hxm9M3J5x/ricerca)
+> [!IMPORTANT]
+> **Launcher** is under active development. Features and interfaces may change. Contributions and feedback are welcome!
 
----
+## ✨ Key Features
 
-## Features
+- 🚀 **Instant Search** - Find applications as you type
+- 🎨 **Modern UI** - Beautiful GTK4/Adwaita interface
+- 🧮 **Built-in Calculator** - Evaluate expressions without switching apps
+- 🔌 **Extensible** - Plugin system for custom functionality
+- 🔒 **Secure** - Flatpak sandboxing support
+- ⚡ **Fast** - Optimized for performance
 
-- Modern interface with Adwaita and GTK4
-- Flatpak support for sandboxed environments
-- Switchable compact and extended layouts
-- SVG icon rendering and detailed app info
-- Persistent user preferences (SQLite)
-- Extension system for enabling/disabling features
-- Type-annotated codebase for better IDE support
-- Comprehensive test suite
+## 🚀 Quick Start
 
-### Core Services
-
-- **ApplicationsService**
-    - Discovers installed apps from `.desktop` files
-    - Instant search and filtering by name
-    - Dynamic, ordered app list via `Gio.ListStore`
-
-- **ExtensionService**
-    - Manage extensions: add, remove, enable, disable
-    - Search and list extensions by name
-    - Extensions can register custom services
-
-- **CommandService**
-    - Execute commands linked to applications for fast launching *(in development)*
-
-- **MathService**
-    - Built-in calculator for mathematical expressions
-
-- **AIService**
-    - Integration with AI APIs for natural language queries *(in development)*
-
-### Extensions
-
-Launcher supports extensions defined in YAML, which can be enabled or disabled from the preferences. Available extensions include:
-
-- Application search
-- Math calculator
-- Command runner *(in development)*
-- AI assistant (Gemini) *(in development)*
-- File manager *(in development)*
-- Link management *(in development)*
-
----
-
-## Requirements
-
-- Python >= 3.11
-- [PyGObject](https://pygobject.readthedocs.io/en/latest/) >= 3.44
-- [google-generativeai](https://pypi.org/project/google-generativeai/) >= 0.3.0 (for AI features)
-- [sqlite3](https://docs.python.org/3/library/sqlite3.html) (built-in with Python)
-- GTK4 and Adwaita libraries
-- Meson >= 0.59.0 (for building with Meson)
-
-## Getting Started
-
-Launcher is distributed via Flatpak, which provides a sandboxed environment with all dependencies included.
-
-### Install and Run with Flatpak
+### Install with Flatpak (Recommended)
 
 ```bash
-# Build and install Launcher with Flatpak
+git clone https://github.com/BottyIvan/launcher-app.git
+cd launcher-app
 flatpak-builder --user --install --force-clean build-dir manifest.yaml
-
-# Launch the application
 flatpak run cloud.ivanbotty.Launcher
 ```
 
-### Development Setup
-
-To contribute to Launcher or run it from source:
+### Run from Source
 
 ```bash
-# Clone the repository
 git clone https://github.com/BottyIvan/launcher-app.git
 cd launcher-app
-
-# Install development dependencies (optional but recommended)
-python3 -m pip install black flake8 mypy
-
-# Run the application directly
 python3 -m cloud.ivanbotty.Launcher
-
-# Or run the welcome wizard
-python3 -m cloud.ivanbotty.Wizard
 ```
 
-### Running Tests
+**📚 For detailed installation instructions, see the [Installation Guide](wiki/Installation.md).**
 
-```bash
-# Run all tests
-python3 -m unittest discover tests/
+## 📖 Documentation
 
-# Run specific test file
-python3 -m unittest tests/test_utils.py
+Complete documentation is available in our **[Wiki](wiki/Home.md)**:
 
-# Run with verbose output
-python3 -m unittest discover tests/ -v
-```
+- **[Home](wiki/Home.md)** - Project overview and quick links
+- **[Installation](wiki/Installation.md)** - Installation for all platforms
+- **[Usage Guide](wiki/Usage-Guide.md)** - How to use Launcher effectively
+- **[Features](wiki/Features.md)** - Complete feature list and descriptions
+- **[Configuration](wiki/Configuration.md)** - Customize Launcher settings
+- **[Architecture](wiki/Architecture.md)** - Technical design and structure
+- **[API Reference](wiki/API-Reference.md)** - API documentation for developers
+- **[Contributing](wiki/Contributing.md)** - Contribution guidelines and dev setup
+- **[FAQ](wiki/FAQ.md)** - Frequently asked questions and troubleshooting
+- **[Changelog](wiki/Changelog.md)** - Version history and release notes
+- **[License](wiki/License.md)** - Licensing information
+
+## 🤝 Contributing
+
+We welcome contributions! Whether you want to:
+- Report bugs
+- Suggest features
+- Improve documentation
+- Write code
+
+**Please read our [Contributing Guide](wiki/Contributing.md) to get started.**
+
+## 💬 Community & Support
+
+- **Issues**: [GitHub Issues](https://github.com/BottyIvan/launcher-app/issues)
+- **Discussions**: Use GitHub Issues for questions
+- **Email**: droidbotty@gmail.com
+
+## 📋 Requirements
+
+- Python 3.11+
+- GTK4 and Adwaita
+- PyGObject 3.44+
+
+**See [Installation Guide](wiki/Installation.md) for complete requirements.**
+
+## 📜 License
+
+**GPL-3.0-or-later** - See [LICENSE](LICENSE) file for details.
+
+Learn more: [License Documentation](wiki/License.md)
+
+## 🙏 Acknowledgments
+
+- Built with [GTK4](https://gtk.org/) and [Adwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/)
+- Icon from [Icons8](https://icons8.it/icon/qW0hxm9M3J5x/ricerca)
+- Thanks to all [contributors](https://github.com/BottyIvan/launcher-app/graphs/contributors)
 
 ---
 
-## Project Structure
+<p align="center">
+    Made with ❤️ by <a href="https://github.com/BottyIvan">Ivan Bottigelli</a>
+</p>
 
-- `cloud/ivanbotty/database/`: Persistent data management with SQLite
-    - `sqlite3.py`: Database and preferences handling with type hints
-    - `__init__.py`
-- `cloud/ivanbotty/utils/`: Shared utility modules
-    - `app_init.py`: App initialization (resources, DB, logging)
-    - `__init__.py`
-- `cloud/ivanbotty/Launcher/`: Main Launcher app code
-    - `app.py`, `__main__.py`: Entry point and core logic
-    - `config/`: UI configurations and constants
-    - `controller/`: Event controllers (search, key, click)
-    - `handlers/`: Input handling (app, math, AI, link, command, extensions)
-    - `helper/`: Utilities (parser, thread manager, dynamic loader)
-    - `models/`: Data models (applications, extensions)
-    - `services/`: Services (applications, command, math, AI, extensions)
-    - `widget/`: UI components (window, search_entry, row, preferences, progress_bar, footer)
-    - `resources/`: SVG icons, appdata, extension YAML, wizard files
-- `cloud/ivanbotty/Wizard/`: Wizard/onboarding source code
-    - `app.py`, `__main__.py`: Welcome wizard
-    - `components/`: Wizard UI components
-- `tests/`: Test suite
-    - `test_utils.py`: Utility module tests
-    - `test_helpers.py`: Helper module tests
-- `manifest.yaml`: Flatpak manifest
-- `pyproject.toml`: Python configuration
-- `meson.build`: Meson build configuration
-- `cloud.ivanbotty.Launcher.desktop`: Desktop entry for Launcher
-- `launcher-wrapper.sh.in`: Launcher wrapper script
-- `LICENSE`: GPL-3.0-or-later
-
-## Contributing
-
-We welcome contributions! Here's how to get started:
-
-### Code Style
-
-- Follow PEP8 conventions
-- Use type hints for function signatures
-- Add docstrings to modules, classes, and functions
-- Format code with `black --line-length 100`
-- Check code with `flake8`
-
-### Workflow
-
-1. **Fork** the repository
-2. **Create a branch** for your feature: `git checkout -b feature/your-feature-name`
-3. **Make your changes** following the code style guidelines
-4. **Write or update tests** for your changes
-5. **Run tests** to ensure everything works: `python3 -m unittest discover tests/`
-6. **Format your code**: `black cloud/ivanbotty --line-length 100`
-7. **Commit your changes** with clear, descriptive messages
-8. **Push** to your fork and **submit a pull request**
-
-### Guidelines
-
-- Keep changes focused and atomic
-- Ensure backward compatibility when possible
-- Update documentation for new features
-- Add tests for new functionality
-- Maintain consistent code style with existing codebase
-
-## License
-
-GPL-3.0-or-later
+<p align="center">
+    ⭐ Star us on GitHub if you find this project useful!
+</p>
