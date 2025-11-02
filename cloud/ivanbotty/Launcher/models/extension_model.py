@@ -1,7 +1,9 @@
 import gi
+
 gi.require_version("Gtk", "4.0")
 from gi.repository import GObject
 import cloud.ivanbotty.database.sqlite3 as db
+
 
 class ExtensionModel(GObject.GObject):
     """
@@ -25,7 +27,17 @@ class ExtensionModel(GObject.GObject):
     version = GObject.Property(type=str, default=None)
     author = GObject.Property(type=str, default=None)
 
-    def __init__(self, name, description=None, enabled=True, cant_disable=False, service=None, handler=None, version=None, author=None):
+    def __init__(
+        self,
+        name,
+        description=None,
+        enabled=True,
+        cant_disable=False,
+        service=None,
+        handler=None,
+        version=None,
+        author=None,
+    ):
         """
         Initialize ExtensionModel.
 

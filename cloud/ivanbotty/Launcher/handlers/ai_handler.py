@@ -3,6 +3,7 @@ from cloud.ivanbotty.Launcher.models.applications_model import ApplicationModel
 
 import cloud.ivanbotty.Launcher.handlers.base_input_handler as bih
 
+
 class AIHandler(bih.BaseInputHandler):
     def can_handle(self, text):
         return text.startswith("ask")
@@ -25,11 +26,9 @@ class AIHandler(bih.BaseInputHandler):
             name = "Error"
             description = "AI service not available or query is empty."
             icon = "dialog-error"
-        list_model.append(ApplicationModel(
-            type="ai",
-            name=name,
-            description=description,
-            exec_cmd=None,
-            icon=icon
-        ))
+        list_model.append(
+            ApplicationModel(
+                type="ai", name=name, description=description, exec_cmd=None, icon=icon
+            )
+        )
         return list_model

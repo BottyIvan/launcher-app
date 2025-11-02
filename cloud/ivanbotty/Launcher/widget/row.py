@@ -123,7 +123,9 @@ class Row(Gtk.ListBoxRow):
             return ""
 
         # Remove code block markers
-        cleaned = re.sub(r"(^```(?:json)?$|^```$)", "", description.strip(), flags=re.MULTILINE).strip()
+        cleaned = re.sub(
+            r"(^```(?:json)?$|^```$)", "", description.strip(), flags=re.MULTILINE
+        ).strip()
 
         # Extract "response" from JSON if present
         try:

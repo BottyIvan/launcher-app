@@ -3,6 +3,7 @@
 This module provides functions for managing user preferences, extensions,
 and API keys using a SQLite database.
 """
+
 import os
 import sqlite3
 from typing import Any, Dict, Optional
@@ -18,26 +19,32 @@ def init_db() -> None:
     c = conn.cursor()
 
     # Table for user preferences
-    c.execute("""
+    c.execute(
+        """
         CREATE TABLE IF NOT EXISTS preferences (
             key TEXT PRIMARY KEY,
             value TEXT
         )
-    """)
+    """
+    )
     # Table for installed extensions
-    c.execute("""
+    c.execute(
+        """
         CREATE TABLE IF NOT EXISTS extensions (
             id TEXT PRIMARY KEY,
             enabled BOOLEAN
         )
-    """)
+    """
+    )
     # Table for API keys of external services
-    c.execute("""
+    c.execute(
+        """
         CREATE TABLE IF NOT EXISTS api_keys (
             service TEXT PRIMARY KEY,
             key TEXT
         )
-    """)
+    """
+    )
     conn.commit()
     conn.close()
 
@@ -45,7 +52,7 @@ def init_db() -> None:
 # ----- Preferences -----
 def set_pref(key: str, value: Any) -> None:
     """Set a preference (key, value) in the database.
-    
+
     Args:
         key: The preference key
         value: The preference value (will be converted to string)
@@ -59,11 +66,11 @@ def set_pref(key: str, value: Any) -> None:
 
 def get_pref(key: str, default: Any = None) -> Any:
     """Retrieve the value of a preference.
-    
+
     Args:
         key: The preference key
         default: Default value if key not found
-        
+
     Returns:
         The preference value if found, otherwise the default value
     """
@@ -78,10 +85,10 @@ def get_pref(key: str, default: Any = None) -> Any:
 # ----- Extensions -----
 def get_extension(ext_id: str) -> Optional[bool]:
     """Retrieve the enabled/disabled state of an extension by its ID.
-    
+
     Args:
         ext_id: The extension identifier
-        
+
     Returns:
         True if enabled, False if disabled, None if not found
     """
@@ -95,9 +102,9 @@ def get_extension(ext_id: str) -> Optional[bool]:
 
 def set_extension_enabled(ext_id: str, enabled: bool) -> None:
     """Enable or disable an extension.
-    
+
     If the extension does not exist, it will be created.
-    
+
     Args:
         ext_id: The extension identifier
         enabled: True to enable, False to disable
@@ -108,7 +115,7 @@ def set_extension_enabled(ext_id: str, enabled: bool) -> None:
             conn.execute(
                 "INSERT INTO extensions (id, enabled) VALUES (?, ?) "
                 "ON CONFLICT(id) DO UPDATE SET enabled=excluded.enabled",
-                (ext_id, int(enabled))
+                (ext_id, int(enabled)),
             )
     finally:
         conn.close()
@@ -116,7 +123,7 @@ def set_extension_enabled(ext_id: str, enabled: bool) -> None:
 
 def get_extensions() -> Dict[str, bool]:
     """Return a dictionary with extension ID and enabled/disabled state.
-    
+
     Returns:
         Dictionary mapping extension IDs to their enabled state
     """
@@ -131,7 +138,7 @@ def get_extensions() -> Dict[str, bool]:
 # ----- API Keys -----
 def set_api_key(service: str, key: str) -> None:
     """Save the API key for a service.
-    
+
     Args:
         service: The service name
         key: The API key
@@ -145,10 +152,10 @@ def set_api_key(service: str, key: str) -> None:
 
 def get_api_key(service: str) -> Optional[str]:
     """Retrieve the API key for a service.
-    
+
     Args:
         service: The service name
-        
+
     Returns:
         The API key if found, None otherwise
     """
@@ -158,4 +165,3 @@ def get_api_key(service: str) -> Optional[str]:
     row = c.fetchone()
     conn.close()
     return row[0] if row else None
-

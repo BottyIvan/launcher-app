@@ -1,8 +1,10 @@
 import gi
+
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk, Gdk
 
 from cloud.ivanbotty.Launcher.controller.event_base_controller import EventBaseController
+
 
 class EventKeyController(EventBaseController, Gtk.EventControllerKey):
     """Handles keyboard events (Enter, Escape, arrows, Backspace)."""

@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 class WelcomeWizard(Adw.Application):
     """Welcome Wizard application for first-time user onboarding.
-    
+
     Attributes:
         win: Main application window
         content: Carousel widget containing wizard pages
@@ -34,7 +34,7 @@ class WelcomeWizard(Adw.Application):
 
     def __init__(self, app: str) -> None:
         """Initialize the Welcome Wizard application.
-        
+
         Args:
             app: Application ID string
         """
@@ -61,7 +61,7 @@ class WelcomeWizard(Adw.Application):
         """Handle moving to the next page in the wizard."""
         if self.content is None:
             return
-            
+
         cur = self.content.get_position()
         n = self.content.get_n_pages()
         if cur < n - 1:
@@ -73,7 +73,7 @@ class WelcomeWizard(Adw.Application):
         """Handle returning to the previous page in the wizard."""
         if self.content is None:
             return
-            
+
         cur = self.content.get_position()
         if cur > 0:
             prev_w = self.content.get_nth_page(cur - 1)
@@ -85,7 +85,7 @@ class WelcomeWizard(Adw.Application):
 
         threading.Thread(
             target=lambda: subprocess.run([sys.executable, "-m", "cloud.ivanbotty.Launcher"]),
-            daemon=True
+            daemon=True,
         ).start()
 
         if self.win:
@@ -115,10 +115,9 @@ class WelcomeWizard(Adw.Application):
                     title=text.get("title", f"Page {i+1}"),
                     subtitle=text.get("description", "Default description."),
                     button_text=text.get(
-                        "button_label",
-                        "Next" if i < len(pages_config) - 1 else "Finish"
+                        "button_label", "Next" if i < len(pages_config) - 1 else "Finish"
                     ),
-                    callback=self.on_next if i < len(pages_config) - 1 else self.on_finish
+                    callback=self.on_next if i < len(pages_config) - 1 else self.on_finish,
                 )
                 for i, text in enumerate(pages_config)
             ]

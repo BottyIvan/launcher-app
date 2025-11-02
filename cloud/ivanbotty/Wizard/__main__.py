@@ -16,19 +16,19 @@ from cloud.ivanbotty.Wizard.app import WelcomeWizard
 
 def main() -> int:
     """Initialize and run the Welcome Wizard.
-    
+
     Returns:
         Exit code (0 for success, 1 for failure)
     """
     logger = setup_logging()
-    
+
     # Initialize application resources and database
     if not initialize_app("Welcome Wizard"):
         return 1
-    
+
     # Create and run the Welcome Wizard
     try:
-        app = WelcomeWizard(app='cloud.ivanbotty.Wizard')
+        app = WelcomeWizard(app="cloud.ivanbotty.Wizard")
         app.run()
         return 0
     except Exception as e:

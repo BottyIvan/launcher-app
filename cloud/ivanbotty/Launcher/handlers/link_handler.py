@@ -2,6 +2,7 @@ import re
 from gi.repository import Gio, Gtk
 import cloud.ivanbotty.Launcher.handlers.base_input_handler as bih
 
+
 class LinkHandler(bih.BaseInputHandler):
     def can_handle(self, text):
         return re.match(r"^https?://", text.strip())

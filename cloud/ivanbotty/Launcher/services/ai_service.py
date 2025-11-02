@@ -5,6 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class AIService:
     """
     Service for handling user prompts and questions.
@@ -35,9 +36,7 @@ class AIService:
         """
         prompt = f"{SYSTEM_PROMPT}{question}"
         logger.debug(f"Sending prompt to model: prompt={prompt!r}")
-        response = self.client.models.generate_content(
-            model="gemini-2.5-flash", contents=prompt
-        )
+        response = self.client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
         logger.debug(f"Received raw response: response={response!r}")
         return self._format_response(response)
 

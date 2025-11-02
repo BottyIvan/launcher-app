@@ -19,26 +19,26 @@ from cloud.ivanbotty.Wizard.app import WelcomeWizard
 
 def main() -> int:
     """Initialize and run the application.
-    
+
     Returns:
         Exit code (0 for success, 1 for failure)
     """
     logger = setup_logging()
-    
+
     # Initialize application resources and database
     if not initialize_app("Launcher"):
         return 1
-    
+
     # Decide which application to launch based on user preferences
     try:
         if db.get_pref("show_welcome_wizard", True) is True:
             db.set_pref("show_welcome_wizard", False)
-            app = WelcomeWizard(app='cloud.ivanbotty.Wizard')
+            app = WelcomeWizard(app="cloud.ivanbotty.Wizard")
             logger.info("Launching Welcome Wizard")
         else:
-            app = App(app='cloud.ivanbotty.Launcher')
+            app = App(app="cloud.ivanbotty.Launcher")
             logger.info("Launching Main Application")
-        
+
         app.run()
         return 0
     except Exception as e:

@@ -3,6 +3,7 @@
 This module provides the main GTK4/Adwaita application for the Launcher,
 handling UI setup, extension management, and search functionality.
 """
+
 import logging
 from typing import Optional
 
@@ -32,7 +33,7 @@ logger = logging.getLogger(__name__)
 
 class App(Adw.Application):
     """Main Launcher application class.
-    
+
     Attributes:
         name: Application name
         win: Main application window
@@ -46,7 +47,7 @@ class App(Adw.Application):
 
     def __init__(self, app: str) -> None:
         """Initialize the application and its components.
-        
+
         Args:
             app: Application ID string
         """
@@ -57,12 +58,8 @@ class App(Adw.Application):
         # Initialize progress bar with configuration
         self.progress_bar = ProgressBar("Loading...")
         self.progress_bar.set_visible(False)
-        self.progress_bar.set_margin_top(
-            UI_CONFS[PREFERENCES].get("progress_margin_top", 6)
-        )
-        self.progress_bar.set_margin_bottom(
-            UI_CONFS[PREFERENCES].get("progress_margin_bottom", 6)
-        )
+        self.progress_bar.set_margin_top(UI_CONFS[PREFERENCES].get("progress_margin_top", 6))
+        self.progress_bar.set_margin_bottom(UI_CONFS[PREFERENCES].get("progress_margin_bottom", 6))
         self.progress_bar.set_margin_start(UI_CONFS[PREFERENCES]["margin_start"])
         self.progress_bar.set_margin_end(UI_CONFS[PREFERENCES]["margin_end"])
         self.progress_bar.set_hexpand(True)
@@ -75,11 +72,11 @@ class App(Adw.Application):
         self.view.set_margin_end(UI_CONFS[PREFERENCES]["margin_end"])
         self.view.set_vexpand(True)
         self.view.set_hexpand(True)
-        
+
         self.entry = SearchEntry(
             placeholder="Type to search...",
             width=UI_CONFS[PREFERENCES]["entry_width"],
-            height=UI_CONFS[PREFERENCES]["entry_height"]
+            height=UI_CONFS[PREFERENCES]["entry_height"],
         )
 
         # Initialize services
@@ -105,10 +102,10 @@ class App(Adw.Application):
         target_func: callable,
         steps: int = 100,
         delay: float = 0.02,
-        text: str = "Processing..."
+        text: str = "Processing...",
     ) -> None:
         """Execute a function while displaying the progress bar.
-        
+
         Args:
             target_func: Function to execute
             steps: Number of progress steps
@@ -147,20 +144,13 @@ class App(Adw.Application):
 
         # Initialize the search controller
         self.search_controller = EventSearchController(
-            app=self,
-            entry_widget=self.entry,
-            view=self.view,
-            services=services,
-            handlers=handlers
+            app=self, entry_widget=self.entry, view=self.view, services=services, handlers=handlers
         )
 
         # Load applications in the background at startup
         apps_service = services.get("application")
         if apps_service:
-            self.run_with_progress(
-                apps_service.load_applications,
-                text="Loading applications..."
-            )
+            self.run_with_progress(apps_service.load_applications, text="Loading applications...")
 
         # Adwaita setup
         Adw.init()
@@ -168,7 +158,7 @@ class App(Adw.Application):
 
         # Create main window
         self.win = Window(self)
-        
+
         # Keyboard controller setup
         self.keyboard_controller = EventKeyController(self)
         self.win.add_controller(self.keyboard_controller)
@@ -197,4 +187,3 @@ class App(Adw.Application):
         logger.info("Application activated")
         if self.win is not None:
             self.win.present()
-

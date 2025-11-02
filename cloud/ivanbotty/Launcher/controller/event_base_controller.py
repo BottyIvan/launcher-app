@@ -6,6 +6,7 @@ from gi.repository import Gtk
 
 logger = logging.getLogger(__name__)
 
+
 class EventBaseController:
     """Base controller for common management of rows and results."""
 
