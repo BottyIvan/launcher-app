@@ -53,12 +53,11 @@ class ApplicationModel(GObject.GObject):
         """
         # Attempt to launch the application using PortalLauncher if available and desktop_id is set.
         # If PortalLauncher is unavailable or fails, fall back to executing the command directly.
-        if self.portal_launcher.is_available() and self.desktop_id:
-            try:
-                self.portal_launcher.open_desktop_app(self.desktop_id)
-                return True
-            except Exception as e:
-                logger.error(f"Failed to launch via PortalLauncher (desktop_id={self.desktop_id}): {e}")
+        try:
+            self.portal_launcher.open_desktop_app(self.desktop_id)
+            return True
+        except Exception as e:
+            logger.error(f"Failed to launch via PortalLauncher (desktop_id={self.desktop_id}): {e}")
 
         try:
             subprocess.Popen(self.exec_cmd, shell=True)
