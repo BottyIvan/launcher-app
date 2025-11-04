@@ -76,16 +76,19 @@ class PortalLauncher:
             return None
 
     def _detect_available_interfaces(self) -> None:
-        """Detect which portal interfaces are available."""
-        # Try to create proxies for each interface to see if they're available
-        for interface in [LAUNCHER_INTERFACE, OPENURI_INTERFACE]:
-            try:
-                proxy = self._get_portal_proxy(interface)
-                if proxy:
-                    self._available_interfaces.add(interface)
-                    logger.debug(f"Detected available interface: {interface}")
-            except Exception as e:
-                logger.debug(f"Interface {interface} not available: {e}")
+        """Detect which portal interfaces are available.
+        
+        Note: We only check for Launcher interface since OpenURI doesn't
+        reliably work for launching desktop applications.
+        """
+        # Only check Launcher interface (the correct one for launching apps)
+        try:
+            proxy = self._get_portal_proxy(LAUNCHER_INTERFACE)
+            if proxy:
+                self._available_interfaces.add(LAUNCHER_INTERFACE)
+                logger.debug(f"Detected available interface: {LAUNCHER_INTERFACE}")
+        except Exception as e:
+            logger.debug(f"Interface {LAUNCHER_INTERFACE} not available: {e}")
 
     def _get_portal_proxy(self, interface: str) -> Optional[Gio.DBusProxy]:
         """Return cached D-Bus proxy for interface."""
@@ -145,7 +148,11 @@ class PortalLauncher:
 
     def _get_system_commands(self, desktop_file_id: str) -> List[List[str]]:
         """Return system launcher commands in order of preference."""
+        # gio launch is the most reliable method for launching desktop apps
+        # gtk-launch is also good but may not be available everywhere
+        # xdg-open and kde-open5 with application:// URIs are less reliable
         base_commands = [
+            ["gio", "launch", desktop_file_id],
             ["gtk-launch", desktop_file_id],
             ["xdg-open", f"application://{desktop_file_id}"],
             ["kde-open5", f"application://{desktop_file_id}"],
@@ -236,8 +243,10 @@ class PortalLauncher:
         
         Tries methods in this order:
         1. org.freedesktop.portal.Launcher.LaunchApplication (if available)
-        2. org.freedesktop.portal.OpenURI.OpenURI (if available)
-        3. System commands: gtk-launch, xdg-open, kde-open5
+        2. System commands: gio launch, gtk-launch, xdg-open, kde-open5
+        
+        Note: OpenURI.OpenURI is NOT used because it doesn't reliably launch
+        desktop applications even though it may accept application:// URIs.
         
         Args:
             desktop_file_id: The desktop file ID (e.g., 'firefox.desktop')
@@ -249,37 +258,20 @@ class PortalLauncher:
         desktop_file_id = self._validate_desktop_file_id(desktop_file_id)
         logger.info(f"Attempting to launch application: {desktop_file_id}")
         
-        # Prepare portal arguments
-        portal_options = options or {}
-        # Parent window handle (empty string means no parent)
-        parent_window = ""
-        uri = f"application://{desktop_file_id}"
-        
-        # Try portal methods if available
-        if self.portal_available and self.bus:
-            logger.debug("Portal is available, trying portal methods")
-            
-            # Method 1: Try Launcher interface (preferred, but newer)
-            if LAUNCHER_INTERFACE in self._available_interfaces:
-                logger.debug("Trying Launcher.LaunchApplication")
-                # LaunchApplication expects (parent_window, desktop_file_id, options)
-                args = GLib.Variant("(ssa{sv})", (parent_window, desktop_file_id, portal_options))
-                if self._call_portal_method(LAUNCHER_INTERFACE, "LaunchApplication", args):
-                    return
-            
-            # Method 2: Try OpenURI interface (more common, should work with application:// URIs)
-            if OPENURI_INTERFACE in self._available_interfaces:
-                logger.debug("Trying OpenURI.OpenURI")
-                # OpenURI expects (parent_window, uri, options)
-                args = GLib.Variant("(ssa{sv})", (parent_window, uri, portal_options))
-                if self._call_portal_method(OPENURI_INTERFACE, "OpenURI", args):
-                    return
-            
-            logger.info("Portal methods failed or unavailable, falling back to system commands")
+        # Try portal Launcher interface if available (the ONLY portal method that works for apps)
+        if self.portal_available and self.bus and LAUNCHER_INTERFACE in self._available_interfaces:
+            logger.debug("Portal Launcher interface available, trying it first")
+            portal_options = options or {}
+            parent_window = ""  # Empty string means no parent
+            # LaunchApplication expects (parent_window, desktop_file_id, options)
+            args = GLib.Variant("(ssa{sv})", (parent_window, desktop_file_id, portal_options))
+            if self._call_portal_method(LAUNCHER_INTERFACE, "LaunchApplication", args):
+                return
+            logger.info("Portal Launcher failed, falling back to system commands")
         else:
-            logger.debug("Portal not available, using system commands directly")
+            logger.debug("Portal Launcher not available, using system commands directly")
         
-        # Method 3: System fallback
+        # System command fallback (most reliable method)
         if self._try_system_launchers(desktop_file_id):
             return
         

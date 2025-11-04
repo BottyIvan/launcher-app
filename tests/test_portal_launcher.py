@@ -98,13 +98,14 @@ class TestPortalLauncher(unittest.TestCase):
         from cloud.ivanbotty.Launcher.helper.portal_launcher import PortalLauncher
 
         mock_is_flatpak.return_value = False
-        # Simulate gtk-launch and xdg-open available
-        mock_which.side_effect = lambda cmd: cmd in ["gtk-launch", "xdg-open"]
+        # Simulate gio, gtk-launch and xdg-open available
+        mock_which.side_effect = lambda cmd: cmd in ["gio", "gtk-launch", "xdg-open"]
 
         launcher = PortalLauncher()
         commands = launcher._get_system_commands("test.desktop")
 
-        # Should include gtk-launch and xdg-open (both available)
+        # Should include gio, gtk-launch and xdg-open (all available)
+        self.assertTrue(any("gio" in cmd for cmd in commands))
         self.assertTrue(any("gtk-launch" in cmd for cmd in commands))
         self.assertTrue(any("xdg-open" in cmd for cmd in commands))
         # kde-open5 not available, check it's not in the list
@@ -243,8 +244,7 @@ class TestPortalLauncher(unittest.TestCase):
         """Test that available interfaces are detected correctly."""
         from cloud.ivanbotty.Launcher.helper.portal_launcher import (
             PortalLauncher, 
-            LAUNCHER_INTERFACE, 
-            OPENURI_INTERFACE
+            LAUNCHER_INTERFACE
         )
 
         # Mock portal components
@@ -252,9 +252,9 @@ class TestPortalLauncher(unittest.TestCase):
         mock_bus_get.return_value = mock_bus
         
         def proxy_factory(*args, **kwargs):
-            # Only create OpenURI proxy successfully
+            # Create Launcher proxy successfully
             interface = args[6] if len(args) > 6 else kwargs.get('interface_name')
-            if interface == OPENURI_INTERFACE or not interface or 'Desktop' in str(interface):
+            if interface == LAUNCHER_INTERFACE or not interface or 'Desktop' in str(interface):
                 proxy = MagicMock()
                 mock_version = MagicMock()
                 mock_version.unpack.return_value = 5
@@ -267,8 +267,8 @@ class TestPortalLauncher(unittest.TestCase):
 
         launcher = PortalLauncher()
         
-        # OpenURI should be detected
-        self.assertIn(OPENURI_INTERFACE, launcher._available_interfaces)
+        # Launcher should be detected (we only check for Launcher now, not OpenURI)
+        self.assertIn(LAUNCHER_INTERFACE, launcher._available_interfaces)
 
 
 if __name__ == "__main__":
