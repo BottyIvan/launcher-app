@@ -42,14 +42,29 @@ class PortalLauncher:
 
         try:
             args = GLib.Variant("(ssa{sv})", ("", f"application://{desktop_file_id}", {}))
-            self.proxy.call_sync(
+            logger.debug(f"Portal available: {self.portal_available}")
+            logger.debug(f"Bus: {self.bus}")
+            logger.debug(f"Proxy: {self.proxy}")
+            logger.debug(f"Desktop file ID: {desktop_file_id}")
+            logger.debug(f"URI: application://{desktop_file_id}")
+            logger.debug(f"args: {args}")
+            logger.debug(f"args type: {type(args)}")
+            logger.debug("Calling portal OpenURI method...")
+            
+            result = self.proxy.call_sync(
                 "OpenURI",
                 args,
                 Gio.DBusCallFlags.NONE,
                 -1,
                 None,
             )
-            logger.info(f"Launched {desktop_file_id} via portal")
+            
+            logger.debug(f"Portal call result: {result}")
+            logger.debug(f"Portal call result type: {type(result)}")
+            logger.info(f"Successfully launched {desktop_file_id} via portal")
         except Exception as e:
-            logger.error(f"Portal launch error: {e}")
+            logger.error(f"Portal launch error for {desktop_file_id}: {e}")
+            logger.error(f"Error type: {type(e)}")
+            logger.error(f"Portal available at time of error: {self.portal_available}")
+            logger.debug(f"Exception details: {str(e)}")
             raise
