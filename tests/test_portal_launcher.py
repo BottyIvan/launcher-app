@@ -107,8 +107,9 @@ class TestPortalLauncher(unittest.TestCase):
         # Should include gtk-launch and xdg-open (both available)
         self.assertTrue(any("gtk-launch" in cmd for cmd in commands))
         self.assertTrue(any("xdg-open" in cmd for cmd in commands))
-        # kde-open5 not available
-        self.assertFalse(any("kde-open5" in str(cmd) for cmd in commands if "xdg-open" not in str(cmd)))
+        # kde-open5 not available, so should not be in commands
+        cmd_strings = [' '.join(cmd) for cmd in commands]
+        self.assertFalse(any("kde-open5" in cmd_str for cmd_str in cmd_strings))
 
     @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.shutil.which')
     @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.PortalLauncher._is_flatpak')

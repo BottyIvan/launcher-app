@@ -125,7 +125,6 @@ class PortalLauncher:
             logger.info(f"Successfully launched via {interface}.{method}")
             return True
         except GLib.GError as e:
-            error_name = e.domain if hasattr(e, 'domain') else 'Unknown'
             if 'UnknownMethod' in str(e):
                 logger.debug(f"{interface}.{method} not available: UnknownMethod")
                 # Remove from available interfaces so we don't try again
@@ -175,7 +174,14 @@ class PortalLauncher:
             return False
         
         for cmd in commands:
-            cmd_name = cmd[0] if not self._is_flatpak() else cmd[2]
+            # Safely get command name
+            if self._is_flatpak():
+                # In Flatpak: ["flatpak-spawn", "--host", "actual-command", ...]
+                cmd_name = cmd[2] if len(cmd) > 2 else cmd[0]
+            else:
+                # Native: ["actual-command", ...]
+                cmd_name = cmd[0]
+            
             try:
                 logger.info(f"Attempting to launch via system command: {' '.join(cmd)}")
                 # Use Popen to launch in background without waiting
