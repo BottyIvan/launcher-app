@@ -49,6 +49,7 @@ python.install_sources(
   'helper/__init__.py',
   'helper/load_class_instance.py',
   'helper/parser.py',
+  'helper/portal_launcher.py',
   'helper/thread_manager.py',
   subdir: 'cloud/ivanbotty/Launcher/helper',
   pure: true,
