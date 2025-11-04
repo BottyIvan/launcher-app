@@ -56,6 +56,7 @@ class ApplicationModel(GObject.GObject):
         if self.portal_launcher.is_available() and self.desktop_id:
             try:
                 self.portal_launcher.open_desktop_app(self.desktop_id)
+                return True
             except Exception as e:
                 logger.error(f"Failed to launch via PortalLauncher (desktop_id={self.desktop_id}): {e}")
 
