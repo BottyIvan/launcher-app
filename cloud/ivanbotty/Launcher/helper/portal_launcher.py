@@ -174,13 +174,16 @@ class PortalLauncher:
             return False
         
         for cmd in commands:
-            # Safely get command name
-            if self._is_flatpak():
-                # In Flatpak: ["flatpak-spawn", "--host", "actual-command", ...]
-                cmd_name = cmd[2] if len(cmd) > 2 else cmd[0]
+            # Extract command name for logging
+            # In Flatpak: ["flatpak-spawn", "--host", "actual-command", ...]
+            # Native: ["actual-command", ...]
+            if self._is_flatpak() and len(cmd) > 2:
+                cmd_name = cmd[2]  # The actual command after flatpak-spawn --host
+            elif len(cmd) > 0:
+                cmd_name = cmd[0]  # The command itself
             else:
-                # Native: ["actual-command", ...]
-                cmd_name = cmd[0]
+                logger.warning("Malformed command in list, skipping")
+                continue
             
             try:
                 logger.info(f"Attempting to launch via system command: {' '.join(cmd)}")
