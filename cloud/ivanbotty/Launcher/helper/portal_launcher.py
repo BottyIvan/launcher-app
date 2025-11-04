@@ -146,6 +146,41 @@ class PortalLauncher:
         """Detect Flatpak environment."""
         return os.path.exists("/.flatpak-info")
 
+    def _can_access_host_commands(self) -> bool:
+        """Check if flatpak-spawn --host commands can be used.
+        
+        Returns True if:
+        - We're in Flatpak AND
+        - flatpak-spawn is available AND
+        - org.freedesktop.Flatpak service is accessible
+        
+        This prevents errors when sandbox doesn't have --talk-name=org.freedesktop.Flatpak
+        """
+        if not self._is_flatpak():
+            return False
+            
+        if not shutil.which("flatpak-spawn"):
+            return False
+            
+        # Check if org.freedesktop.Flatpak service is accessible
+        try:
+            bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+            # Try to create proxy with DO_NOT_AUTO_START to avoid starting the service
+            proxy = Gio.DBusProxy.new_sync(
+                bus,
+                Gio.DBusProxyFlags.DO_NOT_AUTO_START,
+                None,
+                "org.freedesktop.Flatpak",
+                "/org/freedesktop/Flatpak",
+                "org.freedesktop.Flatpak",
+                None
+            )
+            logger.debug("org.freedesktop.Flatpak service is accessible")
+            return True
+        except Exception as e:
+            logger.debug(f"org.freedesktop.Flatpak service not accessible: {e}")
+            return False
+
     def _get_system_commands(self, desktop_file_id: str) -> List[List[str]]:
         """Return system launcher commands in order of preference."""
         # gio launch is the most reliable method for launching desktop apps
@@ -158,14 +193,17 @@ class PortalLauncher:
             ["kde-open5", f"application://{desktop_file_id}"],
         ]
         
-        if self._is_flatpak():
-            # Inside Flatpak, use flatpak-spawn to run commands on host
-            if not shutil.which("flatpak-spawn"):
-                logger.warning("Running in Flatpak but flatpak-spawn not found")
-                return []
+        if self._can_access_host_commands():
+            # Inside Flatpak with host access, use flatpak-spawn to run commands on host
+            logger.debug("Flatpak with host access detected, wrapping commands with flatpak-spawn")
             return [["flatpak-spawn", "--host"] + cmd for cmd in base_commands]
+        elif self._is_flatpak():
+            # Inside Flatpak but no host access - can't use flatpak-spawn
+            logger.warning("Running in Flatpak without org.freedesktop.Flatpak access - cannot launch host apps")
+            logger.warning("Add '--talk-name=org.freedesktop.Flatpak' to manifest.yaml to enable host app launching")
+            return []
         else:
-            # Filter to only include commands that exist
+            # Native environment - filter to only include commands that exist
             available_commands = []
             for cmd in base_commands:
                 if shutil.which(cmd[0]):
