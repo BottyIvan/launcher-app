@@ -25,8 +25,9 @@ class SearchEntry(Gtk.Entry):
         self.set_placeholder_text(placeholder)
         self.set_size_request(width, height)
         
-        # Use native Adwaita styling
-        self.add_css_class("flat")
+        # Use native Adwaita styling and accessibility hints
+        self.set_css_classes(["flat", "rounded", "search"])
+        self.set_accessible_role(Gtk.AccessibleRole.SEARCH_BOX)
         
         # Configure icons
         self.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, "system-search-symbolic")
