@@ -84,6 +84,10 @@ class WelcomeWizard(Adw.Application):
         """Handle completion of the wizard and launch main application."""
         logger.info("Wizard completed! Launching main app...")
 
+        # Mark onboarding as complete
+        from cloud.ivanbotty.Launcher.config.config import mark_onboarding_complete
+        mark_onboarding_complete()
+
         threading.Thread(
             target=lambda: subprocess.run([sys.executable, "-m", "cloud.ivanbotty.Launcher"]),
             daemon=True,
@@ -100,11 +104,19 @@ class WelcomeWizard(Adw.Application):
             self.win = Window(application=self)
 
             # Main box with padding
-            main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=24)
+            main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+            main_box.set_margin_top(12)
+            main_box.set_margin_bottom(12)
 
-            # Carousel and indicators
+            # Carousel with smooth transitions
             self.content = Adw.Carousel()
+            self.content.set_allow_mouse_drag(True)
+            self.content.set_allow_scroll_wheel(True)
+            
+            # Add carousel indicators with dots style
             indicator = Adw.CarouselIndicatorDots(carousel=self.content)
+            indicator.set_halign(Gtk.Align.CENTER)
+            
             main_box.append(self.content)
             main_box.append(indicator)
             self.win.set_content(main_box)
@@ -119,6 +131,7 @@ class WelcomeWizard(Adw.Application):
                         "button_label", "Next" if i < len(pages_config) - 1 else "Finish"
                     ),
                     callback=self.on_next if i < len(pages_config) - 1 else self.on_finish,
+                    icon_name=text.get("icon", None),
                 )
                 for i, text in enumerate(pages_config)
             ]

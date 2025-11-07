@@ -1,6 +1,7 @@
 import cloud.ivanbotty.database.sqlite3 as db
 from pathlib import Path
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -103,3 +104,33 @@ SYSTEM_PROMPT = (
     'Example response: {"response": "Paris is the capital of France."} '
     "Keep responses brief and relevant."
 )
+
+# Onboarding configuration helpers
+def should_show_onboarding() -> bool:
+    """Check if the onboarding wizard should be shown.
+    
+    Returns:
+        bool: True if onboarding should be shown, False otherwise
+    """
+    try:
+        return db.get_pref("show_welcome_wizard", True) is True
+    except Exception:
+        logger.warning("Failed to check onboarding preference, defaulting to True")
+        return True
+
+def mark_onboarding_complete() -> None:
+    """Mark the onboarding wizard as complete."""
+    try:
+        db.set_pref("show_welcome_wizard", False)
+        db.set_pref("onboarding_completed_at", str(int(time.time())))
+        logger.info("Onboarding marked as complete")
+    except Exception as e:
+        logger.error(f"Failed to mark onboarding complete: {e}")
+
+def reset_onboarding() -> None:
+    """Reset the onboarding state to show it again on next launch."""
+    try:
+        db.set_pref("show_welcome_wizard", True)
+        logger.info("Onboarding reset - will show on next launch")
+    except Exception as e:
+        logger.error(f"Failed to reset onboarding: {e}")
