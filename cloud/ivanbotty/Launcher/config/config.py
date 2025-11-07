@@ -78,9 +78,9 @@ ANIMATION_SETTINGS = {
 # Category tag configuration
 # Maps result types to Adwaita style classes for native theming
 CATEGORY_TAG_STYLES = {
-    "application": "accent",  # Uses system accent color
+    "application": "accent",  # Uses system accent color (typically blue)
     "math": "success",  # Green tone
-    "ai": "accent",  # Purple/blue tone
+    "ai": "accent",  # Uses system accent color
     "command": "warning",  # Orange tone
     "file": "accent",  # Default accent
 }

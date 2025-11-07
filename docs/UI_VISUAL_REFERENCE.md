@@ -40,7 +40,7 @@ Visual description of the UI enhancements using native Adwaita styling.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  ⚙                               ↑↓ Navigate  ↵ Select  Esc Close
+│  ⚙                         ↑↓ Navigate  ↵ Select  Esc Close │
 └─────────────────────────────────────────────────────────────┘
     ↑                                    ↑
   Preferences (.circular)           Labels (.dim-label, .caption)
