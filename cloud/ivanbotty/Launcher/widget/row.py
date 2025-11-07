@@ -26,9 +26,6 @@ class Row(Gtk.ListBoxRow):
     
     def __init__(self, app):
         super().__init__()
-        
-        # Add animation class
-        self.add_css_class("result-row")
 
         # Main row container
         row_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
@@ -142,7 +139,6 @@ class Row(Gtk.ListBoxRow):
         tag_button.set_halign(Gtk.Align.END)
         tag_button.set_margin_end(8)
         tag_button.add_css_class("category-tag")
-        tag_button.add_css_class("pill")
         tag_button.set_focusable(False)
         
         # Add type-specific CSS class for color coding

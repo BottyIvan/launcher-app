@@ -208,8 +208,5 @@ class Preferences(Adw.PreferencesDialog):
         text = row.get_text().strip()
         if text:
             db.set_api_key(service, text)
-            
-            # Show a toast notification (if window is available)
-            toast = Adw.Toast.new("API key saved successfully")
-            toast.set_timeout(2)
-            # Note: This would need access to the toast overlay to work properly
+            # Note: Toast notification would require access to the window's toast overlay
+            # which is not available in this dialog context
