@@ -8,6 +8,8 @@ from cloud.ivanbotty.Launcher.widget.preferences import Preferences
 
 
 class Footer(Adw.Bin):
+    """Footer with keyboard shortcuts display using native Adwaita styling."""
+    
     def __init__(self, app):
         super().__init__()
         self.app = app
@@ -16,6 +18,8 @@ class Footer(Adw.Bin):
         main_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
         self.set_margin_start(UI_CONFS[PREFERENCES]["margin_start"])
         self.set_margin_end(UI_CONFS[PREFERENCES]["margin_end"])
+        self.set_margin_top(8)
+        self.set_margin_bottom(8)
 
         self.set_child(main_box)
 
@@ -23,33 +27,35 @@ class Footer(Adw.Bin):
         preferences_btn = Gtk.Button()
         preferences_btn.set_valign(Gtk.Align.CENTER)
         preferences_btn.add_css_class("flat")
-        preferences_icon = Adw.ButtonContent(icon_name="applications-system-symbolic")
+        preferences_btn.add_css_class("circular")
+        preferences_icon = Adw.ButtonContent(
+            icon_name="preferences-system-symbolic",
+            label=""
+        )
         preferences_btn.set_child(preferences_icon)
-        preferences_btn.set_tooltip_text("Open Preferences")
+        preferences_btn.set_tooltip_text("Preferences (Ctrl+,)")
         preferences_btn.set_focus_on_click(False)
         preferences_btn.connect("clicked", lambda b: self.open_preferences())
         main_box.append(preferences_btn)
 
-        # Add a spacer to push shortcut buttons to the right
+        # Add a spacer to push shortcut labels to the right
         spacer = Gtk.Box(hexpand=True)
         main_box.append(spacer)
 
-        # Define and add shortcut buttons to the right side
-        shortcut_definitions = [
-            ("keyboard-enter-symbolic", "Select"),
-            ("arrow1-down-symbolic", "Navigate Down"),
-            ("arrow1-up-symbolic", "Navigate Up"),
+        # Add shortcut labels with native styling
+        shortcuts = [
+            ("↑↓", "Navigate"),
+            ("↵", "Select"),
+            ("Esc", "Close"),
         ]
-        for icon_name, description in shortcut_definitions:
-            shortcut_btn = Gtk.Button()
-            shortcut_icon = Adw.ButtonContent(icon_name=icon_name)
-            shortcut_btn.set_child(shortcut_icon)
-            shortcut_btn.add_css_class("flat")
-            shortcut_btn.set_tooltip_text(
-                f"Press {icon_name} to {description}" if description else f"Press {icon_name}"
-            )
-            main_box.append(shortcut_btn)
+        
+        for key_text, action_text in shortcuts:
+            label = Gtk.Label(label=f"{key_text} {action_text}")
+            label.add_css_class("dim-label")
+            label.add_css_class("caption")
+            label.set_valign(Gtk.Align.CENTER)
+            main_box.append(label)
 
     def open_preferences(self):
-        # Import and present the Preferences window
+        """Open the preferences dialog."""
         Preferences(self.app).present()

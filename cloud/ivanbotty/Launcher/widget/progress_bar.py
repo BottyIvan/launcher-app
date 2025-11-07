@@ -4,10 +4,10 @@ from gi.repository import Gtk, GLib
 
 
 class ProgressBar(Gtk.ProgressBar):
+    """Progress bar using native Adwaita styling."""
+    
     def __init__(self, text="Loading..."):
-        """
-        Initialize the ProgressBar with optional display text.
-        """
+        """Initialize the ProgressBar with optional display text."""
         super().__init__()
         self.set_show_text(True)
         self.set_text(text)

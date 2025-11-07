@@ -36,12 +36,16 @@
 
 ## ✨ Key Features
 
-- 🚀 **Instant Search** - Find applications as you type
-- 🎨 **Modern UI** - Beautiful GTK4/Adwaita interface
+- 🚀 **Instant Search** - Find applications as you type with fuzzy matching
+- 🎨 **Modern UI** - Beautiful GTK4/Adwaita interface with smooth animations
+- ⌨️ **Keyboard-First** - Complete keyboard navigation with visible shortcuts
 - 🧮 **Built-in Calculator** - Evaluate expressions without switching apps
 - 🔌 **Extensible** - Plugin system for custom functionality
+- 🎯 **Smart Results** - Color-coded category tags for quick identification
 - 🔒 **Secure** - Flatpak sandboxing support
-- ⚡ **Fast** - Optimized for performance
+- ⚡ **Fast** - Optimized for performance with GPU-accelerated animations
+- 🌓 **Adaptive Theming** - Automatic dark/light mode support
+- 📏 **Responsive Layout** - Compact and default modes for different screen sizes
 
 ## 🚀 Quick Start
 
@@ -62,6 +66,15 @@ cd launcher-app
 python3 -m cloud.ivanbotty.Launcher
 ```
 
+### Keyboard Shortcuts
+
+- **Type** - Start searching for applications and commands
+- **↑/↓** - Navigate through results
+- **Enter** - Launch the selected item
+- **Escape** - Close the launcher
+- **Ctrl+,** - Open preferences
+- **Ctrl+?** or **F1** - Show all keyboard shortcuts
+
 **📚 For detailed installation instructions, see the [Installation Guide](https://github.com/BottyIvan/launcher-app/wiki/Installation).**
 
 ## 📖 Documentation
@@ -79,6 +92,17 @@ Complete documentation is available in our **[Wiki](https://github.com/BottyIvan
 - **[FAQ](https://github.com/BottyIvan/launcher-app/wiki/FAQ)** - Frequently asked questions and troubleshooting
 - **[Changelog](https://github.com/BottyIvan/launcher-app/wiki/Changelog)** - Version history and release notes
 - **[License](https://github.com/BottyIvan/launcher-app/wiki/License)** - Licensing information
+
+### UI Enhancement Documentation
+
+See the [UI Enhancements Guide](docs/UI_ENHANCEMENTS.md) for details on the modern interface improvements, including:
+- Custom CSS styling following GNOME HIG
+- Smooth animations and transitions
+- Keyboard-first navigation
+- Color-coded category tags
+- Responsive layout modes (Compact/Default)
+
+For visual reference, check the [UI Visual Reference](docs/UI_VISUAL_REFERENCE.md).
 
 ## 🤝 Contributing
 

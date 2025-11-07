@@ -43,22 +43,46 @@ UI_CONFS = {
         "width": 700,
         "height": 400,
         "entry_width": 660,
-        "entry_height": 36,
-        "margin_top": 8,
-        "margin_bottom": 8,
-        "margin_start": 8,
-        "margin_end": 8,
+        "entry_height": 40,  # Slightly larger for better touch
+        "margin_top": 10,
+        "margin_bottom": 10,
+        "margin_start": 10,
+        "margin_end": 10,
+        "progress_margin_top": 6,
+        "progress_margin_bottom": 6,
+        "icon_size": 32,  # Icon size in pixels
     },
     DEFAULT_STYLE: {
-        "width": 800,
-        "height": 540,
-        "entry_width": 760,
-        "entry_height": 48,
+        "width": 850,  # Slightly wider for better content display
+        "height": 580,  # Slightly taller for more results
+        "entry_width": 810,
+        "entry_height": 52,  # Larger for better accessibility
         "margin_top": 16,
         "margin_bottom": 16,
-        "margin_start": 16,
-        "margin_end": 16,
+        "margin_start": 20,  # More breathing room
+        "margin_end": 20,
+        "progress_margin_top": 8,
+        "progress_margin_bottom": 8,
+        "icon_size": 32,  # Icon size in pixels
     },
+}
+
+# Animation and transition settings
+# These can be adjusted by users via preferences or configuration files
+ANIMATION_SETTINGS = {
+    "enable_animations": True,  # Global animation toggle
+    "transition_duration": 200,  # Duration in milliseconds for transitions
+    "icon_hover_scale": 1.05,  # Scale factor for icon hover effect (if animations enabled)
+}
+
+# Category tag configuration
+# Maps result types to Adwaita style classes for native theming
+CATEGORY_TAG_STYLES = {
+    "application": "accent",  # Uses system accent color (typically blue)
+    "math": "success",  # Green tone
+    "ai": "accent",  # Uses system accent color
+    "command": "warning",  # Orange tone
+    "file": "accent",  # Default accent
 }
 
 # Retrieve the user's preferred UI style from the database.
