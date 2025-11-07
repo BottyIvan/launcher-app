@@ -8,5 +8,6 @@
         <file>arrow1-down-symbolic.svg</file>
         <file>arrow1-up-symbolic.svg</file>
         <file>keyboard-enter-symbolic.svg</file>
+        <file>style.css</file>
     </gresource>
 </gresources>

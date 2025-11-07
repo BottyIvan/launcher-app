@@ -13,7 +13,7 @@ import yaml
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 
-from gi.repository import Adw, GLib, Gtk
+from gi.repository import Adw, GLib, Gtk, Gdk
 
 from cloud.ivanbotty.Launcher.config.config import PREFERENCES, UI_CONFS
 from cloud.ivanbotty.Launcher.controller.event_key_controller import EventKeyController
@@ -132,6 +132,9 @@ class App(Adw.Application):
         Gtk.Application.do_startup(self)
         logger.info("Application startup")
 
+        # Load custom CSS for modern UI
+        self._load_custom_css()
+
         # Prepare services dictionary
         services = {
             ext.name.lower(): load_class_instance(ext.service)
@@ -167,24 +170,40 @@ class App(Adw.Application):
         self.keyboard_controller = EventKeyController(self)
         self.win.add_controller(self.keyboard_controller)
 
-        # Create scrolled window for the view
+        # Create scrolled window for the view with styling
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         scrolled_window.set_vexpand(True)
         scrolled_window.set_hexpand(True)
+        scrolled_window.add_css_class("results-list")
         scrolled_window.set_child(self.view)
 
         # Create footer widget
         footer = Footer(self)
 
-        # Layout setup
+        # Layout setup with CSS classes
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        box.add_css_class("launcher-content")
         box.append(self.entry)
         box.append(self.progress_bar)
         box.append(scrolled_window)
         box.append(footer)
 
         self.win.set_content(box)
+
+    def _load_custom_css(self) -> None:
+        """Load custom CSS stylesheet for modern UI styling."""
+        try:
+            css_provider = Gtk.CssProvider()
+            css_provider.load_from_resource("/cloud/ivanbotty/Launcher/resources/style.css")
+            Gtk.StyleContext.add_provider_for_display(
+                Gdk.Display.get_default(),
+                css_provider,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            )
+            logger.info("Custom CSS loaded successfully")
+        except Exception as e:
+            logger.warning(f"Failed to load custom CSS: {e}")
 
     def do_activate(self) -> None:
         """Activate the application and show the window."""

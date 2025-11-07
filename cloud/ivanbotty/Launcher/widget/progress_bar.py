@@ -5,13 +5,14 @@ from gi.repository import Gtk, GLib
 
 class ProgressBar(Gtk.ProgressBar):
     def __init__(self, text="Loading..."):
-        """
-        Initialize the ProgressBar with optional display text.
-        """
+        """Initialize the ProgressBar with optional display text."""
         super().__init__()
         self.set_show_text(True)
         self.set_text(text)
         self.set_fraction(0.0)
+        
+        # Add CSS classes for modern styling
+        self.add_css_class("launcher-progress")
 
     def update_progress(self, fraction, text=None):
         """

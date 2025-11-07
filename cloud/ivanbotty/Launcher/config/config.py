@@ -43,21 +43,25 @@ UI_CONFS = {
         "width": 700,
         "height": 400,
         "entry_width": 660,
-        "entry_height": 36,
-        "margin_top": 8,
-        "margin_bottom": 8,
-        "margin_start": 8,
-        "margin_end": 8,
+        "entry_height": 40,  # Slightly larger for better touch
+        "margin_top": 10,
+        "margin_bottom": 10,
+        "margin_start": 10,
+        "margin_end": 10,
+        "progress_margin_top": 6,
+        "progress_margin_bottom": 6,
     },
     DEFAULT_STYLE: {
-        "width": 800,
-        "height": 540,
-        "entry_width": 760,
-        "entry_height": 48,
+        "width": 850,  # Slightly wider for better content display
+        "height": 580,  # Slightly taller for more results
+        "entry_width": 810,
+        "entry_height": 52,  # Larger for better accessibility
         "margin_top": 16,
         "margin_bottom": 16,
-        "margin_start": 16,
-        "margin_end": 16,
+        "margin_start": 20,  # More breathing room
+        "margin_end": 20,
+        "progress_margin_top": 8,
+        "progress_margin_bottom": 8,
     },
 }
 
