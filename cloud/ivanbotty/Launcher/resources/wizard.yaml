@@ -1,40 +1,54 @@
 pages:
-  - title: "🚀 Welcome to Launcher!"
+  - title: "Welcome to Launcher"
+    icon: "applications-system-symbolic"
     description: |
-      **Launcher** is a modern and elegant desktop application launcher for Linux, built with **GTK 4** and **Adwaita**.
-      Instantly find and open your applications with a smooth, responsive, and minimal interface.
-    button: "Next"
+      A modern, fast, and elegant application launcher for Linux.
+      
+      Find and launch your applications instantly with a beautiful, 
+      keyboard-first interface that feels right at home on your desktop.
+    button_label: "Get Started"
 
-  - title: "🌟 Fast and Elegant"
+  - title: "Lightning-Fast Search"
+    icon: "system-search-symbolic"
     description: |
-      • Instant search with real-time results  
-      • Modern Adwaita-style interface  
-      • Crisp SVG icons and fluid animations  
-      • Support for native and Flatpak applications  
-      • Lightweight and optimized for performance
-    button: "Next"
+      Start typing to instantly search across all your applications.
+      
+      • Fuzzy matching finds what you need quickly
+      • Real-time results as you type
+      • Works with native and Flatpak applications
+      • Built-in calculator for quick math
+    button_label: "Next"
 
-  - title: "🧠 Smart Features"
+  - title: "Keyboard-First Design"
+    icon: "input-keyboard-symbolic"
     description: |
-      • Switch between compact or expanded layouts  
-      • Persistent preferences stored securely with SQLite  
-      • Modular architecture powered by internal services  
-      • AI and command integrations *(in development)*  
-      • Designed for customization and flexibility
-    button: "Next"
+      Navigate effortlessly using your keyboard.
+      
+      • Type to search
+      • ↑↓ to navigate results
+      • Enter to launch
+      • Escape to close
+      • Ctrl+? to see all shortcuts
+    button_label: "Next"
 
-  - title: "🧩 Extensions"
+  - title: "Personalize Your Experience"
+    icon: "emblem-system-symbolic"
     description: |
-      Extend Launcher with additional modules:
-      • Application search and management  
-      • Built-in calculator and command runner  
-      • AI assistant and file manager *(coming soon)*  
-      • Easy to enable or disable from Preferences
-    button: "Next"
+      Make Launcher work the way you want.
+      
+      • Choose compact or spacious layouts
+      • Enable or disable extension modules
+      • All preferences stored locally
+      • Access settings with Ctrl+,
+    button_label: "Next"
 
-  - title: "🔒 Privacy &amp; Preferences"
+  - title: "Privacy First"
+    icon: "security-high-symbolic"
     description: |
-      Your data stays on your device — Launcher never collects or shares information.  
-      All settings are stored locally and can be adjusted anytime from **Preferences**.  
-      Enjoy full control over your workspace.
-    button: "Finish"
+      Your data stays on your device.
+      
+      Launcher respects your privacy — no telemetry, no tracking, 
+      no data collection. Everything runs locally on your system.
+      
+      Ready to get started?
+    button_label: "Launch Launcher"

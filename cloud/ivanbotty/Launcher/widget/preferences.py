@@ -32,6 +32,33 @@ class Preferences(Adw.PreferencesDialog):
         page_general.set_title("General")
         page_general.set_icon_name("preferences-system-symbolic")
 
+        # Onboarding group
+        onboarding_group = Adw.PreferencesGroup(
+            title="Welcome Wizard",
+            description="First-time setup and introduction"
+        )
+
+        # Action row to re-run the onboarding wizard
+        wizard_row = Adw.ActionRow(
+            title="Run Setup Again",
+            subtitle="Show the welcome wizard on next launch"
+        )
+        wizard_row.set_activatable(True)
+        wizard_row.add_suffix(Gtk.Image.new_from_icon_name("media-playback-start-symbolic"))
+
+        def on_reset_wizard(row):
+            from cloud.ivanbotty.Launcher.config.config import reset_onboarding
+            reset_onboarding()
+            
+            # Show confirmation toast
+            toast = Adw.Toast(title="Welcome wizard will show on next launch")
+            toast.set_timeout(3)
+            if hasattr(self, 'add_toast'):
+                self.add_toast(toast)
+
+        wizard_row.connect("activated", on_reset_wizard)
+        onboarding_group.add(wizard_row)
+
         # About group for application info
         about_group = Adw.PreferencesGroup(title="About")
         about_group.set_description("Information about Launcher")
@@ -56,6 +83,7 @@ class Preferences(Adw.PreferencesDialog):
         info_row.connect("activated", on_info_row_activated)
         about_group.add(info_row)
 
+        page_general.add(onboarding_group)
         page_general.add(about_group)
         self.add(page_general)
 

@@ -8,7 +8,13 @@ from typing import Callable
 
 class Page:
     @staticmethod
-    def make_page(title: str, subtitle: str, button_text: str, callback: Callable) -> Adw.Clamp:
+    def make_page(
+        title: str,
+        subtitle: str,
+        button_text: str,
+        callback: Callable,
+        icon_name: str = None
+    ) -> Adw.Clamp:
         """
         Creates a compact, Adwaita-conformant onboarding page.
         Args:
@@ -16,6 +22,7 @@ class Page:
             subtitle (str): The subtitle or description.
             button_text (str): Text for the action button.
             callback (Callable): Function to call when button is clicked.
+            icon_name (str): Optional icon name to display above the title.
         Returns:
             Adw.Clamp: The constructed page widget.
         """
@@ -23,7 +30,7 @@ class Page:
         clamp.set_maximum_size(640)
 
         # Vertical box to arrange widgets
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=24)
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20)
         vbox.set_margin_top(48)
         vbox.set_margin_bottom(48)
         vbox.set_margin_start(32)
@@ -33,26 +40,30 @@ class Page:
         vbox.set_hexpand(True)
         vbox.set_vexpand(True)
 
+        # Add icon if provided
+        if icon_name:
+            icon = Gtk.Image.new_from_icon_name(icon_name)
+            icon.set_pixel_size(64)
+            icon.set_margin_bottom(12)
+            icon.add_css_class("accent")
+            vbox.append(icon)
+
         # Title and subtitle labels
-        title_label = Page._create_label(title, markup=True, size="xx-large", weight="bold")
-        subtitle_label = Page._create_label(subtitle, markup=True, dim=True, margin_top=8)
+        title_label = Page._create_label(title, markup=True, size="x-large", weight="bold")
+        subtitle_label = Page._create_label(subtitle, markup=True, dim=True, margin_top=12)
 
-        # Separator line
-        separator = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
-        separator.set_margin_top(12)
-        separator.set_margin_bottom(12)
-
-        # Action button
+        # Action button with larger size and pill style
         button = Gtk.Button(label=button_text)
         button.add_css_class("suggested-action")
+        button.add_css_class("pill")
         button.set_halign(Gtk.Align.CENTER)
-        button.set_margin_top(12)
+        button.set_margin_top(24)
+        button.set_size_request(200, -1)
         button.connect("clicked", lambda *_: callback())
 
         # Add widgets to the vertical box
         vbox.append(title_label)
         vbox.append(subtitle_label)
-        vbox.append(separator)
         vbox.append(button)
 
         clamp.set_child(vbox)
