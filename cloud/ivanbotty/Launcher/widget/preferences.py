@@ -50,11 +50,17 @@ class Preferences(Adw.PreferencesDialog):
             from cloud.ivanbotty.Launcher.config.config import reset_onboarding
             reset_onboarding()
             
-            # Show confirmation toast
-            toast = Adw.Toast(title="Welcome wizard will show on next launch")
-            toast.set_timeout(3)
-            if hasattr(self, 'add_toast'):
-                self.add_toast(toast)
+            # Show confirmation toast if supported
+            # Note: Adw.PreferencesDialog doesn't support add_toast in all versions
+            # The preference change is saved regardless, and users will see the wizard on next launch
+            try:
+                toast = Adw.Toast(title="Welcome wizard will show on next launch")
+                toast.set_timeout(3)
+                if hasattr(self, 'add_toast'):
+                    self.add_toast(toast)
+            except Exception:
+                # Toast not supported, but the preference was still set successfully
+                pass
 
         wizard_row.connect("activated", on_reset_wizard)
         onboarding_group.add(wizard_row)

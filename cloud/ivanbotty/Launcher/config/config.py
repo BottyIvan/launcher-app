@@ -1,6 +1,7 @@
 import cloud.ivanbotty.database.sqlite3 as db
 from pathlib import Path
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -121,7 +122,7 @@ def mark_onboarding_complete() -> None:
     """Mark the onboarding wizard as complete."""
     try:
         db.set_pref("show_welcome_wizard", False)
-        db.set_pref("onboarding_completed_at", str(int(__import__("time").time())))
+        db.set_pref("onboarding_completed_at", str(int(time.time())))
         logger.info("Onboarding marked as complete")
     except Exception as e:
         logger.error(f"Failed to mark onboarding complete: {e}")
