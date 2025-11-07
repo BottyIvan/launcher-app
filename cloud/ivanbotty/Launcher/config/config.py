@@ -50,6 +50,7 @@ UI_CONFS = {
         "margin_end": 10,
         "progress_margin_top": 6,
         "progress_margin_bottom": 6,
+        "icon_size": 32,  # Icon size in pixels
     },
     DEFAULT_STYLE: {
         "width": 850,  # Slightly wider for better content display
@@ -62,7 +63,26 @@ UI_CONFS = {
         "margin_end": 20,
         "progress_margin_top": 8,
         "progress_margin_bottom": 8,
+        "icon_size": 32,  # Icon size in pixels
     },
+}
+
+# Animation and transition settings
+# These can be adjusted by users via preferences or configuration files
+ANIMATION_SETTINGS = {
+    "enable_animations": True,  # Global animation toggle
+    "transition_duration": 200,  # Duration in milliseconds for transitions
+    "icon_hover_scale": 1.05,  # Scale factor for icon hover effect (if animations enabled)
+}
+
+# Category tag configuration
+# Maps result types to Adwaita style classes for native theming
+CATEGORY_TAG_STYLES = {
+    "application": "accent",  # Uses system accent color
+    "math": "success",  # Green tone
+    "ai": "accent",  # Purple/blue tone
+    "command": "warning",  # Orange tone
+    "file": "accent",  # Default accent
 }
 
 # Retrieve the user's preferred UI style from the database.

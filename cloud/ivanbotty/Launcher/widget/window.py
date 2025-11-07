@@ -2,18 +2,17 @@ import gi
 
 gi.require_version("Adw", "1")
 gi.require_version("Gtk", "4.0")
-from gi.repository import Adw, Gtk, Gdk
+from gi.repository import Adw, Gtk
 from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
 
 
 class Window(Adw.ApplicationWindow):
-    """Enhanced main window with modern styling and keyboard shortcuts.
+    """Main window with keyboard shortcuts using native Adwaita styling.
     
     Features:
     - Responsive sizing with constraints
-    - Keyboard shortcuts overlay (Ctrl+?)
-    - Better visual hierarchy
-    - Smooth transitions
+    - Keyboard shortcuts overlay (Ctrl+? or F1)
+    - Native Adwaita look and feel
     """
     
     def __init__(self, application):
@@ -24,12 +23,9 @@ class Window(Adw.ApplicationWindow):
         height = UI_CONFS[PREFERENCES]["height"]
         self.set_default_size(width, height)
         
-        # Allow some resizing but with constraints for better UX
+        # Allow resizing with minimum constraints
         self.set_resizable(True)
         self.set_size_request(600, 400)  # Minimum size
-        
-        # Add CSS classes for styling
-        self.add_css_class("launcher-window")
         
         # Set up keyboard shortcuts
         self._setup_shortcuts()

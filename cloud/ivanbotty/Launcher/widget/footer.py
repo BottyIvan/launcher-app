@@ -8,21 +8,11 @@ from cloud.ivanbotty.Launcher.widget.preferences import Preferences
 
 
 class Footer(Adw.Bin):
-    """Enhanced footer with improved keyboard shortcuts display.
-    
-    Features:
-    - Modern visual design with better spacing
-    - Clear keyboard shortcut hints
-    - Preferences button with tooltip
-    - Responsive layout
-    """
+    """Footer with keyboard shortcuts display using native Adwaita styling."""
     
     def __init__(self, app):
         super().__init__()
         self.app = app
-
-        # Add CSS class for styling
-        self.add_css_class("launcher-footer")
 
         # Create the main horizontal container for the footer
         main_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
@@ -48,44 +38,23 @@ class Footer(Adw.Bin):
         preferences_btn.connect("clicked", lambda b: self.open_preferences())
         main_box.append(preferences_btn)
 
-        # Add a spacer to push shortcut buttons to the right
+        # Add a spacer to push shortcut labels to the right
         spacer = Gtk.Box(hexpand=True)
         main_box.append(spacer)
 
-        # Define and add shortcut hints to the right side
-        shortcut_definitions = [
-            ("↑↓", "Navigate", "Use arrow keys to navigate through results"),
-            ("↵", "Select", "Press Enter to launch the selected item"),
-            ("Esc", "Close", "Press Escape to close the launcher"),
+        # Add shortcut labels with native styling
+        shortcuts = [
+            ("↑↓", "Navigate"),
+            ("↵", "Select"),
+            ("Esc", "Close"),
         ]
         
-        for key_label, action_label, tooltip in shortcut_definitions:
-            hint_box = self._create_shortcut_hint(key_label, action_label, tooltip)
-            main_box.append(hint_box)
-
-    def _create_shortcut_hint(self, key_label, action_label, tooltip):
-        """Create a keyboard shortcut hint with key and action labels."""
-        hint_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-        hint_box.set_valign(Gtk.Align.CENTER)
-        hint_box.set_tooltip_text(tooltip)
-        hint_box.add_css_class("shortcut-hint")
-        
-        # Key label with special styling
-        key_lbl = Gtk.Label(label=key_label)
-        key_lbl.add_css_class("monospace")
-        key_lbl.add_css_class("dim-label")
-        key_lbl.set_margin_start(8)
-        key_lbl.set_margin_end(2)
-        hint_box.append(key_lbl)
-        
-        # Action label
-        action_lbl = Gtk.Label(label=action_label)
-        action_lbl.add_css_class("caption")
-        action_lbl.add_css_class("dim-label")
-        action_lbl.set_margin_end(8)
-        hint_box.append(action_lbl)
-        
-        return hint_box
+        for key_text, action_text in shortcuts:
+            label = Gtk.Label(label=f"{key_text} {action_text}")
+            label.add_css_class("dim-label")
+            label.add_css_class("caption")
+            label.set_valign(Gtk.Align.CENTER)
+            main_box.append(label)
 
     def open_preferences(self):
         """Open the preferences dialog."""

@@ -7,13 +7,12 @@ from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
 
 
 class SearchEntry(Gtk.Entry):
-    """Enhanced search entry with modern styling and better UX.
+    """Enhanced search entry with dynamic clear button.
     
     Features:
-    - Modern visual design with rounded corners and shadows
-    - Clear button that appears when text is entered
-    - Smooth transitions and hover effects
-    - Improved icon positioning
+    - Clear button appears only when text is entered
+    - Uses native Adwaita styling
+    - Keyboard accessible
     """
     
     __gsignals__ = {
@@ -26,11 +25,10 @@ class SearchEntry(Gtk.Entry):
         self.set_placeholder_text(placeholder)
         self.set_size_request(width, height)
         
-        # Apply modern styling classes
-        self.add_css_class("search-entry")
+        # Use native Adwaita styling
         self.add_css_class("flat")
         
-        # Configure icons with better visual hierarchy
+        # Configure icons
         self.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, "system-search-symbolic")
         self.set_icon_activatable(Gtk.EntryIconPosition.PRIMARY, False)
         

@@ -6,7 +6,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 
 from gi.repository import Gtk, Gio, Adw
-from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES
+from cloud.ivanbotty.Launcher.config.config import UI_CONFS, PREFERENCES, CATEGORY_TAG_STYLES
 
 # Pre-compile regex patterns for better performance
 _CODE_BLOCK_PATTERN = re.compile(r"(^```(?:json)?$|^```$)", re.MULTILINE)
@@ -14,13 +14,12 @@ _CODE_KEYWORDS_PATTERN = re.compile(r"\b(const|def|class|function)\b")
 
 
 class Row(Gtk.ListBoxRow):
-    """Enhanced row widget with modern styling and animations.
+    """Enhanced row widget using native Adwaita styling.
     
     Features:
-    - Smooth hover and selection animations
-    - Better icon presentation with shadows
-    - Improved text hierarchy and readability
-    - Category tags with color coding
+    - Configurable icon sizes
+    - Native Adwaita category tags
+    - Improved text hierarchy
     - Responsive layout
     """
     
@@ -45,7 +44,7 @@ class Row(Gtk.ListBoxRow):
         spacer.set_hexpand(True)
         row_box.append(spacer)
 
-        # Type tag with category-specific styling
+        # Type tag with native Adwaita styling
         tag = getattr(app, "type", "")
         if tag:
             tag_button = self._create_tag_button(tag)
@@ -64,8 +63,9 @@ class Row(Gtk.ListBoxRow):
         widget.set_margin_end(UI_CONFS[PREFERENCES]["margin_end"])
 
     def _create_icon_widget(self, icon_name):
-        """Create icon widget with modern styling and shadow."""
+        """Create icon widget with configurable size from settings."""
         icon_name = icon_name or "application-x-addon-symbolic"
+        icon_size = UI_CONFS[PREFERENCES].get("icon_size", 32)
         
         # Use FileIcon for absolute paths, otherwise ThemedIcon
         gicon = (
@@ -75,10 +75,9 @@ class Row(Gtk.ListBoxRow):
         )
         
         image = Gtk.Image.new_from_gicon(gicon)
-        image.set_pixel_size(32)  # Slightly larger for better visibility
-        image.add_css_class("app-icon")
+        image.set_pixel_size(icon_size)
 
-        # Container for icon with better spacing
+        # Container for icon with proper spacing
         box_icon_bin = Gtk.Box()
         box_icon_bin.set_margin_top(4)
         box_icon_bin.set_margin_bottom(4)
@@ -86,30 +85,31 @@ class Row(Gtk.ListBoxRow):
         box_icon_bin.set_margin_end(8)
         box_icon_bin.set_valign(Gtk.Align.CENTER)
         box_icon_bin.set_halign(Gtk.Align.START)
-        box_icon_bin.set_size_request(40, 40)
+        box_icon_bin.set_size_request(icon_size + 8, icon_size + 8)
         box_icon_bin.append(image)
         
         return box_icon_bin
 
     def _create_name_desc_box(self, app):
-        """Create the name and description layout with improved typography."""
+        """Create the name and description layout with proper hierarchy."""
         name_desc_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
         name_desc_box.set_valign(Gtk.Align.CENTER)
 
-        # Name label with enhanced styling
+        # Name label
         name_label = Gtk.Label(label=getattr(app, "name", ""))
         name_label.set_xalign(0)
         name_label.set_hexpand(True)
         name_label.set_margin_start(0)
         name_label.set_margin_bottom(2)
         name_label.set_ellipsize(True)
-        name_label.set_max_width_chars(28)  # Slightly more space
+        name_label.set_max_width_chars(28)
         name_label.set_halign(Gtk.Align.FILL)
         name_label.set_valign(Gtk.Align.CENTER)
-        name_label.add_css_class("app-name")
+        # Use heading class for better hierarchy
+        name_label.add_css_class("heading")
         name_desc_box.append(name_label)
 
-        # Description with improved styling
+        # Description
         desc = self.prettify_description(getattr(app, "description", ""))
         if desc:
             desc_label = Gtk.Label(label=desc)
@@ -121,7 +121,8 @@ class Row(Gtk.ListBoxRow):
             desc_label.set_max_width_chars(0)
             desc_label.set_halign(Gtk.Align.FILL)
             desc_label.set_valign(Gtk.Align.FILL)
-            desc_label.add_css_class("app-description")
+            # Use dim-label for secondary text
+            desc_label.add_css_class("dim-label")
 
             # Monospace font if code detected
             if _CODE_KEYWORDS_PATTERN.search(desc):
@@ -133,26 +134,26 @@ class Row(Gtk.ListBoxRow):
         return name_desc_box
 
     def _create_tag_button(self, tag):
-        """Create a category tag button with color-coded styling."""
+        """Create a category tag button using native Adwaita styles."""
         tag_button = Gtk.Button(label=tag)
         tag_button.set_valign(Gtk.Align.CENTER)
         tag_button.set_halign(Gtk.Align.END)
         tag_button.set_margin_end(8)
-        tag_button.add_css_class("category-tag")
         tag_button.set_focusable(False)
         
-        # Add type-specific CSS class for color coding
+        # Use native Adwaita pill style
+        tag_button.add_css_class("pill")
+        
+        # Map tag type to Adwaita style class from configuration
         tag_lower = tag.lower()
-        if "app" in tag_lower or "application" in tag_lower:
-            tag_button.add_css_class("app")
-        elif "math" in tag_lower or "calc" in tag_lower:
-            tag_button.add_css_class("math")
-        elif "ai" in tag_lower or "assistant" in tag_lower:
-            tag_button.add_css_class("ai")
-        elif "command" in tag_lower or "cmd" in tag_lower:
-            tag_button.add_css_class("command")
-        elif "file" in tag_lower:
-            tag_button.add_css_class("file")
+        style_class = "accent"  # Default
+        
+        for tag_type, adw_class in CATEGORY_TAG_STYLES.items():
+            if tag_type in tag_lower:
+                style_class = adw_class
+                break
+        
+        tag_button.add_css_class(style_class)
         
         return tag_button
 
