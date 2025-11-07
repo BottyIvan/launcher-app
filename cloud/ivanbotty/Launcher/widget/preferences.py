@@ -3,7 +3,9 @@ import gi
 gi.require_version("Adw", "1")
 gi.require_version("Gtk", "4.0")
 from gi.repository import Adw, Gtk
-import cloud.ivanbotty.database.sqlite3 as db
+
+from cloud.ivanbotty.database import sqlite3 as db
+from cloud.ivanbotty.Launcher.config.config import reset_onboarding
 
 
 class Preferences(Adw.PreferencesDialog):
@@ -47,7 +49,6 @@ class Preferences(Adw.PreferencesDialog):
         wizard_row.add_suffix(Gtk.Image.new_from_icon_name("media-playback-start-symbolic"))
 
         def on_reset_wizard(row):
-            from cloud.ivanbotty.Launcher.config.config import reset_onboarding
             reset_onboarding()
             
             # Show confirmation toast if supported
