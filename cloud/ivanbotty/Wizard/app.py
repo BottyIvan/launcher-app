@@ -16,6 +16,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Adw, Gtk
 
+from cloud.ivanbotty.Launcher.config.config import mark_onboarding_complete
 from cloud.ivanbotty.Launcher.widget.window import Window
 from cloud.ivanbotty.Wizard.components.page import Page
 from cloud.ivanbotty.common import find_extensions_yaml
@@ -85,7 +86,6 @@ class WelcomeWizard(Adw.Application):
         logger.info("Wizard completed! Launching main app...")
 
         # Mark onboarding as complete
-        from cloud.ivanbotty.Launcher.config.config import mark_onboarding_complete
         mark_onboarding_complete()
 
         threading.Thread(
