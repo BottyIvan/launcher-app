@@ -74,12 +74,12 @@ class ApplicationsService:
                 try:
                     # Create ApplicationModel from cached data
                     app = ApplicationModel(
+                        type=entry_data.get('type', 'Application'),
                         name=entry_data.get('name', ''),
-                        icon=entry_data.get('icon', ''),
-                        command=entry_data.get('command', ''),
-                        description=entry_data.get('description', ''),
-                        keywords=entry_data.get('keywords', []),
-                        categories=entry_data.get('categories', [])
+                        description=entry_data.get('description', None),
+                        exec_cmd=entry_data.get('exec_cmd', ''),
+                        desktop_id=entry_data.get('desktop_id', ''),
+                        icon=entry_data.get('icon', None),
                     )
                     self.store.append(app)
                 except Exception as e:
