@@ -46,6 +46,11 @@ def build_parser(version: Optional[str] = None) -> argparse.ArgumentParser:
         help="Launch the welcome wizard on startup for first-time setup"
     )
     parser.add_argument(
+        "--daemonize",
+        action="store_true",
+        help="Run the application as a background service (daemon mode)"
+    )
+    parser.add_argument(
         "--config",
         type=str,
         help="Specify an alternative configuration file location"
