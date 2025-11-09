@@ -46,25 +46,38 @@ The daemon exposes the following D-Bus interface:
 
 ## Usage
 
+### D-Bus Service Activation
+
+The daemon is configured for automatic D-Bus activation. When the UI tries to connect to the daemon and it's not running, D-Bus will automatically start it.
+
+**D-Bus Service File:** `cloud.ivanbotty.Launcherd.service`
+- Installed to: `/usr/share/dbus-1/services/` (system-wide) or `~/.local/share/dbus-1/services/` (user)
+- Enables automatic daemon startup on first connection
+
 ### Starting the Daemon
 
 The daemon can be started in several ways:
 
-1. **Automatic Start (Recommended)**
+1. **Automatic D-Bus Activation (Recommended)**
+   - The daemon starts automatically when the UI first connects
+   - No manual intervention needed
+   - D-Bus service file handles activation
+
+2. **Automatic Start at Login**
    - The daemon is configured to start automatically at user login via the desktop file
    - Location: `~/.config/autostart/cloud.ivanbotty.Launcherd.desktop`
 
-2. **Manual Start**
+3. **Manual Start**
    ```bash
    python3 -m cloud.ivanbotty.Launcherd
    ```
 
-3. **Daemon Mode (Background)**
+4. **Daemon Mode (Background)**
    ```bash
    python3 -m cloud.ivanbotty.Launcherd --daemonize
    ```
 
-4. **Debug Mode**
+5. **Debug Mode**
    ```bash
    python3 -m cloud.ivanbotty.Launcherd --debug
    ```
