@@ -1,5 +1,6 @@
 import logging
 import os
+import json
 
 import gi
 
@@ -50,7 +51,6 @@ class ApplicationsService:
         Returns:
             True if successfully loaded from cache, False otherwise
         """
-        import json
         
         try:
             if not os.path.exists(cache_path):
