@@ -26,9 +26,7 @@
 **Launcher** provides instant search for installed applications, a built-in calculator, and an extensible architecture for adding custom features. It integrates seamlessly with modern Linux desktop environments.
 
 <p align="center">
-    <video src="./assets/launcher.mp4" controls width="600">
-        Your browser does not support the video tag.
-    </video>
+    <img src="./assets/Screenshot From 2025-11-09 21-55-46.png" width="600"/>
 </p>
 
 > [!IMPORTANT]
