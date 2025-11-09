@@ -39,7 +39,10 @@ class LauncherDaemonClient:
         self._signal_subscriptions = []
 
     def connect(self, timeout_ms: int = 1000) -> bool:
-        """Connect to the daemon D-Bus service.
+        """Connect to the daemon D-Bus service synchronously.
+        
+        Note: This method blocks and should not be used during UI startup.
+        Use connect_async() instead for non-blocking connection.
 
         Args:
             timeout_ms: Connection timeout in milliseconds
@@ -72,6 +75,60 @@ class LauncherDaemonClient:
             self.proxy = None
             self.connection = None
             return False
+    
+    def connect_async(self, callback: Callable[[bool], None]) -> None:
+        """Connect to the daemon D-Bus service asynchronously.
+        
+        This method doesn't block and is suitable for use during UI startup.
+        The connection happens in the background, and the callback is invoked
+        when the connection attempt completes.
+        
+        Args:
+            callback: Function to call with the connection result (True/False)
+        """
+        def do_connect():
+            """Thread function to attempt connection."""
+            try:
+                self.connection = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+                
+                # Try to create proxy with DO_NOT_AUTO_START flag first
+                # to check if daemon is already running
+                try:
+                    test_proxy = Gio.DBusProxy.new_sync(
+                        self.connection,
+                        Gio.DBusProxyFlags.DO_NOT_AUTO_START,
+                        None,
+                        self.BUS_NAME,
+                        self.OBJECT_PATH,
+                        self.INTERFACE_NAME,
+                        None
+                    )
+                    # Daemon is already running, use it
+                    self.proxy = test_proxy
+                    logger.debug("Daemon already running")
+                except Exception:
+                    # Daemon not running, don't wait for auto-start
+                    # Just log and return False
+                    logger.debug("Daemon not running and won't auto-start for async connect")
+                    GLib.idle_add(lambda: callback(False) or False)
+                    return
+                
+                # Test that we can actually communicate
+                self.proxy.get_cached_property("Version")
+                
+                logger.debug("Async connection to daemon successful")
+                GLib.idle_add(lambda: callback(True) or False)
+                
+            except Exception as e:
+                logger.debug(f"Async connection to daemon failed: {e}")
+                self.proxy = None
+                self.connection = None
+                GLib.idle_add(lambda: callback(False) or False)
+        
+        # Run connection attempt in a background thread
+        import threading
+        thread = threading.Thread(target=do_connect, daemon=True)
+        thread.start()
 
     def disconnect(self) -> None:
         """Disconnect from the daemon."""

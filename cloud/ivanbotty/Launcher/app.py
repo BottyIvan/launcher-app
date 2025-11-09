@@ -115,28 +115,42 @@ class App(Adw.Application):
         self._init_daemon_client()
     
     def _init_daemon_client(self) -> None:
-        """Initialize connection to the daemon if available."""
+        """Initialize connection to the daemon if available.
+        
+        This is done asynchronously to avoid blocking UI startup.
+        The daemon integration is optional and shouldn't delay the app.
+        """
         if not DAEMON_CLIENT_AVAILABLE:
             logger.info("Daemon client not available, running without daemon integration")
             return
         
         try:
             self.daemon_client = LauncherDaemonClient()
-            if self.daemon_client.connect():
-                logger.info("Connected to Launcher daemon")
-                
-                # Subscribe to daemon signals
-                self.daemon_client.subscribe_to_indexing_progress(
-                    self._on_daemon_indexing_progress
-                )
-                self.daemon_client.subscribe_to_cache_updated(
-                    self._on_daemon_cache_updated
-                )
-            else:
-                logger.info("Daemon not available, running standalone")
-                self.daemon_client = None
+            # Connect asynchronously to avoid blocking UI startup
+            # The daemon may take time to start via D-Bus activation
+            self.daemon_client.connect_async(self._on_daemon_connected)
         except Exception as e:
             logger.warning(f"Could not initialize daemon client: {e}")
+            self.daemon_client = None
+    
+    def _on_daemon_connected(self, success: bool) -> None:
+        """Callback when daemon connection attempt completes.
+        
+        Args:
+            success: True if connected successfully
+        """
+        if success:
+            logger.info("Connected to Launcher daemon")
+            
+            # Subscribe to daemon signals
+            self.daemon_client.subscribe_to_indexing_progress(
+                self._on_daemon_indexing_progress
+            )
+            self.daemon_client.subscribe_to_cache_updated(
+                self._on_daemon_cache_updated
+            )
+        else:
+            logger.info("Daemon not available, running standalone")
             self.daemon_client = None
     
     def _on_daemon_indexing_progress(self, progress: float, apps_count: int) -> None:
@@ -171,22 +185,6 @@ class App(Adw.Application):
             return False
         
         GLib.idle_add(hide_progress)
-    
-    def _should_use_daemon_cache(self) -> bool:
-        """Check if daemon cache is available and should be used.
-        
-        Returns:
-            True if daemon cache is available, False otherwise
-        """
-        if not self.daemon_client or not self.daemon_client.is_connected():
-            return False
-        
-        cache_status = self.daemon_client.get_cache_status()
-        if not cache_status:
-            return False
-        
-        available, cache_path, last_updated = cache_status
-        return available and os.path.exists(cache_path)
 
     def run_with_progress(
         self,
@@ -238,33 +236,14 @@ class App(Adw.Application):
             app=self, entry_widget=self.entry, view=self.view, services=services, handlers=handlers
         )
 
-        # Load applications in the background at startup
+        # Load applications immediately - don't wait for daemon
+        # The daemon integration is optional and runs in the background
         apps_service = services.get("application")
         if apps_service:
-            # Check if daemon has a cache ready
-            if self._should_use_daemon_cache():
-                # Daemon has cache, check if it's currently indexing
-                indexing_status = self.daemon_client.get_indexing_status()
-                if indexing_status:
-                    is_indexing, progress, apps_count = indexing_status
-                    if is_indexing:
-                        # Show progress bar while daemon is indexing
-                        logger.info("Daemon is indexing, showing progress")
-                        self.progress_bar.set_text(f"Indexing applications... {apps_count}")
-                        self.progress_bar.set_fraction(progress)
-                        self.progress_bar.set_visible(True)
-                    else:
-                        # Cache is ready, load instantly without progress bar
-                        logger.info("Loading applications from daemon cache")
-                        apps_service.load_applications()
-                else:
-                    # Cache available, load instantly
-                    logger.info("Loading applications from cache")
-                    apps_service.load_applications()
-            else:
-                # No daemon or no cache, load with progress bar
-                logger.info("Loading applications without daemon cache")
-                self.run_with_progress(apps_service.load_applications, text="Loading applications...")
+            # Always load applications with progress bar
+            # This ensures instant UI responsiveness
+            logger.info("Loading applications...")
+            self.run_with_progress(apps_service.load_applications, text="Loading applications...")
 
 
         # Adwaita setup

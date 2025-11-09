@@ -84,22 +84,23 @@ The daemon can be started in several ways:
 
 ### UI Behavior
 
-When the Launcher UI starts:
+The Launcher UI is designed for instant startup, similar to Spotlight, Krunner, or PowerToys Run:
 
-1. **With Daemon Running and Cache Ready**
-   - UI loads applications instantly from cache
-   - No progress bar shown
-   - Fastest startup experience
+1. **UI Starts Instantly**
+   - Applications load immediately on startup
+   - No waiting for daemon connection
+   - Progress bar shows while loading apps from database
 
-2. **With Daemon Running and Indexing**
-   - UI shows progress bar with indexing status
-   - Progress updates received via D-Bus signals
-   - Progress bar disappears when indexing completes
+2. **Daemon Connection (Background)**
+   - Daemon connection happens asynchronously in the background
+   - Does not block UI startup
+   - If daemon is already running, connection is nearly instant
+   - If daemon needs to auto-start, it happens without blocking the UI
 
-3. **Without Daemon**
-   - UI loads applications directly (fallback mode)
-   - Progress bar shown during loading
-   - No background updates
+3. **Daemon Integration (Optional)**
+   - Once daemon connects, it keeps the application cache fresh in the background
+   - Future launches benefit from the cached data
+   - Daemon is completely optional - UI works perfectly without it
 
 ## Cache Location
 
