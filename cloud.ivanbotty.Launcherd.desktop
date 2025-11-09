@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Launcher Service
+Exec=python3 -m cloud.ivanbotty.Launcherd
+Icon=cloud.ivanbotty.Launcher
+Terminal=false
+Comment=Application scanning service for Launcher
