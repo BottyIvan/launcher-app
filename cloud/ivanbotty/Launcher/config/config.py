@@ -113,7 +113,10 @@ def should_show_onboarding() -> bool:
         bool: True if onboarding should be shown, False otherwise
     """
     try:
-        return db.get_pref("show_welcome_wizard", True) is True
+        pref = db.get_pref("show_welcome_wizard", True)
+        if isinstance(pref, str):
+            pref = pref.lower() == "true"
+        return bool(pref)
     except Exception:
         logger.warning("Failed to check onboarding preference, defaulting to True")
         return True
