@@ -181,6 +181,15 @@ dbus-monitor --session "type='signal',sender='cloud.ivanbotty.Launcherd'"
 2. Check D-Bus service registration (see Debugging section)
 3. Check UI logs for connection errors
 
+### Timeout Errors During Daemon Activation
+
+If you see timeout errors like `g-io-error-quark: timeout (24)` when the UI starts:
+
+1. **This is expected behavior** - The daemon is being auto-started via D-Bus and needs time to initialize
+2. The UI uses a 30-second timeout for D-Bus method calls to allow the daemon to start
+3. If timeouts persist, the daemon may be failing to start - check daemon logs
+4. Try starting the daemon manually first: `python3 -m cloud.ivanbotty.Launcherd --debug`
+
 ### Cache Not Updating
 
 1. Verify daemon has write permissions to cache directory

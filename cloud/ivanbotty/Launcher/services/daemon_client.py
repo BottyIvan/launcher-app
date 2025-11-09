@@ -108,7 +108,7 @@ class LauncherDaemonClient:
                 "GetCacheStatus",
                 None,
                 Gio.DBusCallFlags.NONE,
-                1000,  # 1 second timeout
+                30000,  # 30 second timeout (daemon may need time to start via D-Bus activation)
                 None
             )
 
@@ -135,7 +135,7 @@ class LauncherDaemonClient:
                 "GetIndexingStatus",
                 None,
                 Gio.DBusCallFlags.NONE,
-                1000,  # 1 second timeout
+                30000,  # 30 second timeout (daemon may need time to start via D-Bus activation)
                 None
             )
 
@@ -162,7 +162,7 @@ class LauncherDaemonClient:
                 "ForceUpdate",
                 None,
                 Gio.DBusCallFlags.NONE,
-                1000,  # 1 second timeout
+                30000,  # 30 second timeout (daemon may need time to start via D-Bus activation)
                 None
             )
             logger.info("Force update requested")
