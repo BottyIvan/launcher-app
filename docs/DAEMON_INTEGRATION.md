@@ -95,7 +95,8 @@ The Launcher UI is designed for instant startup, similar to Spotlight, Krunner, 
 2. **Cache Loading**
    - If cache file exists and is recent (< 1 hour old): Instant load
    - If cache file missing or outdated: Scan desktop files with progress bar
-   - Cache file is created and maintained by the daemon in background
+   - **UI creates cache file** after scanning (even without daemon)
+   - Daemon (if running) keeps cache fresh in background
 
 3. **Daemon Connection (Background)**
    - Daemon connection happens asynchronously in the background
@@ -106,7 +107,7 @@ The Launcher UI is designed for instant startup, similar to Spotlight, Krunner, 
 4. **Daemon Integration (Optional)**
    - Once daemon connects, it keeps the application cache fresh in the background
    - Future launches benefit from the cached data
-   - Daemon is completely optional - UI works perfectly without it
+   - **Daemon is completely optional** - UI creates and uses cache independently
 
 ## Cache Location
 
@@ -116,9 +117,10 @@ The application cache is stored at:
 ```
 
 This cache file is:
-- Created by the daemon during background scanning
-- Read by the UI for instant startup
-- Updated automatically every 60 seconds by the daemon
+- **Created by the UI** after first scan (instant subsequent launches)
+- Also maintained by the daemon (if running) during background scanning
+- Read by the UI for instant startup on subsequent launches
+- Updated automatically every 60 seconds by the daemon (if running)
 - Considered stale after 1 hour (triggers rescan)
 
 ## Configuration

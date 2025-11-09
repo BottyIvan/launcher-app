@@ -25,12 +25,15 @@ class ApplicationsService:
         self._icon_cache = {}  # Cache for icon paths
         self._desktop_cache = {}  # Cache for parsed desktop entries
 
-    def load_applications(self):
+    def load_applications(self, save_cache: bool = True):
         """
         Load application entries from directories specified in ALL_APP_DIRS.
 
         Parses '.desktop' files into ApplicationModel instances and appends them to the store.
         Ensures each application is loaded only once by name.
+        
+        Args:
+            save_cache: If True, save loaded applications to cache file (default: True)
 
         Returns:
             Gio.ListStore: Store containing loaded ApplicationModel instances.
@@ -39,6 +42,11 @@ class ApplicationsService:
         self.store.remove_all()
         for app_dir in ALL_APP_DIRS:
             self._load_applications_from_dir(app_dir, loaded_names)
+        
+        # Save to cache for next launch
+        if save_cache:
+            self.save_applications_to_cache()
+        
         return self.store
     
     def load_applications_from_cache(self, cache_path: str) -> bool:
@@ -91,6 +99,49 @@ class ApplicationsService:
             
         except Exception as e:
             logger.warning(f"Error loading from cache: {e}")
+            return False
+    
+    def save_applications_to_cache(self, cache_path: str = None) -> bool:
+        """
+        Save currently loaded applications to a cache file.
+        
+        Args:
+            cache_path: Path to the cache JSON file (default: standard cache location)
+            
+        Returns:
+            True if successfully saved, False otherwise
+        """
+        if cache_path is None:
+            cache_path = os.path.expanduser("~/.cache/cloud.ivanbotty.Launcher/applications_cache.json")
+        
+        try:
+            # Ensure cache directory exists
+            cache_dir = os.path.dirname(cache_path)
+            os.makedirs(cache_dir, exist_ok=True)
+            
+            # Convert applications to cache data
+            cache_data = []
+            for i in range(self.store.get_n_items()):
+                app = self.store.get_item(i)
+                cache_data.append({
+                    'type': app.type if hasattr(app, 'type') else 'Application',
+                    'name': app.name,
+                    'description': app.description,
+                    'exec_cmd': app.exec_cmd,
+                    'desktop_id': app.desktop_id,
+                    'icon': app.icon,
+                })
+            
+            # Write cache file
+            import json
+            with open(cache_path, 'w') as f:
+                json.dump(cache_data, f, indent=2)
+            
+            logger.info(f"Saved {len(cache_data)} applications to cache: {cache_path}")
+            return True
+            
+        except Exception as e:
+            logger.warning(f"Error saving cache: {e}")
             return False
 
     def _load_applications_from_dir(self, app_dir, loaded_names):
