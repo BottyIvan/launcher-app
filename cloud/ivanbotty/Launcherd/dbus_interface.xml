@@ -1,0 +1,58 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="cloud.ivanbotty.Launcherd">
+    <!-- Methods -->
+    <method name="GetCacheStatus">
+      <arg direction="out" type="b" name="available">
+        <annotation name="org.gtk.GDBus.DocString" value="True if cache is available and ready to use"/>
+      </arg>
+      <arg direction="out" type="s" name="cache_path">
+        <annotation name="org.gtk.GDBus.DocString" value="Path to the cache file"/>
+      </arg>
+      <arg direction="out" type="x" name="last_updated">
+        <annotation name="org.gtk.GDBus.DocString" value="Unix timestamp of last cache update"/>
+      </arg>
+    </method>
+    
+    <method name="GetIndexingStatus">
+      <arg direction="out" type="b" name="is_indexing">
+        <annotation name="org.gtk.GDBus.DocString" value="True if currently indexing applications"/>
+      </arg>
+      <arg direction="out" type="d" name="progress">
+        <annotation name="org.gtk.GDBus.DocString" value="Progress from 0.0 to 1.0"/>
+      </arg>
+      <arg direction="out" type="i" name="apps_count">
+        <annotation name="org.gtk.GDBus.DocString" value="Number of applications indexed"/>
+      </arg>
+    </method>
+    
+    <method name="ForceUpdate">
+      <annotation name="org.gtk.GDBus.DocString" value="Force an immediate cache update"/>
+    </method>
+    
+    <!-- Signals -->
+    <signal name="CacheUpdated">
+      <arg type="i" name="apps_count">
+        <annotation name="org.gtk.GDBus.DocString" value="Number of applications in the updated cache"/>
+      </arg>
+      <arg type="x" name="timestamp">
+        <annotation name="org.gtk.GDBus.DocString" value="Unix timestamp of the update"/>
+      </arg>
+    </signal>
+    
+    <signal name="IndexingProgress">
+      <arg type="d" name="progress">
+        <annotation name="org.gtk.GDBus.DocString" value="Progress from 0.0 to 1.0"/>
+      </arg>
+      <arg type="i" name="apps_count">
+        <annotation name="org.gtk.GDBus.DocString" value="Current number of applications indexed"/>
+      </arg>
+    </signal>
+    
+    <!-- Properties -->
+    <property name="Version" type="s" access="read">
+      <annotation name="org.gtk.GDBus.DocString" value="Version of the daemon"/>
+    </property>
+  </interface>
+</node>
