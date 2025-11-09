@@ -5,6 +5,7 @@ handling UI setup, extension management, and search functionality.
 """
 
 import logging
+import os
 from typing import Optional
 
 import gi
@@ -29,6 +30,13 @@ from cloud.ivanbotty.Launcher.widget.search_entry import SearchEntry
 from cloud.ivanbotty.Launcher.widget.window import Window
 from cloud.ivanbotty.common import find_extensions_yaml
 
+try:
+    from cloud.ivanbotty.Launcher.services.daemon_client import LauncherDaemonClient
+    DAEMON_CLIENT_AVAILABLE = True
+except ImportError:
+    DAEMON_CLIENT_AVAILABLE = False
+    LauncherDaemonClient = None
+
 logger = logging.getLogger(__name__)
 
 
@@ -44,6 +52,7 @@ class App(Adw.Application):
         extensions_service: Service for managing extensions
         search_controller: Controller for handling search events
         keyboard_controller: Controller for handling keyboard events
+        daemon_client: Client for communicating with the daemon (if available)
     """
 
     def __init__(self, app: str) -> None:
@@ -55,6 +64,7 @@ class App(Adw.Application):
         super().__init__(application_id=app)
         self.name = "Main Application"
         self.win: Optional[Window] = None
+        self.daemon_client: Optional[LauncherDaemonClient] = None
 
         # Initialize progress bar with configuration
         self.progress_bar = ProgressBar("Loading...")
@@ -100,6 +110,83 @@ class App(Adw.Application):
 
         # Load extensions into the service
         self.extensions_service.load_from_config(config)
+        
+        # Try to connect to daemon
+        self._init_daemon_client()
+    
+    def _init_daemon_client(self) -> None:
+        """Initialize connection to the daemon if available."""
+        if not DAEMON_CLIENT_AVAILABLE:
+            logger.info("Daemon client not available, running without daemon integration")
+            return
+        
+        try:
+            self.daemon_client = LauncherDaemonClient()
+            if self.daemon_client.connect():
+                logger.info("Connected to Launcher daemon")
+                
+                # Subscribe to daemon signals
+                self.daemon_client.subscribe_to_indexing_progress(
+                    self._on_daemon_indexing_progress
+                )
+                self.daemon_client.subscribe_to_cache_updated(
+                    self._on_daemon_cache_updated
+                )
+            else:
+                logger.info("Daemon not available, running standalone")
+                self.daemon_client = None
+        except Exception as e:
+            logger.warning(f"Could not initialize daemon client: {e}")
+            self.daemon_client = None
+    
+    def _on_daemon_indexing_progress(self, progress: float, apps_count: int) -> None:
+        """Handle indexing progress updates from daemon.
+        
+        Args:
+            progress: Progress from 0.0 to 1.0
+            apps_count: Number of applications indexed
+        """
+        def update_ui():
+            if self.progress_bar.get_visible():
+                self.progress_bar.update_progress(
+                    progress, 
+                    f"Indexing applications... {apps_count}"
+                )
+            return False
+        
+        GLib.idle_add(update_ui)
+    
+    def _on_daemon_cache_updated(self, apps_count: int, timestamp: int) -> None:
+        """Handle cache update notification from daemon.
+        
+        Args:
+            apps_count: Number of applications in the cache
+            timestamp: Unix timestamp of the update
+        """
+        logger.info(f"Daemon cache updated: {apps_count} applications")
+        
+        def hide_progress():
+            if self.progress_bar.get_visible():
+                self.progress_bar.set_visible(False)
+            return False
+        
+        GLib.idle_add(hide_progress)
+    
+    def _should_use_daemon_cache(self) -> bool:
+        """Check if daemon cache is available and should be used.
+        
+        Returns:
+            True if daemon cache is available, False otherwise
+        """
+        if not self.daemon_client or not self.daemon_client.is_connected():
+            return False
+        
+        cache_status = self.daemon_client.get_cache_status()
+        if not cache_status:
+            return False
+        
+        available, cache_path, last_updated = cache_status
+        return available and os.path.exists(cache_path)
 
     def run_with_progress(
         self,
@@ -154,7 +241,31 @@ class App(Adw.Application):
         # Load applications in the background at startup
         apps_service = services.get("application")
         if apps_service:
-            self.run_with_progress(apps_service.load_applications, text="Loading applications...")
+            # Check if daemon has a cache ready
+            if self._should_use_daemon_cache():
+                # Daemon has cache, check if it's currently indexing
+                indexing_status = self.daemon_client.get_indexing_status()
+                if indexing_status:
+                    is_indexing, progress, apps_count = indexing_status
+                    if is_indexing:
+                        # Show progress bar while daemon is indexing
+                        logger.info("Daemon is indexing, showing progress")
+                        self.progress_bar.set_text(f"Indexing applications... {apps_count}")
+                        self.progress_bar.set_fraction(progress)
+                        self.progress_bar.set_visible(True)
+                    else:
+                        # Cache is ready, load instantly without progress bar
+                        logger.info("Loading applications from daemon cache")
+                        apps_service.load_applications()
+                else:
+                    # Cache available, load instantly
+                    logger.info("Loading applications from cache")
+                    apps_service.load_applications()
+            else:
+                # No daemon or no cache, load with progress bar
+                logger.info("Loading applications without daemon cache")
+                self.run_with_progress(apps_service.load_applications, text="Loading applications...")
+
 
         # Adwaita setup
         Adw.init()

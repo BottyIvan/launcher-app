@@ -24,6 +24,18 @@ install_data(
   install_dir: datadir / 'applications',
 )
 
+# Install daemon desktop file for autostart
+install_data(
+  'cloud.ivanbotty.Launcherd.desktop',
+  install_dir: datadir / 'applications',
+)
+
+# Install daemon autostart file
+install_data(
+  'cloud.ivanbotty.Launcherd.desktop',
+  install_dir: get_option('sysconfdir') / 'xdg/autostart',
+)
+
 # Install SVG icon
 install_data(
   'cloud/ivanbotty/Launcher/resources/cloud.ivanbotty.Launcher.svg',
