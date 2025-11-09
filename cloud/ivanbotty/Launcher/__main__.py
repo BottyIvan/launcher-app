@@ -11,7 +11,8 @@ import gi
 
 gi.require_version("Gtk", "4.0")
 
-import cloud.ivanbotty.database.sqlite3 as db
+from cloud.ivanbotty.Launcher.config.config import (should_show_onboarding,
+                                                    mark_onboarding_complete)
 from cloud.ivanbotty.Launcher.app import App
 from cloud.ivanbotty.utils import configure_cli, initialize_app, setup_logging
 from cloud.ivanbotty.Wizard.app import WelcomeWizard
@@ -37,8 +38,9 @@ def main() -> int:
 
     # Decide which application to launch based on user preferences
     try:
-        if db.get_pref("show_welcome_wizard", True) is True:
-            db.set_pref("show_welcome_wizard", False)
+        logger.info("Starting Launcher Application")
+        logger.debug(f"show_welcome_wizard preference: {should_show_onboarding()}")
+        if should_show_onboarding():
             app = WelcomeWizard(app="cloud.ivanbotty.Wizard")
             logger.info("Launching Welcome Wizard")
         else:
