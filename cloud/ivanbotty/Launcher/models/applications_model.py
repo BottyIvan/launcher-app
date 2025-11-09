@@ -65,3 +65,38 @@ class ApplicationModel(GObject.GObject):
         except Exception as e:
             logger.error(f"Error executing command exec_cmd={self.exec_cmd}: {e}")
             return False
+    
+    def to_dict(self):
+        """
+        Convert the ApplicationModel to a dictionary.
+
+        Returns:
+            dict: A dictionary representation of the ApplicationModel.
+        """
+        return {
+            "type": self.type,
+            "name": self.name,
+            "description": self.description,
+            "exec_cmd": self.exec_cmd,
+            "desktop_id": self.desktop_id,
+            "icon": self.icon,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        """
+        Create an ApplicationModel instance from a dictionary.
+
+        Args:
+            data (dict): A dictionary containing application properties.
+        Returns:
+            ApplicationModel: An instance of ApplicationModel.
+        """
+        return cls(
+            type=data.get("type"),
+            name=data.get("name"),
+            description=data.get("description"),
+            exec_cmd=data.get("exec_cmd"),
+            desktop_id=data.get("desktop_id"),
+            icon=data.get("icon"),
+        )
