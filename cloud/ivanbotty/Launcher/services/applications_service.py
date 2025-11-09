@@ -39,6 +39,59 @@ class ApplicationsService:
         for app_dir in ALL_APP_DIRS:
             self._load_applications_from_dir(app_dir, loaded_names)
         return self.store
+    
+    def load_applications_from_cache(self, cache_path: str) -> bool:
+        """
+        Load applications from a cache file created by the daemon.
+        
+        Args:
+            cache_path: Path to the cache JSON file
+            
+        Returns:
+            True if successfully loaded from cache, False otherwise
+        """
+        import json
+        
+        try:
+            if not os.path.exists(cache_path):
+                logger.debug(f"Cache file not found: {cache_path}")
+                return False
+            
+            # Check if cache is recent (less than 1 hour old)
+            cache_age = os.path.getmtime(cache_path)
+            import time
+            if time.time() - cache_age > 3600:
+                logger.debug(f"Cache file too old: {cache_path}")
+                return False
+            
+            with open(cache_path, 'r') as f:
+                cache_data = json.load(f)
+            
+            logger.info(f"Loading {len(cache_data)} applications from cache")
+            self.store.remove_all()
+            
+            for entry_data in cache_data:
+                try:
+                    # Create ApplicationModel from cached data
+                    app = ApplicationModel(
+                        name=entry_data.get('name', ''),
+                        icon=entry_data.get('icon', ''),
+                        command=entry_data.get('command', ''),
+                        description=entry_data.get('description', ''),
+                        keywords=entry_data.get('keywords', []),
+                        categories=entry_data.get('categories', [])
+                    )
+                    self.store.append(app)
+                except Exception as e:
+                    logger.debug(f"Error loading cached app: {e}")
+                    continue
+            
+            logger.info(f"Successfully loaded {self.store.get_n_items()} applications from cache")
+            return True
+            
+        except Exception as e:
+            logger.warning(f"Error loading from cache: {e}")
+            return False
 
     def _load_applications_from_dir(self, app_dir, loaded_names):
         """Helper to load applications from a single directory."""

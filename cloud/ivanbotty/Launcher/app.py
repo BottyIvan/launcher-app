@@ -236,14 +236,20 @@ class App(Adw.Application):
             app=self, entry_widget=self.entry, view=self.view, services=services, handlers=handlers
         )
 
-        # Load applications immediately - don't wait for daemon
-        # The daemon integration is optional and runs in the background
+        # Load applications - try cache first, then fallback to scanning
         apps_service = services.get("application")
         if apps_service:
-            # Always load applications with progress bar
-            # This ensures instant UI responsiveness
-            logger.info("Loading applications...")
-            self.run_with_progress(apps_service.load_applications, text="Loading applications...")
+            # Try loading from cache file (fast - no D-Bus calls needed)
+            cache_path = os.path.expanduser("~/.cache/cloud.ivanbotty.Launcher/applications_cache.json")
+            cache_loaded = apps_service.load_applications_from_cache(cache_path)
+            
+            if cache_loaded:
+                # Cache loaded successfully - instant startup!
+                logger.info("Applications loaded from cache")
+            else:
+                # No cache or cache outdated - scan directories with progress bar
+                logger.info("Loading applications from directories...")
+                self.run_with_progress(apps_service.load_applications, text="Loading applications...")
 
 
         # Adwaita setup

@@ -87,17 +87,23 @@ The daemon can be started in several ways:
 The Launcher UI is designed for instant startup, similar to Spotlight, Krunner, or PowerToys Run:
 
 1. **UI Starts Instantly**
-   - Applications load immediately on startup
+   - On first launch: Scans desktop files (shows progress bar)
+   - On subsequent launches: Loads from cache file (instant!)
    - No waiting for daemon connection
-   - Progress bar shows while loading apps from database
+   - Cache file checked synchronously (fast file check, no D-Bus calls)
 
-2. **Daemon Connection (Background)**
+2. **Cache Loading**
+   - If cache file exists and is recent (< 1 hour old): Instant load
+   - If cache file missing or outdated: Scan desktop files with progress bar
+   - Cache file is created and maintained by the daemon in background
+
+3. **Daemon Connection (Background)**
    - Daemon connection happens asynchronously in the background
    - Does not block UI startup
    - If daemon is already running, connection is nearly instant
    - If daemon needs to auto-start, it happens without blocking the UI
 
-3. **Daemon Integration (Optional)**
+4. **Daemon Integration (Optional)**
    - Once daemon connects, it keeps the application cache fresh in the background
    - Future launches benefit from the cached data
    - Daemon is completely optional - UI works perfectly without it
@@ -108,6 +114,12 @@ The application cache is stored at:
 ```
 ~/.cache/cloud.ivanbotty.Launcher/applications_cache.json
 ```
+
+This cache file is:
+- Created by the daemon during background scanning
+- Read by the UI for instant startup
+- Updated automatically every 60 seconds by the daemon
+- Considered stale after 1 hour (triggers rescan)
 
 ## Configuration
 
