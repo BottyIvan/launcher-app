@@ -70,6 +70,7 @@ python.install_sources(
   'services/ai_service.py',
   'services/applications_service.py',
   'services/command_service.py',
+  'services/daemon_client.py',
   'services/extensions_service.py',
   'services/math_service.py',
   subdir: 'cloud/ivanbotty/Launcher/services',
