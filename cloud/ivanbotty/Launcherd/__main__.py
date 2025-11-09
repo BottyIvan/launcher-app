@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 
 def setup_logging(debug: bool = False) -> None:
     """Configure logging for the daemon.
-    
+
     Args:
         debug: Enable debug logging if True
     """
@@ -45,7 +45,7 @@ def setup_logging(debug: bool = False) -> None:
 
 def ensure_cache_dir_exists(path: str) -> None:
     """Ensure the cache directory exists.
-    
+
     Args:
         path: Path to the cache file
     """
@@ -57,11 +57,11 @@ def ensure_cache_dir_exists(path: str) -> None:
 
 def update_cache(service: ApplicationsService, dbus_service=None) -> int:
     """Update the cache file with the list of applications.
-    
+
     Args:
         service: ApplicationsService instance
         dbus_service: Optional D-Bus service for progress updates
-        
+
     Returns:
         Number of applications cached
     """
@@ -69,26 +69,26 @@ def update_cache(service: ApplicationsService, dbus_service=None) -> int:
         if dbus_service:
             dbus_service.set_indexing_state(True)
             dbus_service.update_indexing_progress(0.0, 0)
-        
+
         store = service.load_applications()
         apps = [model.to_dict() for model in store]
         apps_count = len(apps)
-        
+
         if dbus_service:
             dbus_service.update_indexing_progress(0.5, apps_count)
-        
+
         ensure_cache_dir_exists(CACHE_PATH)
         with open(CACHE_PATH, "w", encoding="utf-8") as f:
             json.dump(apps, f, indent=2, ensure_ascii=False)
-        
+
         if dbus_service:
             dbus_service.update_indexing_progress(1.0, apps_count)
             dbus_service.set_indexing_state(False)
             dbus_service.emit_cache_updated(apps_count)
-        
+
         logger.info("Cache updated with %d applications.", apps_count)
         return apps_count
-        
+
     except Exception as e:
         logger.exception("Error updating the cache: %s", e)
         if dbus_service:
@@ -98,16 +98,16 @@ def update_cache(service: ApplicationsService, dbus_service=None) -> int:
 
 def run_daemon(debug: bool = False, daemonize: bool = False) -> int:
     """Run the daemon service.
-    
+
     Args:
         debug: Enable debug logging
         daemonize: Run as a background daemon
-        
+
     Returns:
         Exit code
     """
     setup_logging(debug)
-    
+
     if daemonize and os.name == 'posix':
         # Simple daemonization for Unix-like systems
         try:
@@ -119,10 +119,10 @@ def run_daemon(debug: bool = False, daemonize: bool = False) -> int:
         except OSError as e:
             logger.error(f"Fork failed: {e}")
             return 1
-    
+
     # Initialize services
     service = ApplicationsService()
-    
+
     # Start D-Bus service if available
     dbus_service = None
     if GLIB_AVAILABLE:
@@ -138,21 +138,21 @@ def run_daemon(debug: bool = False, daemonize: bool = False) -> int:
             dbus_service = None
     else:
         logger.warning("GLib not available, D-Bus service disabled")
-    
+
     # Set up signal handlers for graceful shutdown
     shutdown_requested = [False]
-    
+
     def signal_handler(signum, frame):
         logger.info(f"Received signal {signum}, shutting down...")
         shutdown_requested[0] = True
-    
+
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
-    
+
     # Initial cache update
     logger.info("Launcher daemon started. Scanning every %d seconds.", SCAN_INTERVAL)
     update_cache(service, dbus_service)
-    
+
     # Main loop
     try:
         while not shutdown_requested[0]:
@@ -166,13 +166,13 @@ def run_daemon(debug: bool = False, daemonize: bool = False) -> int:
         if dbus_service:
             dbus_service.stop()
         logger.info("Daemon stopped")
-    
+
     return 0
 
 
 def main() -> int:
     """Main entry point for the daemon.
-    
+
     Returns:
         Exit code
     """
@@ -189,7 +189,7 @@ def main() -> int:
         action="store_true",
         help="Run as a background daemon"
     )
-    
+
     args = parser.parse_args()
     return run_daemon(debug=args.debug, daemonize=args.daemonize)
 
