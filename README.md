@@ -1,11 +1,15 @@
-# Launcher
+# LightFlow
 
 <p align="center">
-    <img src="./cloud/ivanbotty/Launcher/resources/cloud.ivanbotty.Launcher.svg" alt="Launcher Icon" width="128">
+    <img src="./cloud/ivanbotty/LightFlow/resources/cloud.ivanbotty.LightFlow.svg" alt="LightFlow Icon" width="128">
 </p>
 
 <p align="center">
-    <strong>A modern desktop application launcher for Linux</strong>
+    <strong>Light your workflow</strong>
+</p>
+
+<p align="center">
+    A fast, elegant, and modern application launcher for Linux
 </p>
 
 <p align="center">
@@ -23,14 +27,14 @@
 
 ## Overview
 
-**Launcher** provides instant search for installed applications, a built-in calculator, and an extensible architecture for adding custom features. It integrates seamlessly with modern Linux desktop environments.
+**LightFlow** provides instant search for installed applications, a built-in calculator, and an extensible architecture for adding custom features. It integrates seamlessly with modern Linux desktop environments.
 
 <p align="center">
     <img src="./assets/Screenshot From 2025-11-09 21-55-46.png" width="600"/>
 </p>
 
 > [!IMPORTANT]
-> **Launcher** is under active development. Features and interfaces may change. Contributions and feedback are welcome!
+> **LightFlow** is under active development. Features and interfaces may change. Contributions and feedback are welcome!
 
 ## ✨ Key Features
 
@@ -53,7 +57,7 @@
 git clone https://github.com/BottyIvan/launcher-app.git
 cd launcher-app
 flatpak-builder --user --install --force-clean build-dir manifest.yaml
-flatpak run cloud.ivanbotty.Launcher
+flatpak run cloud.ivanbotty.LightFlow
 ```
 
 ### Run from Source
@@ -61,7 +65,7 @@ flatpak run cloud.ivanbotty.Launcher
 ```bash
 git clone https://github.com/BottyIvan/launcher-app.git
 cd launcher-app
-python3 -m cloud.ivanbotty.Launcher
+python3 -m cloud.ivanbotty.LightFlow
 ```
 
 ### Keyboard Shortcuts
@@ -69,7 +73,7 @@ python3 -m cloud.ivanbotty.Launcher
 - **Type** - Start searching for applications and commands
 - **↑/↓** - Navigate through results
 - **Enter** - Launch the selected item
-- **Escape** - Close the launcher
+- **Escape** - Close LightFlow
 - **Ctrl+,** - Open preferences
 - **Ctrl+?** or **F1** - Show all keyboard shortcuts
 
@@ -81,9 +85,9 @@ Complete documentation is available in our **[Wiki](https://github.com/BottyIvan
 
 - **[Home](https://github.com/BottyIvan/launcher-app/wiki/Home)** - Project overview and quick links
 - **[Installation](https://github.com/BottyIvan/launcher-app/wiki/Installation)** - Installation for all platforms
-- **[Usage Guide](https://github.com/BottyIvan/launcher-app/wiki/Usage-Guide)** - How to use Launcher effectively
+- **[Usage Guide](https://github.com/BottyIvan/launcher-app/wiki/Usage-Guide)** - How to use LightFlow effectively
 - **[Features](https://github.com/BottyIvan/launcher-app/wiki/Features)** - Complete feature list and descriptions
-- **[Configuration](https://github.com/BottyIvan/launcher-app/wiki/Configuration)** - Customize Launcher settings
+- **[Configuration](https://github.com/BottyIvan/launcher-app/wiki/Configuration)** - Customize LightFlow settings
 - **[Architecture](https://github.com/BottyIvan/launcher-app/wiki/Architecture)** - Technical design and structure
 - **[API Reference](https://github.com/BottyIvan/launcher-app/wiki/API-Reference)** - API documentation for developers
 - **[Contributing](https://github.com/BottyIvan/launcher-app/wiki/Contributing)** - Contribution guidelines and dev setup
@@ -126,6 +130,16 @@ We welcome contributions! Whether you want to:
 
 **See [Installation Guide](https://github.com/BottyIvan/launcher-app/wiki/Installation) for complete requirements.**
 
+## 🔧 CLI Commands
+
+- **lightflow** - Launch the LightFlow UI
+- **lightflowd** - Run the LightFlowD background daemon (for application indexing)
+
+## 📦 Flatpak App IDs
+
+- **UI**: `cloud.ivanbotty.LightFlow`
+- **Daemon**: `cloud.ivanbotty.LightFlowD`
+
 ## 📜 License
 
 **GPL-3.0-or-later** - See [LICENSE](LICENSE) file for details.
@@ -147,3 +161,7 @@ Learn more: [License Documentation](https://github.com/BottyIvan/launcher-app/wi
 <p align="center">
     ⭐ Star us on GitHub if you find this project useful!
 </p>
+
+---
+
+> **Note**: This project was recently rebranded from "Launcher" to "LightFlow". The GitHub Wiki pages are being updated to reflect the new branding. Some wiki pages may still reference the old name temporarily.

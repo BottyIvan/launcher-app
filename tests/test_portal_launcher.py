@@ -26,8 +26,8 @@ class TestPortalLauncher(unittest.TestCase):
         except ImportError as e:
             self.fail(f"Failed to import PortalLauncher: {e}")
 
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.bus_get_sync')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.DBusProxy.new_sync')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.Gio.bus_get_sync')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.Gio.DBusProxy.new_sync')
     def test_portal_launcher_initialization_success(self, mock_proxy_new, mock_bus_get):
         """Test successful portal initialization."""
         from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
@@ -49,7 +49,7 @@ class TestPortalLauncher(unittest.TestCase):
         self.assertEqual(launcher.portal_version, 5)
         self.assertIsNotNone(launcher.bus)
 
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.bus_get_sync')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.Gio.bus_get_sync')
     def test_portal_launcher_initialization_failure(self, mock_bus_get):
         """Test portal initialization failure."""
         from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
@@ -63,7 +63,7 @@ class TestPortalLauncher(unittest.TestCase):
         self.assertIsNone(launcher.portal_version)
         self.assertIsNone(launcher.bus)
 
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.os.path.exists')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.os.path.exists')
     def test_is_flatpak_detection(self, mock_exists):
         """Test Flatpak environment detection."""
         from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
@@ -91,8 +91,8 @@ class TestPortalLauncher(unittest.TestCase):
         with self.assertRaises(ValueError):
             PortalLauncher._validate_desktop_file_id("test\nmalicious.desktop")
 
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.shutil.which')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.PortalLauncher._is_flatpak')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.shutil.which')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.PortalLauncher._is_flatpak')
     def test_get_system_commands_native(self, mock_is_flatpak, mock_which):
         """Test system command generation in native environment."""
         from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
@@ -112,8 +112,8 @@ class TestPortalLauncher(unittest.TestCase):
         has_kde = any("kde-open5" == cmd[0] for cmd in commands)
         self.assertFalse(has_kde)
 
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.shutil.which')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.PortalLauncher._is_flatpak')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.shutil.which')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.PortalLauncher._is_flatpak')
     def test_get_system_commands_flatpak(self, mock_is_flatpak, mock_which):
         """Test system command generation in Flatpak environment."""
         from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
@@ -129,11 +129,11 @@ class TestPortalLauncher(unittest.TestCase):
             self.assertEqual(cmd[0], "flatpak-spawn")
             self.assertEqual(cmd[1], "--host")
 
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.bus_get_sync')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.DBusProxy.new_sync')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.subprocess.Popen')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.shutil.which')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.PortalLauncher._is_flatpak')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.Gio.bus_get_sync')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.Gio.DBusProxy.new_sync')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.subprocess.Popen')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.shutil.which')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.PortalLauncher._is_flatpak')
     def test_open_desktop_app_portal_success(self, mock_is_flatpak, mock_which, 
                                               mock_popen, mock_proxy_new, mock_bus_get):
         """Test successful app launch via portal."""
@@ -166,10 +166,10 @@ class TestPortalLauncher(unittest.TestCase):
         # Popen should not be called if portal succeeds
         mock_popen.assert_not_called()
 
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.bus_get_sync')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.subprocess.Popen')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.shutil.which')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.PortalLauncher._is_flatpak')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.Gio.bus_get_sync')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.subprocess.Popen')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.shutil.which')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.PortalLauncher._is_flatpak')
     def test_open_desktop_app_system_fallback(self, mock_is_flatpak, mock_which, 
                                                mock_popen, mock_bus_get):
         """Test app launch fallback to system commands when portal fails."""
@@ -193,9 +193,9 @@ class TestPortalLauncher(unittest.TestCase):
         # Should have tried system command
         mock_popen.assert_called()
 
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.bus_get_sync')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.shutil.which')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.PortalLauncher._is_flatpak')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.Gio.bus_get_sync')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.shutil.which')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.PortalLauncher._is_flatpak')
     def test_open_desktop_app_all_methods_fail(self, mock_is_flatpak, mock_which, mock_bus_get):
         """Test that RuntimeError is raised when all launch methods fail."""
         from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
@@ -213,8 +213,8 @@ class TestPortalLauncher(unittest.TestCase):
         
         self.assertIn("all methods failed", str(context.exception))
 
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.bus_get_sync')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.DBusProxy.new_sync')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.Gio.bus_get_sync')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.Gio.DBusProxy.new_sync')
     def test_get_portal_info(self, mock_proxy_new, mock_bus_get):
         """Test portal info reporting."""
         from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
@@ -238,8 +238,8 @@ class TestPortalLauncher(unittest.TestCase):
         self.assertIn("is_flatpak", info)
         self.assertTrue(info["available"])
 
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.bus_get_sync')
-    @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.DBusProxy.new_sync')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.Gio.bus_get_sync')
+    @patch('cloud.ivanbotty.LightFlow.helper.portal_launcher.Gio.DBusProxy.new_sync')
     def test_interface_detection(self, mock_proxy_new, mock_bus_get):
         """Test that available interfaces are detected correctly."""
         from cloud.ivanbotty.LightFlow.helper.portal_launcher import (

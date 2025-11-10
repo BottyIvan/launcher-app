@@ -22,7 +22,7 @@ except ImportError:
     GLib = None
 
 from cloud.ivanbotty.LightFlow.services.applications_service import ApplicationsService
-from cloud.ivanbotty.LightFlowd.dbus_service import LightFlowDDBusService
+from cloud.ivanbotty.LightFlowD.dbus_service import LightFlowDDBusService
 
 CACHE_PATH = os.path.expanduser("~/.cache/cloud.ivanbotty.LightFlow/applications_cache.json")
 SCAN_INTERVAL = 60

@@ -68,12 +68,12 @@ class Preferences(Adw.PreferencesDialog):
 
         # About group for application info
         about_group = Adw.PreferencesGroup(title="About")
-        about_group.set_description("Information about Launcher")
+        about_group.set_description("Information about LightFlow")
 
         # Information row with app details
         info_row = Adw.ActionRow(
-            title="Launcher",
-            subtitle="Modern application launcher for Linux"
+            title="LightFlow",
+            subtitle="Light your workflow"
         )
         info_row.set_activatable(True)
         info_row.add_suffix(Gtk.Image.new_from_icon_name("go-next-symbolic"))
@@ -81,7 +81,7 @@ class Preferences(Adw.PreferencesDialog):
         # Show about dialog when activated
         def on_info_row_activated(row):
             about = Adw.AboutDialog.new_from_appdata(
-                "/cloud/ivanbotty/Launcher/resources/appdata.xml", "0.0.1"
+                "/cloud/ivanbotty/LightFlow/resources/appdata.xml", "0.0.1"
             )
             about.set_developers(["Ivan Bottigelli https://ivanbotty.cloud"])
             about.set_copyright("© 2025 Ivan Bottigelli.")

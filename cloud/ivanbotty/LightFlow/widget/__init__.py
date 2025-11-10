@@ -1,1 +1,1 @@
-# cloud.ivanbotty.Launcher.widget package
+# cloud.ivanbotty.LightFlow.widget package

@@ -132,7 +132,7 @@ class TestLoadClassInstancePerformance(unittest.TestCase):
         _instance_cache.clear()
 
         # Load a class instance
-        path = "cloud.ivanbotty.Launcher.services.math_service.MathService"
+        path = "cloud.ivanbotty.LightFlow.services.math_service.MathService"
         instance1 = load_class_instance(path)
 
         # Verify it was cached
@@ -151,7 +151,7 @@ class TestLoadClassInstancePerformance(unittest.TestCase):
             _instance_cache,
         )
 
-        path = "cloud.ivanbotty.Launcher.services.math_service.MathService"
+        path = "cloud.ivanbotty.LightFlow.services.math_service.MathService"
 
         # Clear cache
         _instance_cache.clear()
