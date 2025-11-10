@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>cloud.ivanbotty.LightFlow</id>
+  <name>LightFlow</name>
+  <summary>Light your workflow</summary>
+  <description>A fast, elegant, and modern application launcher for Linux built with GTK4 and Adwaita.</description>
+  <releases>
+    <release version="0.0.1" date="2025-05-10">
+      <description>
+        <p>Initial release of LightFlow.</p>
+      </description>
+    </release>
+  </releases>
+  <developer>
+    <name>Ivan Bottigelli</name>
+    <email>ivanbottigelli@example.com</email>
+  </developer>
+  <project_license>GPL-3.0-or-later</project_license>
+  <copyright>Copyright © 2024 Ivan Bottigelli</copyright>
+  <url type="homepage">https://github.com/BottyIvan/launcher-app</url>
+  <url type="help">https://github.com/BottyIvan/launcher-app/wiki</url>
+  <url type="bugtracker">https://github.com/BottyIvan/launcher-app/issues</url>
+  <provides>
+    <id>cloud.ivanbotty.LightFlow.desktop</id>
+  </provides>
+  <categories>
+    <category>Utility</category>
+  </categories>
+  <icon type="stock">cloud-ivanbotty-lightflow</icon>
+</component>

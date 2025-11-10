@@ -22,7 +22,7 @@ ignore = W503,W504
 
 per-file-ignores =
     # Allow module level imports after gi.require_version calls
-    **/Launcher/**/*.py:E402
+    **/LightFlow/**/*.py:E402
     **/Wizard/**/*.py:E402
     **/utils/**/*.py:E402
     # Allow unused imports in test files (used for mocking)

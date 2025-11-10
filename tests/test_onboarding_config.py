@@ -21,7 +21,7 @@ class TestOnboardingConfig(unittest.TestCase):
         """Test that should_show_onboarding returns True by default."""
         mock_get_pref.return_value = True
         
-        from cloud.ivanbotty.Launcher.config.config import should_show_onboarding
+        from cloud.ivanbotty.LightFlow.config.config import should_show_onboarding
         
         result = should_show_onboarding()
         self.assertTrue(result)
@@ -32,7 +32,7 @@ class TestOnboardingConfig(unittest.TestCase):
         """Test that should_show_onboarding returns False when completed."""
         mock_get_pref.return_value = False
         
-        from cloud.ivanbotty.Launcher.config.config import should_show_onboarding
+        from cloud.ivanbotty.LightFlow.config.config import should_show_onboarding
         
         result = should_show_onboarding()
         self.assertFalse(result)
@@ -42,7 +42,7 @@ class TestOnboardingConfig(unittest.TestCase):
         """Test that should_show_onboarding handles database errors gracefully."""
         mock_get_pref.side_effect = Exception("Database error")
         
-        from cloud.ivanbotty.Launcher.config.config import should_show_onboarding
+        from cloud.ivanbotty.LightFlow.config.config import should_show_onboarding
         
         result = should_show_onboarding()
         self.assertTrue(result)  # Should default to True on error
@@ -50,7 +50,7 @@ class TestOnboardingConfig(unittest.TestCase):
     @patch('cloud.ivanbotty.database.sqlite3.set_pref')
     def test_mark_onboarding_complete(self, mock_set_pref):
         """Test that mark_onboarding_complete sets correct preferences."""
-        from cloud.ivanbotty.Launcher.config.config import mark_onboarding_complete
+        from cloud.ivanbotty.LightFlow.config.config import mark_onboarding_complete
         
         mark_onboarding_complete()
         
@@ -72,7 +72,7 @@ class TestOnboardingConfig(unittest.TestCase):
         """Test that mark_onboarding_complete handles database errors gracefully."""
         mock_set_pref.side_effect = Exception("Database error")
         
-        from cloud.ivanbotty.Launcher.config.config import mark_onboarding_complete
+        from cloud.ivanbotty.LightFlow.config.config import mark_onboarding_complete
         
         # Should not raise an exception
         try:
@@ -83,7 +83,7 @@ class TestOnboardingConfig(unittest.TestCase):
     @patch('cloud.ivanbotty.database.sqlite3.set_pref')
     def test_reset_onboarding(self, mock_set_pref):
         """Test that reset_onboarding sets show_welcome_wizard to True."""
-        from cloud.ivanbotty.Launcher.config.config import reset_onboarding
+        from cloud.ivanbotty.LightFlow.config.config import reset_onboarding
         
         reset_onboarding()
         
@@ -94,7 +94,7 @@ class TestOnboardingConfig(unittest.TestCase):
         """Test that reset_onboarding handles database errors gracefully."""
         mock_set_pref.side_effect = Exception("Database error")
         
-        from cloud.ivanbotty.Launcher.config.config import reset_onboarding
+        from cloud.ivanbotty.LightFlow.config.config import reset_onboarding
         
         # Should not raise an exception
         try:

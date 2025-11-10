@@ -1,7 +1,7 @@
 [project]
-name = "cloud.ivanbotty.Launcher"
+name = "cloud.ivanbotty.LightFlow"
 version = "0.0.1"
-description = "A modern GTK4/Adwaita desktop launcher for Linux."
+description = "Light your workflow - A fast, elegant application launcher for Linux"
 authors = [{ name = "Ivan Bottigelli", email = "droidbotty@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.11"
@@ -13,10 +13,10 @@ dependencies = [
 ]
 
 [project.scripts]
-cloud-ivanbotty-launcher = "cloud.ivanbotty.Launcher.main:main"
+cloud-ivanbotty-lightflow = "cloud.ivanbotty.LightFlow.main:main"
 
 [tool.setuptools]
-packages = ["cloud.ivanbotty.Launcher"]
+packages = ["cloud.ivanbotty.LightFlow"]
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]

@@ -20,7 +20,7 @@ class TestPortalLauncher(unittest.TestCase):
     def test_import_portal_launcher(self):
         """Test that PortalLauncher can be imported."""
         try:
-            from cloud.ivanbotty.Launcher.helper.portal_launcher import PortalLauncher
+            from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
 
             self.assertIsNotNone(PortalLauncher)
         except ImportError as e:
@@ -30,7 +30,7 @@ class TestPortalLauncher(unittest.TestCase):
     @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.DBusProxy.new_sync')
     def test_portal_launcher_initialization_success(self, mock_proxy_new, mock_bus_get):
         """Test successful portal initialization."""
-        from cloud.ivanbotty.Launcher.helper.portal_launcher import PortalLauncher
+        from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
 
         # Mock the bus and proxy
         mock_bus = MagicMock()
@@ -52,7 +52,7 @@ class TestPortalLauncher(unittest.TestCase):
     @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.bus_get_sync')
     def test_portal_launcher_initialization_failure(self, mock_bus_get):
         """Test portal initialization failure."""
-        from cloud.ivanbotty.Launcher.helper.portal_launcher import PortalLauncher
+        from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
 
         # Make bus_get_sync raise an exception
         mock_bus_get.side_effect = Exception("D-Bus not available")
@@ -66,7 +66,7 @@ class TestPortalLauncher(unittest.TestCase):
     @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.os.path.exists')
     def test_is_flatpak_detection(self, mock_exists):
         """Test Flatpak environment detection."""
-        from cloud.ivanbotty.Launcher.helper.portal_launcher import PortalLauncher
+        from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
 
         # Test Flatpak environment
         mock_exists.return_value = True
@@ -78,7 +78,7 @@ class TestPortalLauncher(unittest.TestCase):
 
     def test_validate_desktop_file_id(self):
         """Test desktop file ID validation."""
-        from cloud.ivanbotty.Launcher.helper.portal_launcher import PortalLauncher
+        from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
 
         # Valid IDs
         self.assertEqual(PortalLauncher._validate_desktop_file_id("firefox.desktop"), "firefox.desktop")
@@ -95,7 +95,7 @@ class TestPortalLauncher(unittest.TestCase):
     @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.PortalLauncher._is_flatpak')
     def test_get_system_commands_native(self, mock_is_flatpak, mock_which):
         """Test system command generation in native environment."""
-        from cloud.ivanbotty.Launcher.helper.portal_launcher import PortalLauncher
+        from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
 
         mock_is_flatpak.return_value = False
         # Simulate gio, gtk-launch and xdg-open available
@@ -116,7 +116,7 @@ class TestPortalLauncher(unittest.TestCase):
     @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.PortalLauncher._is_flatpak')
     def test_get_system_commands_flatpak(self, mock_is_flatpak, mock_which):
         """Test system command generation in Flatpak environment."""
-        from cloud.ivanbotty.Launcher.helper.portal_launcher import PortalLauncher
+        from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
 
         mock_is_flatpak.return_value = True
         mock_which.return_value = "/usr/bin/flatpak-spawn"
@@ -137,7 +137,7 @@ class TestPortalLauncher(unittest.TestCase):
     def test_open_desktop_app_portal_success(self, mock_is_flatpak, mock_which, 
                                               mock_popen, mock_proxy_new, mock_bus_get):
         """Test successful app launch via portal."""
-        from cloud.ivanbotty.Launcher.helper.portal_launcher import PortalLauncher
+        from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
 
         mock_is_flatpak.return_value = False
         mock_which.return_value = "/usr/bin/gtk-launch"
@@ -173,7 +173,7 @@ class TestPortalLauncher(unittest.TestCase):
     def test_open_desktop_app_system_fallback(self, mock_is_flatpak, mock_which, 
                                                mock_popen, mock_bus_get):
         """Test app launch fallback to system commands when portal fails."""
-        from cloud.ivanbotty.Launcher.helper.portal_launcher import PortalLauncher
+        from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
         import subprocess
 
         # Portal not available
@@ -198,7 +198,7 @@ class TestPortalLauncher(unittest.TestCase):
     @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.PortalLauncher._is_flatpak')
     def test_open_desktop_app_all_methods_fail(self, mock_is_flatpak, mock_which, mock_bus_get):
         """Test that RuntimeError is raised when all launch methods fail."""
-        from cloud.ivanbotty.Launcher.helper.portal_launcher import PortalLauncher
+        from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
 
         # Portal not available
         mock_bus_get.side_effect = Exception("D-Bus not available")
@@ -217,7 +217,7 @@ class TestPortalLauncher(unittest.TestCase):
     @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.DBusProxy.new_sync')
     def test_get_portal_info(self, mock_proxy_new, mock_bus_get):
         """Test portal info reporting."""
-        from cloud.ivanbotty.Launcher.helper.portal_launcher import PortalLauncher
+        from cloud.ivanbotty.LightFlow.helper.portal_launcher import PortalLauncher
 
         # Mock portal components
         mock_bus = MagicMock()
@@ -242,7 +242,7 @@ class TestPortalLauncher(unittest.TestCase):
     @patch('cloud.ivanbotty.Launcher.helper.portal_launcher.Gio.DBusProxy.new_sync')
     def test_interface_detection(self, mock_proxy_new, mock_bus_get):
         """Test that available interfaces are detected correctly."""
-        from cloud.ivanbotty.Launcher.helper.portal_launcher import (
+        from cloud.ivanbotty.LightFlow.helper.portal_launcher import (
             PortalLauncher, 
             LAUNCHER_INTERFACE
         )

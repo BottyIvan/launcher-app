@@ -23,7 +23,7 @@ class TestApplicationsServicePerformance(unittest.TestCase):
     )
     def test_icon_caching(self):
         """Test that icon searches are cached."""
-        from cloud.ivanbotty.Launcher.services.applications_service import ApplicationsService
+        from cloud.ivanbotty.LightFlow.services.applications_service import ApplicationsService
 
         service = ApplicationsService()
 
@@ -46,7 +46,7 @@ class TestApplicationsServicePerformance(unittest.TestCase):
     )
     def test_desktop_entry_caching(self):
         """Test that desktop entries are cached."""
-        from cloud.ivanbotty.Launcher.services.applications_service import ApplicationsService
+        from cloud.ivanbotty.LightFlow.services.applications_service import ApplicationsService
 
         service = ApplicationsService()
 
@@ -89,7 +89,7 @@ class TestMathServicePerformance(unittest.TestCase):
 
     def test_safe_dict_is_shared(self):
         """Test that safe_dict is pre-built and shared."""
-        from cloud.ivanbotty.Launcher.services.math_service import MathService, _SAFE_DICT
+        from cloud.ivanbotty.LightFlow.services.math_service import MathService, _SAFE_DICT
 
         # Create two instances
         service1 = MathService()
@@ -102,7 +102,7 @@ class TestMathServicePerformance(unittest.TestCase):
 
     def test_math_calculation_performance(self):
         """Test that math calculations are fast."""
-        from cloud.ivanbotty.Launcher.services.math_service import MathService
+        from cloud.ivanbotty.LightFlow.services.math_service import MathService
 
         service = MathService()
 
@@ -123,7 +123,7 @@ class TestLoadClassInstancePerformance(unittest.TestCase):
 
     def test_instance_caching(self):
         """Test that class instances are cached."""
-        from cloud.ivanbotty.Launcher.helper.load_class_instance import (
+        from cloud.ivanbotty.LightFlow.helper.load_class_instance import (
             load_class_instance,
             _instance_cache,
         )
@@ -146,7 +146,7 @@ class TestLoadClassInstancePerformance(unittest.TestCase):
 
     def test_cached_load_is_faster(self):
         """Test that cached loads are faster than initial loads."""
-        from cloud.ivanbotty.Launcher.helper.load_class_instance import (
+        from cloud.ivanbotty.LightFlow.helper.load_class_instance import (
             load_class_instance,
             _instance_cache,
         )
@@ -177,7 +177,7 @@ class TestRowWidgetPerformance(unittest.TestCase):
     )
     def test_regex_patterns_precompiled(self):
         """Test that regex patterns are pre-compiled at module level."""
-        from cloud.ivanbotty.Launcher.widget import row
+        from cloud.ivanbotty.LightFlow.widget import row
 
         # Check that patterns exist as module-level constants
         self.assertTrue(hasattr(row, "_CODE_BLOCK_PATTERN"))

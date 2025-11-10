@@ -19,7 +19,7 @@ class TestParser(unittest.TestCase):
     def test_import_parser(self):
         """Test that the Parser class can be imported."""
         try:
-            from cloud.ivanbotty.Launcher.helper.parser import Parser
+            from cloud.ivanbotty.LightFlow.helper.parser import Parser
 
             self.assertIsNotNone(Parser)
         except ImportError as e:
@@ -27,7 +27,7 @@ class TestParser(unittest.TestCase):
 
     def test_parser_instantiation(self):
         """Test that Parser can be instantiated."""
-        from cloud.ivanbotty.Launcher.helper.parser import Parser
+        from cloud.ivanbotty.LightFlow.helper.parser import Parser
 
         parser = Parser()
         self.assertIsNotNone(parser)
@@ -39,7 +39,7 @@ class TestThreadManager(unittest.TestCase):
     def test_import_thread_manager(self):
         """Test that the ThreadManager class can be imported."""
         try:
-            from cloud.ivanbotty.Launcher.helper.thread_manager import ThreadManager
+            from cloud.ivanbotty.LightFlow.helper.thread_manager import ThreadManager
 
             self.assertIsNotNone(ThreadManager)
         except ImportError as e:
@@ -47,14 +47,14 @@ class TestThreadManager(unittest.TestCase):
 
     def test_thread_manager_instantiation(self):
         """Test that ThreadManager can be instantiated."""
-        from cloud.ivanbotty.Launcher.helper.thread_manager import ThreadManager
+        from cloud.ivanbotty.LightFlow.helper.thread_manager import ThreadManager
 
         manager = ThreadManager()
         self.assertIsNotNone(manager)
 
     def test_run_in_thread(self):
         """Test that run_in_thread method works."""
-        from cloud.ivanbotty.Launcher.helper.thread_manager import ThreadManager
+        from cloud.ivanbotty.LightFlow.helper.thread_manager import ThreadManager
         import threading
         import time
 
@@ -78,7 +78,7 @@ class TestLoadClassInstance(unittest.TestCase):
     def test_import_load_class_instance(self):
         """Test that load_class_instance function can be imported."""
         try:
-            from cloud.ivanbotty.Launcher.helper.load_class_instance import (
+            from cloud.ivanbotty.LightFlow.helper.load_class_instance import (
                 load_class_instance,
             )
 
@@ -88,7 +88,7 @@ class TestLoadClassInstance(unittest.TestCase):
 
     def test_load_class_instance_invalid_path(self):
         """Test load_class_instance with invalid path."""
-        from cloud.ivanbotty.Launcher.helper.load_class_instance import (
+        from cloud.ivanbotty.LightFlow.helper.load_class_instance import (
             load_class_instance,
         )
 
@@ -97,7 +97,7 @@ class TestLoadClassInstance(unittest.TestCase):
 
     def test_load_class_instance_nonexistent_module(self):
         """Test load_class_instance with nonexistent module."""
-        from cloud.ivanbotty.Launcher.helper.load_class_instance import (
+        from cloud.ivanbotty.LightFlow.helper.load_class_instance import (
             load_class_instance,
         )
 
@@ -111,7 +111,7 @@ class TestMathService(unittest.TestCase):
     def test_import_math_service(self):
         """Test that the MathService class can be imported."""
         try:
-            from cloud.ivanbotty.Launcher.services.math_service import MathService
+            from cloud.ivanbotty.LightFlow.services.math_service import MathService
 
             self.assertIsNotNone(MathService)
         except ImportError as e:
@@ -119,14 +119,14 @@ class TestMathService(unittest.TestCase):
 
     def test_math_service_instantiation(self):
         """Test that MathService can be instantiated."""
-        from cloud.ivanbotty.Launcher.services.math_service import MathService
+        from cloud.ivanbotty.LightFlow.services.math_service import MathService
 
         service = MathService()
         self.assertIsNotNone(service)
 
     def test_calculate_simple_expression(self):
         """Test basic calculation."""
-        from cloud.ivanbotty.Launcher.services.math_service import MathService
+        from cloud.ivanbotty.LightFlow.services.math_service import MathService
 
         service = MathService()
         result, error = service.calculate("2 + 2")
@@ -136,7 +136,7 @@ class TestMathService(unittest.TestCase):
 
     def test_calculate_complex_expression(self):
         """Test complex calculation."""
-        from cloud.ivanbotty.Launcher.services.math_service import MathService
+        from cloud.ivanbotty.LightFlow.services.math_service import MathService
 
         service = MathService()
         result, error = service.calculate("2 * 3 + 4")
@@ -146,7 +146,7 @@ class TestMathService(unittest.TestCase):
 
     def test_calculate_invalid_expression(self):
         """Test calculation with invalid expression."""
-        from cloud.ivanbotty.Launcher.services.math_service import MathService
+        from cloud.ivanbotty.LightFlow.services.math_service import MathService
 
         service = MathService()
         result, error = service.calculate("invalid")
@@ -161,7 +161,7 @@ class TestBaseInputHandler(unittest.TestCase):
     def test_import_base_handler(self):
         """Test that BaseInputHandler can be imported."""
         try:
-            from cloud.ivanbotty.Launcher.handlers.base_input_handler import (
+            from cloud.ivanbotty.LightFlow.handlers.base_input_handler import (
                 BaseInputHandler,
             )
 
@@ -171,7 +171,7 @@ class TestBaseInputHandler(unittest.TestCase):
 
     def test_base_handler_methods_raise_not_implemented(self):
         """Test that base handler methods raise NotImplementedError."""
-        from cloud.ivanbotty.Launcher.handlers.base_input_handler import (
+        from cloud.ivanbotty.LightFlow.handlers.base_input_handler import (
             BaseInputHandler,
         )
 

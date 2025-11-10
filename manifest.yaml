@@ -1,8 +1,8 @@
-id: cloud.ivanbotty.Launcher
+id: cloud.ivanbotty.LightFlow
 runtime: org.gnome.Platform
 runtime-version: '48'
 sdk: org.gnome.Sdk
-command: cloud-ivanbotty-launcher
+command: cloud-ivanbotty-lightflow
 
 # Permissions and filesystem access for the Flatpak app
 finish-args:
@@ -13,8 +13,8 @@ finish-args:
   - --talk-name=org.freedesktop.portal.Desktop    # Desktop portal access
   - --talk-name=org.freedesktop.Flatpak           # Flatpak portal access
   - --talk-name=org.freedesktop.DBus              # D-Bus access
-  - --own-name=cloud.ivanbotty.Launcher           # Own name for the launcher
-  - --own-name=cloud.ivanbotty.Launcherd          # Own name for the daemon
+  - --own-name=cloud.ivanbotty.LightFlow          # Own name for the launcher
+  - --own-name=cloud.ivanbotty.LightFlowD         # Own name for the daemon
   - --own-name=cloud.ivanbotty.Wizard             # Own name for the wizard
   - --filesystem=host:ro                          # Access to the host filesystem (read-only)
   - --filesystem=home                             # Access to home directory
@@ -30,7 +30,7 @@ modules:
         url: https://files.pythonhosted.org/packages/05/8e/961c0007c59b8dd7729d542c61a4d537767a59645b82a0b521206e1e25c2/pyyaml-6.0.3.tar.gz
         sha256: d76623373421df22fb4cf8817020cbb7ef15c725b9d5e45f17e189bfc384190f
 
-  - name: launcher-app
+  - name: lightflow-app
     buildsystem: meson
     config-opts:
       - --prefix=/app

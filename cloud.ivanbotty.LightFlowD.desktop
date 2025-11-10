@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=LightFlowD
+Exec=python3 -m cloud.ivanbotty.LightFlowD --daemonize
+Icon=cloud.ivanbotty.LightFlow
+Terminal=false
+Comment=Background application indexing service for LightFlow
+Categories=System;
+X-GNOME-Autostart-enabled=true
+X-KDE-autostart-after=panel
+Hidden=false
+NoDisplay=true

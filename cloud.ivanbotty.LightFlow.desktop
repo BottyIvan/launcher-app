@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=LightFlow
+GenericName=Application Launcher
+Comment=Light your workflow
+Exec=cloud-ivanbotty-lightflow
+Icon=cloud.ivanbotty.LightFlow
+Terminal=false
+Type=Application
+Categories=Utility;GTK;
+Keywords=lightflow;launcher;search;applications;

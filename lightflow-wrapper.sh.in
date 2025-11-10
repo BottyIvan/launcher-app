@@ -1,0 +1,4 @@
+#!/bin/sh
+# Wrapper script for cloud.ivanbotty.LightFlow
+
+exec @PYTHON@ -m cloud.ivanbotty.LightFlow "$@"

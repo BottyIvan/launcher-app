@@ -1,4 +1,4 @@
-project('launcher-app',
+project('lightflow-app',
   version: '0.0.1',
   meson_version: '>= 0.59.0',
   default_options: [
@@ -20,25 +20,25 @@ subdir('cloud')
 
 # Install desktop file
 install_data(
-  'cloud.ivanbotty.Launcher.desktop',
+  'cloud.ivanbotty.LightFlow.desktop',
   install_dir: datadir / 'applications',
 )
 
 # Install daemon desktop file for autostart
 install_data(
-  'cloud.ivanbotty.Launcherd.desktop',
+  'cloud.ivanbotty.LightFlowD.desktop',
   install_dir: datadir / 'applications',
 )
 
 # Install daemon autostart file
 install_data(
-  'cloud.ivanbotty.Launcherd.desktop',
+  'cloud.ivanbotty.LightFlowD.desktop',
   install_dir: get_option('sysconfdir') / 'xdg/autostart',
 )
 
 # Install SVG icon
 install_data(
-  'cloud/ivanbotty/Launcher/resources/cloud.ivanbotty.Launcher.svg',
+  'cloud/ivanbotty/LightFlow/resources/cloud.ivanbotty.LightFlow.svg',
   install_dir: datadir / 'icons/hicolor/scalable/apps',
 )
 
@@ -50,26 +50,26 @@ install_data(
 
 # Install resources (icons, data files)
 install_subdir(
-  'cloud/ivanbotty/Launcher/resources',
-  install_dir: pkgdatadir / 'Launcher',
+  'cloud/ivanbotty/LightFlow/resources',
+  install_dir: pkgdatadir / 'LightFlow',
   strip_directory: false,
 )
 
 # Compile the gresource file
-gresource_xml = 'cloud/ivanbotty/Launcher/resources/resources.xml'
+gresource_xml = 'cloud/ivanbotty/LightFlow/resources/resources.xml'
 gresource_target = custom_target(
   'resources.gresource',
   input: gresource_xml,
   output: 'resources.gresource',
-  command: ['glib-compile-resources', '@INPUT@', '--target=@OUTPUT@', '--sourcedir=' + meson.project_source_root() / 'cloud/ivanbotty/Launcher/resources'],
+  command: ['glib-compile-resources', '@INPUT@', '--target=@OUTPUT@', '--sourcedir=' + meson.project_source_root() / 'cloud/ivanbotty/LightFlow/resources'],
   install: true,
-  install_dir: pkgdatadir / 'Launcher/resources',
+  install_dir: pkgdatadir / 'LightFlow/resources',
 )
 
 # Create wrapper script for the launcher
 configure_file(
-  input: 'launcher-wrapper.sh.in',
-  output: 'cloud-ivanbotty-launcher',
+  input: 'lightflow-wrapper.sh.in',
+  output: 'cloud-ivanbotty-lightflow',
   configuration: {
     'PYTHON': python.full_path(),
   },
@@ -80,8 +80,8 @@ configure_file(
 
 # Create wrapper script for the daemon
 configure_file(
-  input: 'launcherd-wrapper.sh.in',
-  output: 'cloud-ivanbotty-launcherd',
+  input: 'lightflowd-wrapper.sh.in',
+  output: 'cloud-ivanbotty-lightflowd',
   configuration: {
     'PYTHON': python.full_path(),
   },
@@ -92,8 +92,8 @@ configure_file(
 
 # Install D-Bus service file for daemon auto-activation
 configure_file(
-  input: 'cloud.ivanbotty.Launcherd.service.in',
-  output: 'cloud.ivanbotty.Launcherd.service',
+  input: 'cloud.ivanbotty.LightFlowD.service.in',
+  output: 'cloud.ivanbotty.LightFlowD.service',
   configuration: {
     'BINDIR': bindir,
   },

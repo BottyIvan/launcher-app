@@ -9,6 +9,6 @@ python.install_sources(
 # Process subdirectories
 subdir('utils')
 subdir('database')
-subdir('Launcher')
-subdir('Launcherd')
+subdir('LightFlow')
+subdir('LightFlowD')
 subdir('Wizard')

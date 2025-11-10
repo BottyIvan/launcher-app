@@ -1,4 +1,4 @@
-"""Common utilities for the launcher application.
+"""Common utilities for the LightFlow application.
 
 This module provides utility functions for locating resource files
 in various installation environments (direct execution, Meson, Flatpak).
@@ -10,8 +10,8 @@ from typing import Optional
 
 # Constants for resource paths
 # Note: PKGDATADIR must match the project name in meson.build
-PKGDATADIR = "launcher-app"
-RESOURCE_SUBDIR = "Launcher/resources"
+PKGDATADIR = "lightflow-app"
+RESOURCE_SUBDIR = "LightFlow/resources"
 RESOURCE_FILE = "resources.gresource"
 
 

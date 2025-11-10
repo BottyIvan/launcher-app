@@ -19,7 +19,7 @@ class TestDaemonServiceImport(unittest.TestCase):
     def test_import_dbus_service_module(self):
         """Test that the dbus_service module can be imported."""
         try:
-            from cloud.ivanbotty.Launcherd import dbus_service
+            from cloud.ivanbotty.LightFlowd import dbus_service
             self.assertIsNotNone(dbus_service)
         except ImportError as e:
             # If GLib is not available, the import might fail
@@ -29,7 +29,7 @@ class TestDaemonServiceImport(unittest.TestCase):
     def test_import_daemon_client_module(self):
         """Test that the daemon_client module can be imported."""
         try:
-            from cloud.ivanbotty.Launcher.services import daemon_client
+            from cloud.ivanbotty.LightFlow.services import daemon_client
             self.assertIsNotNone(daemon_client)
         except ImportError as e:
             self.skipTest(f"GLib not available: {e}")
@@ -43,7 +43,7 @@ class TestDaemonServiceBasic(unittest.TestCase):
     @patch("cloud.ivanbotty.Launcherd.dbus_service.Gio")
     def test_daemon_service_creation(self, mock_gio, mock_glib):
         """Test that LauncherDaemonDBusService can be created."""
-        from cloud.ivanbotty.Launcherd.dbus_service import LauncherdDBusService
+        from cloud.ivanbotty.LightFlowd.dbus_service import LauncherdDBusService
         
         cache_path = "/tmp/test_cache.json"
         service = LauncherdDBusService(cache_path)
@@ -57,7 +57,7 @@ class TestDaemonServiceBasic(unittest.TestCase):
     @patch("cloud.ivanbotty.Launcherd.dbus_service.DBUS_AVAILABLE", False)
     def test_daemon_service_no_dbus(self):
         """Test that LauncherDaemonDBusService raises error when D-Bus unavailable."""
-        from cloud.ivanbotty.Launcherd.dbus_service import LauncherdDBusService
+        from cloud.ivanbotty.LightFlowd.dbus_service import LauncherdDBusService
         
         with self.assertRaises(ImportError):
             LauncherdDBusService("/tmp/test_cache.json")
@@ -67,7 +67,7 @@ class TestDaemonServiceBasic(unittest.TestCase):
     @patch("cloud.ivanbotty.Launcherd.dbus_service.Gio")
     def test_daemon_service_indexing_state(self, mock_gio, mock_glib):
         """Test setting indexing state."""
-        from cloud.ivanbotty.Launcherd.dbus_service import LauncherdDBusService
+        from cloud.ivanbotty.LightFlowd.dbus_service import LauncherdDBusService
         
         service = LauncherdDBusService("/tmp/test_cache.json")
         
@@ -84,7 +84,7 @@ class TestDaemonServiceBasic(unittest.TestCase):
     @patch("cloud.ivanbotty.Launcherd.dbus_service.Gio")
     def test_daemon_service_progress_update(self, mock_gio, mock_glib):
         """Test updating indexing progress."""
-        from cloud.ivanbotty.Launcherd.dbus_service import LauncherdDBusService
+        from cloud.ivanbotty.LightFlowd.dbus_service import LauncherdDBusService
         
         service = LauncherdDBusService("/tmp/test_cache.json")
         
@@ -109,7 +109,7 @@ class TestDaemonClientBasic(unittest.TestCase):
     @patch("cloud.ivanbotty.Launcher.services.daemon_client.Gio")
     def test_daemon_client_creation(self, mock_gio, mock_glib):
         """Test that LauncherDaemonClient can be created."""
-        from cloud.ivanbotty.Launcher.services.daemon_client import LauncherDaemonClient
+        from cloud.ivanbotty.LightFlow.services.daemon_client import LauncherDaemonClient
         
         client = LauncherDaemonClient()
         
@@ -121,7 +121,7 @@ class TestDaemonClientBasic(unittest.TestCase):
     @patch("cloud.ivanbotty.Launcher.services.daemon_client.DBUS_AVAILABLE", False)
     def test_daemon_client_no_dbus(self):
         """Test that LauncherDaemonClient raises error when D-Bus unavailable."""
-        from cloud.ivanbotty.Launcher.services.daemon_client import LauncherDaemonClient
+        from cloud.ivanbotty.LightFlow.services.daemon_client import LauncherDaemonClient
         
         with self.assertRaises(ImportError):
             LauncherDaemonClient()
@@ -130,7 +130,7 @@ class TestDaemonClientBasic(unittest.TestCase):
     @patch("cloud.ivanbotty.Launcher.services.daemon_client.Gio")
     def test_daemon_client_connection_failure(self, mock_gio):
         """Test that connection failure is handled gracefully."""
-        from cloud.ivanbotty.Launcher.services.daemon_client import LauncherDaemonClient
+        from cloud.ivanbotty.LightFlow.services.daemon_client import LauncherDaemonClient
         
         # Make bus_get_sync raise an exception
         mock_gio.bus_get_sync.side_effect = Exception("D-Bus not available")
@@ -146,7 +146,7 @@ class TestDaemonClientBasic(unittest.TestCase):
     @patch("cloud.ivanbotty.Launcher.services.daemon_client.Gio")
     def test_daemon_client_get_status_not_connected(self, mock_gio, mock_glib):
         """Test that getting status returns None when not connected."""
-        from cloud.ivanbotty.Launcher.services.daemon_client import LauncherDaemonClient
+        from cloud.ivanbotty.LightFlow.services.daemon_client import LauncherDaemonClient
         
         client = LauncherDaemonClient()
         
@@ -173,7 +173,7 @@ class TestDaemonMainModule(unittest.TestCase):
     @patch("cloud.ivanbotty.Launcherd.__main__.GLIB_AVAILABLE", False)
     def test_daemon_run_without_glib(self, mock_service, mock_logging):
         """Test that daemon can run without GLib (no D-Bus)."""
-        from cloud.ivanbotty.Launcherd.__main__ import ensure_cache_dir_exists
+        from cloud.ivanbotty.LightFlowd.__main__ import ensure_cache_dir_exists
         
         # Test cache dir creation function
         with patch("os.path.exists") as mock_exists, \

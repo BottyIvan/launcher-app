@@ -1,0 +1,4 @@
+#!/bin/sh
+# Wrapper script for cloud.ivanbotty.LightFlowD daemon
+
+exec @PYTHON@ -m cloud.ivanbotty.LightFlowD --daemonize "$@"

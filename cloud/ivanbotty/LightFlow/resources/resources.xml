@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/cloud/ivanbotty/LightFlow/resources">
+        <file>appdata.xml</file>
+        <file>extensions.yaml</file>
+        <file>cloud.ivanbotty.LightFlow.svg</file>
+        <file>wizard.yaml</file>
+        <file>arrow1-down-symbolic.svg</file>
+        <file>arrow1-up-symbolic.svg</file>
+        <file>keyboard-enter-symbolic.svg</file>
+    </gresource>
+</gresources>
