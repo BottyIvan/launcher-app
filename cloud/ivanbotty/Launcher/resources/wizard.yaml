@@ -1,54 +1,54 @@
 pages:
-  - title: "Welcome to Launcher"
+  - title: "Meet LightFlow"
     icon: "applications-system-symbolic"
     description: |
-      A modern, fast, and elegant application launcher for Linux.
+      a fast, elegant, and modern application launcher for Linux.
       
-      Find and launch your applications instantly with a beautiful, 
-      keyboard-first interface that feels right at home on your desktop.
+      Search, calculate, and launch instantly through a beautiful, 
+      keyboard-first interface designed to keep you in flow.
     button_label: "Get Started"
 
-  - title: "Lightning-Fast Search"
+  - title: "Instant, Fluid Search"
     icon: "system-search-symbolic"
     description: |
-      Start typing to instantly search across all your applications.
+      Start typing — LightFlow finds what you need in real time.
       
-      • Fuzzy matching finds what you need quickly
-      • Real-time results as you type
-      • Works with native and Flatpak applications
+      • Fuzzy matching for smart results  
+      • Instant feedback as you type  
+      • Works with native and Flatpak apps  
       • Built-in calculator for quick math
     button_label: "Next"
 
-  - title: "Keyboard-First Design"
+  - title: "Keyboard-First Experience"
     icon: "input-keyboard-symbolic"
     description: |
-      Navigate effortlessly using your keyboard.
+      Stay in the flow with complete keyboard navigation.
       
-      • Type to search
-      • ↑↓ to navigate results
-      • Enter to launch
-      • Escape to close
-      • Ctrl+? to see all shortcuts
+      • Type to search  
+      • ↑↓ to browse results  
+      • Enter to launch  
+      • Escape to close  
+      • Ctrl+? to view all shortcuts
     button_label: "Next"
 
-  - title: "Personalize Your Experience"
+  - title: "Make It Yours"
     icon: "emblem-system-symbolic"
     description: |
-      Make Launcher work the way you want.
+      Personalize LightFlow to fit your workflow.
       
-      • Choose compact or spacious layouts
-      • Enable or disable extension modules
-      • All preferences stored locally
-      • Access settings with Ctrl+,
+      • Choose between compact or spacious layouts  
+      • Enable or disable extensions  
+      • Preferences stored locally  
+      • Open settings with Ctrl+,
     button_label: "Next"
 
-  - title: "Privacy First"
+  - title: "Private by Design"
     icon: "security-high-symbolic"
     description: |
-      Your data stays on your device.
+      Your data stays with you — always.
       
-      Launcher respects your privacy — no telemetry, no tracking, 
-      no data collection. Everything runs locally on your system.
+      LightFlow runs locally with no telemetry, no tracking, 
+      and no cloud dependencies.
       
-      Ready to get started?
-    button_label: "Launch Launcher"
+      Ready to light your workflow?
+    button_label: "Launch LightFlow"
