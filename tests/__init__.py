@@ -1,1 +1,1 @@
-"""Test suite for the Launcher application."""
+"""Test suite for the LightFlow application."""

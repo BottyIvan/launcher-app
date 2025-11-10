@@ -1,4 +1,4 @@
-"""SQLite database management for Launcher application.
+"""SQLite database management for LightFlow application.
 
 This module provides functions for managing user preferences, extensions,
 and API keys using a SQLite database.
@@ -11,7 +11,7 @@ from contextlib import contextmanager
 import threading
 
 # Path to the SQLite database
-DB_PATH = os.path.expanduser("~/.config/cloud.ivanbotty.Launcher/settings.db")
+DB_PATH = os.path.expanduser("~/.config/cloud.ivanbotty.LightFlow/settings.db")
 
 # Thread-local storage for connections
 _local = threading.local()

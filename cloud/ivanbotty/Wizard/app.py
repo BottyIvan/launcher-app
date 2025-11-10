@@ -89,7 +89,7 @@ class WelcomeWizard(Adw.Application):
         mark_onboarding_complete()
 
         threading.Thread(
-            target=lambda: subprocess.run([sys.executable, "-m", "cloud.ivanbotty.Launcher"]),
+            target=lambda: subprocess.run([sys.executable, "-m", "cloud.ivanbotty.LightFlow"]),
             daemon=True,
         ).start()
 

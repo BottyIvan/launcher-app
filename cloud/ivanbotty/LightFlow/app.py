@@ -140,7 +140,7 @@ class App(Adw.Application):
             success: True if connected successfully
         """
         if success:
-            logger.info("Connected to Launcher daemon")
+            logger.info("Connected to LightFlowD daemon")
             
             # Subscribe to daemon signals
             self.daemon_client.subscribe_to_indexing_progress(

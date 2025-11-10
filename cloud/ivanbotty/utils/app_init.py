@@ -1,7 +1,7 @@
 """Application initialization utilities.
 
 This module provides shared functions for resource loading, database initialization,
-and logging setup used by both Launcher and Wizard entry points.
+and logging setup used by both LightFlow and Wizard entry points.
 """
 
 import argparse
@@ -24,7 +24,7 @@ import cloud.ivanbotty.database.sqlite3 as db
 from cloud.ivanbotty.common import find_resource_file, RESOURCE_FILE
 
 def build_parser(version: Optional[str] = None) -> argparse.ArgumentParser:
-    """Create and configure the argument parser for the Launcher application.
+    """Create and configure the argument parser for the LightFlow application.
 
     Args:
         version: Optional application version string for the --version flag.
@@ -33,7 +33,7 @@ def build_parser(version: Optional[str] = None) -> argparse.ArgumentParser:
         Configured ArgumentParser instance.
     """
     parser = argparse.ArgumentParser(
-        description="Launcher App - flexible startup options for configuration, logging, and automation"
+        description="LightFlow App - flexible startup options for configuration, logging, and automation"
     )
     parser.add_argument(
         "--debug",
@@ -63,7 +63,7 @@ def build_parser(version: Optional[str] = None) -> argparse.ArgumentParser:
     parser.add_argument(
         "--version",
         action="version",
-        version=version if version else "Launcher App (version unknown)",
+        version=version if version else "LightFlow App (version unknown)",
         help="Show application version and exit"
     )
     return parser

@@ -1,4 +1,4 @@
-"""Tests for Launcher daemon D-Bus service and client.
+"""Tests for LightFlowD daemon D-Bus service and client.
 
 These tests verify that the daemon service and client can be imported
 and basic functionality works.
@@ -42,7 +42,7 @@ class TestDaemonServiceBasic(unittest.TestCase):
     @patch("cloud.ivanbotty.LightFlowD.dbus_service.GLib")
     @patch("cloud.ivanbotty.LightFlowD.dbus_service.Gio")
     def test_daemon_service_creation(self, mock_gio, mock_glib):
-        """Test that LauncherDaemonDBusService can be created."""
+        """Test that LightFlowDDBusService can be created."""
         from cloud.ivanbotty.LightFlowD.dbus_service import LightFlowDDBusService
         
         cache_path = "/tmp/test_cache.json"
@@ -56,7 +56,7 @@ class TestDaemonServiceBasic(unittest.TestCase):
 
     @patch("cloud.ivanbotty.LightFlowD.dbus_service.DBUS_AVAILABLE", False)
     def test_daemon_service_no_dbus(self):
-        """Test that LauncherDaemonDBusService raises error when D-Bus unavailable."""
+        """Test that LightFlowDDBusService raises error when D-Bus unavailable."""
         from cloud.ivanbotty.LightFlowD.dbus_service import LightFlowDDBusService
         
         with self.assertRaises(ImportError):
