@@ -9,6 +9,7 @@ license = { file = "LICENSE" }
 dependencies = [
     "PyGObject>=3.44",
     "google-generativeai>=0.3.0", # dependency for genai
+    "PyYAML>=6.0.3"
 ]
 
 [project.scripts]
