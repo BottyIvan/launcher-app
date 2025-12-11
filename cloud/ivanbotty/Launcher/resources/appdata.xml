@@ -3,11 +3,17 @@
   <id>cloud.ivanbotty.Launcher</id>
   <name>Launcher</name>
   <summary>A modern GTK4/Adwaita desktop launcher for Linux.</summary>
-  <description>A modern GTK4/Adwaita desktop launcher for Linux.</description>
+  <description>A modern GTK4/Adwaita desktop launcher for Linux.
+  <p><b>Required permissions:</b></p>
+    <ul>
+      <li>Network access: for online search and updates</li>
+      <li>Filesystem access: to index and launch apps anywhere</li>
+    </ul>
+  </description>
   <releases>
-    <release version="0.0.1" date="2025-05-10">
+    <release version="1.0.0" date="2025-12-11">
       <description>
-        <p>Initial release of Launcher.</p>
+        <p>First stable public release.</p>
       </description>
     </release>
   </releases>
