@@ -42,9 +42,9 @@ install_data(
   install_dir: datadir / 'icons/hicolor/scalable/apps',
 )
 
-# Install manifest.yaml
+# Install cloud.ivanbotty.Launcher.yaml
 install_data(
-  'manifest.yaml',
+  'cloud.ivanbotty.Launcher.yaml',
   install_dir: pkgdatadir,
 )
 
