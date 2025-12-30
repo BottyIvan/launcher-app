@@ -10,6 +10,7 @@ finish-args:
   - --filesystem=host:ro                          # Access to the host filesystem (read-only). Acceptable justification: the app must index, search, or launch files/applications anywhere on the system or in the home directory.
   - --filesystem=home                             # Access to home directory. Acceptable justification: the app must index, search, or launch files/applications anywhere on the system or in the home directory.
   - --socket=wayland                              # Enable Wayland display support
+  - --socket=fallback-x11                         # Enable fallback X11 support
   - --device=dri                                  # Allow direct rendering (GPU access)
   - --talk-name=org.freedesktop.Flatpak           # Flatpak portal access
 
