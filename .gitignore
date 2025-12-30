@@ -49,6 +49,7 @@ coverage.xml
 
 # Project Build
 .flatpak-builder/
+repo/
 build-dir/
 _build/
 *.egg-info/
