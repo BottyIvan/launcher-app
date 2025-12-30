@@ -24,6 +24,8 @@ install_data(
   install_dir: datadir / 'applications',
 )
 
+# Install daemon desktop file for autostart
+
 # Install SVG icon
 install_data(
   'cloud/ivanbotty/Launcher/resources/cloud.ivanbotty.Launcher.svg',
@@ -71,6 +73,8 @@ configure_file(
   install_dir: bindir,
   install_mode: 'rwxr-xr-x',
 )
+
+
 
 # Summary
 summary({
