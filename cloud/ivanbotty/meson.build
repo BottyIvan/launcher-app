@@ -10,5 +10,4 @@ python.install_sources(
 subdir('utils')
 subdir('database')
 subdir('Launcher')
-subdir('Launcherd')
 subdir('Wizard')

@@ -25,16 +25,6 @@ install_data(
 )
 
 # Install daemon desktop file for autostart
-install_data(
-  'cloud.ivanbotty.Launcherd.desktop',
-  install_dir: datadir / 'applications',
-)
-
-# Install daemon autostart file
-install_data(
-  'cloud.ivanbotty.Launcherd.desktop',
-  install_dir: get_option('sysconfdir') / 'xdg/autostart',
-)
 
 # Install SVG icon
 install_data(
@@ -78,28 +68,7 @@ configure_file(
   install_mode: 'rwxr-xr-x',
 )
 
-# Create wrapper script for the daemon
-configure_file(
-  input: 'launcherd-wrapper.sh.in',
-  output: 'cloud-ivanbotty-launcherd',
-  configuration: {
-    'PYTHON': python.full_path(),
-  },
-  install: true,
-  install_dir: bindir,
-  install_mode: 'rwxr-xr-x',
-)
 
-# Install D-Bus service file for daemon auto-activation
-configure_file(
-  input: 'cloud.ivanbotty.Launcherd.service.in',
-  output: 'cloud.ivanbotty.Launcherd.service',
-  configuration: {
-    'BINDIR': bindir,
-  },
-  install: true,
-  install_dir: datadir / 'dbus-1/services',
-)
 
 # Summary
 summary({

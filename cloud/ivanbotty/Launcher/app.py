@@ -30,13 +30,6 @@ from cloud.ivanbotty.Launcher.widget.search_entry import SearchEntry
 from cloud.ivanbotty.Launcher.widget.window import Window
 from cloud.ivanbotty.common import find_extensions_yaml
 
-try:
-    from cloud.ivanbotty.Launcher.services.daemon_client import LauncherDaemonClient
-    DAEMON_CLIENT_AVAILABLE = True
-except ImportError:
-    DAEMON_CLIENT_AVAILABLE = False
-    LauncherDaemonClient = None
-
 logger = logging.getLogger(__name__)
 
 
@@ -52,7 +45,6 @@ class App(Adw.Application):
         extensions_service: Service for managing extensions
         search_controller: Controller for handling search events
         keyboard_controller: Controller for handling keyboard events
-        daemon_client: Client for communicating with the daemon (if available)
     """
 
     def __init__(self, app: str) -> None:
@@ -64,7 +56,6 @@ class App(Adw.Application):
         super().__init__(application_id=app)
         self.name = "Main Application"
         self.win: Optional[Window] = None
-        self.daemon_client: Optional[LauncherDaemonClient] = None
 
         # Initialize progress bar with configuration
         self.progress_bar = ProgressBar("Loading...")
@@ -110,81 +101,6 @@ class App(Adw.Application):
 
         # Load extensions into the service
         self.extensions_service.load_from_config(config)
-        
-        # Try to connect to daemon
-        self._init_daemon_client()
-    
-    def _init_daemon_client(self) -> None:
-        """Initialize connection to the daemon if available.
-        
-        This is done asynchronously to avoid blocking UI startup.
-        The daemon integration is optional and shouldn't delay the app.
-        """
-        if not DAEMON_CLIENT_AVAILABLE:
-            logger.info("Daemon client not available, running without daemon integration")
-            return
-        
-        try:
-            self.daemon_client = LauncherDaemonClient()
-            # Connect asynchronously to avoid blocking UI startup
-            # The daemon may take time to start via D-Bus activation
-            self.daemon_client.connect_async(self._on_daemon_connected)
-        except Exception as e:
-            logger.warning(f"Could not initialize daemon client: {e}")
-            self.daemon_client = None
-    
-    def _on_daemon_connected(self, success: bool) -> None:
-        """Callback when daemon connection attempt completes.
-        
-        Args:
-            success: True if connected successfully
-        """
-        if success:
-            logger.info("Connected to Launcher daemon")
-            
-            # Subscribe to daemon signals
-            self.daemon_client.subscribe_to_indexing_progress(
-                self._on_daemon_indexing_progress
-            )
-            self.daemon_client.subscribe_to_cache_updated(
-                self._on_daemon_cache_updated
-            )
-        else:
-            logger.info("Daemon not available, running standalone")
-            self.daemon_client = None
-    
-    def _on_daemon_indexing_progress(self, progress: float, apps_count: int) -> None:
-        """Handle indexing progress updates from daemon.
-        
-        Args:
-            progress: Progress from 0.0 to 1.0
-            apps_count: Number of applications indexed
-        """
-        def update_ui():
-            if self.progress_bar.get_visible():
-                self.progress_bar.update_progress(
-                    progress, 
-                    f"Indexing applications... {apps_count}"
-                )
-            return False
-        
-        GLib.idle_add(update_ui)
-    
-    def _on_daemon_cache_updated(self, apps_count: int, timestamp: int) -> None:
-        """Handle cache update notification from daemon.
-        
-        Args:
-            apps_count: Number of applications in the cache
-            timestamp: Unix timestamp of the update
-        """
-        logger.info(f"Daemon cache updated: {apps_count} applications")
-        
-        def hide_progress():
-            if self.progress_bar.get_visible():
-                self.progress_bar.set_visible(False)
-            return False
-        
-        GLib.idle_add(hide_progress)
 
     def run_with_progress(
         self,
