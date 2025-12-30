@@ -26,10 +26,17 @@ install_data(
 
 # Install daemon desktop file for autostart
 
+
 # Install SVG icon
 install_data(
   'cloud/ivanbotty/Launcher/resources/cloud.ivanbotty.Launcher.svg',
   install_dir: datadir / 'icons/hicolor/scalable/apps',
+)
+
+# Install metainfo file for AppStream
+install_data(
+  'assets/cloud.ivanbotty.Launcher.metainfo.xml',
+  install_dir: datadir / 'metainfo',
 )
 
 # Install cloud.ivanbotty.Launcher.yaml
