@@ -6,12 +6,19 @@ command: cloud-ivanbotty-launcher
 
 # Permissions and filesystem access for the Flatpak app
 finish-args:
-  - --share=network                               # Allow network access
-  - --filesystem=host:ro  # Read-only access to the host filesystem
-  - --socket=wayland                              # Enable Wayland display support
-  - --socket=fallback-x11                         # Enable fallback X11 support
-  - --share=ipc                                   # Required for X11 support
-  - --device=dri                                  # Allow direct rendering (GPU access)
+  - --share=network                                 # Allow network access
+  - --filesystem=xdg-data/applications:ro           # Access to user applications
+  - --filesystem=xdg-data/icons:ro                  # Access to user icons
+  - --filesystem=/usr/share/applications:ro         # Access to system applications
+  - --filesystem=/usr/share/icons:ro                # Access to system icons
+  - --filesystem=/usr/share/pixmaps:ro              # Access to system pixmaps
+  - --filesystem=~/.local/share/applications:ro     # User applications (legacy)
+  - --filesystem=~/.local/share/icons:ro            # User icons (legacy)
+  - --filesystem=~/.icons:ro                        # User icons (legacy)
+  - --socket=wayland                                # Enable Wayland display support
+  - --socket=fallback-x11                           # Enable fallback X11 support
+  - --share=ipc                                     # Required for X11 support
+  - --device=dri                                    # Allow direct rendering (GPU access)
 
 modules:
   - name: PyYAML
