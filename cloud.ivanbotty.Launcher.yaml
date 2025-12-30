@@ -8,9 +8,7 @@ command: cloud-ivanbotty-launcher
 finish-args:
   - --share=network                               # Allow network access
   - --filesystem=xdg-documents                    # Access only to user's Documents
-  - --filesystem=/usr/share/applications:ro       # Read-only access to system applications
   - --filesystem=/var/lib/flatpak/exports/share/applications:ro # Read-only access to Flatpak applications
-  - --filesystem=/usr/share/icons:ro              # Read-only access to system icons
   - --socket=wayland                              # Enable Wayland display support
   - --socket=fallback-x11                         # Enable fallback X11 support
   - --share=ipc                                   # Required for X11 support
