@@ -7,7 +7,7 @@ command: cloud-ivanbotty-launcher
 # Permissions and filesystem access for the Flatpak app
 finish-args:
   - --share=network                                 # Allow network access
-  - --filesystem=host                             # Access to host's directory (for indexing files)
+  - --filesystem=host                               # Access to host's directory (for indexing files)
   - --socket=wayland                                # Enable Wayland display support
   - --socket=fallback-x11                           # Enable fallback X11 support
   - --share=ipc                                     # Required for X11 support
