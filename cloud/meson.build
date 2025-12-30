@@ -5,4 +5,5 @@ python.install_sources(
   pure: true,
 )
 
+# Process ivanbotty subdirectory
 subdir('ivanbotty')
