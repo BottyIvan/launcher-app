@@ -60,7 +60,7 @@
   <screenshots>
     <!-- Replace with real screenshots when available -->
     <screenshot type="default">
-      <image>https://github.com/BottyIvan/launcher-app/blob/main/assets/Screenshot%20From%202025-11-09%2021-55-46.png</image>
+      <image>https://raw.githubusercontent.com/BottyIvan/launcher-app/main/assets/Screenshot%20From%202025-11-09%2021-55-46.png</image>
     </screenshot>
   </screenshots>
 
@@ -69,7 +69,7 @@
   </requires>
 
   <branding>
-    <icon type="stock">cloud.ivanbotty.Launcher</icon>
+    <icon type="local">cloud.ivanbotty.Launcher</icon>
   </branding>
 
 </component>
