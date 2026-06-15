@@ -17,6 +17,9 @@ from cloud.ivanbotty.Launcher.app import App
 from cloud.ivanbotty.utils import configure_cli, initialize_app, setup_logging
 from cloud.ivanbotty.Wizard.app import WelcomeWizard
 
+LAUNCHER_APP_ID = "cloud.ivanbotty.Launcher"
+WIZARD_APP_ID = "cloud.ivanbotty.Launcher.Wizard"
+
 
 def main() -> int:
     """Initialize and run the application.
@@ -41,10 +44,10 @@ def main() -> int:
         logger.info("Starting Launcher Application")
         logger.debug(f"show_welcome_wizard preference: {should_show_onboarding()}")
         if should_show_onboarding():
-            app = WelcomeWizard(app="cloud.ivanbotty.Wizard")
+            app = WelcomeWizard(app=WIZARD_APP_ID)
             logger.info("Launching Welcome Wizard")
         else:
-            app = App(app="cloud.ivanbotty.Launcher")
+            app = App(app=LAUNCHER_APP_ID)
             logger.info("Launching Main Application")
 
         app.run()
