@@ -14,7 +14,7 @@ import yaml
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Adw, Gtk
+from gi.repository import Adw, Gio, Gtk
 
 from cloud.ivanbotty.Launcher.config.config import mark_onboarding_complete
 from cloud.ivanbotty.Launcher.widget.window import Window
@@ -39,7 +39,7 @@ class WelcomeWizard(Adw.Application):
         Args:
             app: Application ID string
         """
-        super().__init__(application_id=app)
+        super().__init__(application_id=app, flags=Gio.ApplicationFlags.NON_UNIQUE)
         self.win: Optional[Window] = None
         self.content: Optional[Adw.Carousel] = None
         self.wizard_texts: dict = {}
