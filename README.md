@@ -52,7 +52,7 @@
 ```bash
 git clone https://github.com/BottyIvan/launcher-app.git
 cd launcher-app
-flatpak-builder --user --install --force-clean build-dir manifest.yaml
+flatpak-builder --user --install --force-clean build-dir cloud.ivanbotty.Launcher.yaml
 flatpak run cloud.ivanbotty.Launcher
 ```
 
